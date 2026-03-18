@@ -1,0 +1,1264 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Medinistros | Simulador de pedidos y cotizaciones</title>
+  <style>
+    :root {
+      --bg: #07111f;
+      --bg-soft: #0d1728;
+      --panel: rgba(10, 18, 31, 0.9);
+      --panel-strong: rgba(7, 14, 26, 0.98);
+      --line: rgba(148, 163, 184, 0.12);
+      --text: #e5eefb;
+      --muted: #91a1bc;
+      --accent: #25c0ff;
+      --accent-2: #29d391;
+      --warn: #ffb347;
+      --danger: #ff6b7a;
+      --violet: #9c7bff;
+      --shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(37, 192, 255, 0.18), transparent 24%),
+        radial-gradient(circle at top right, rgba(156, 123, 255, 0.12), transparent 28%),
+        linear-gradient(180deg, #08111f 0%, #050b15 100%);
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 32px 32px;
+      opacity: 0.18;
+      pointer-events: none;
+    }
+
+    .shell {
+      position: relative;
+      z-index: 1;
+      width: min(1480px, calc(100vw - 32px));
+      margin: 22px auto 40px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .hero-card,
+    .zone,
+    .card {
+      background: linear-gradient(180deg, rgba(14, 24, 41, 0.9), rgba(7, 12, 22, 0.96));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+    }
+
+    .hero-card { padding: 24px; }
+    .badge-row, .action-row, .mini-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+    .badge {
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(37, 192, 255, 0.26);
+      color: #bfe8ff;
+      background: rgba(37, 192, 255, 0.08);
+      font-size: 0.82rem;
+      letter-spacing: 0.01em;
+    }
+
+    h1 {
+      margin: 14px 0 10px;
+      font-size: clamp(2rem, 3vw, 3.25rem);
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+    }
+
+    .hero p, .section-intro, .muted { color: var(--muted); }
+    .hero p { font-size: 1rem; line-height: 1.6; max-width: 62ch; }
+
+    .action-row { margin-top: 22px; }
+
+    button {
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      color: var(--text);
+      background: rgba(9, 15, 27, 0.88);
+      border-radius: 14px;
+      padding: 12px 16px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      border-color: rgba(37, 192, 255, 0.42);
+      box-shadow: 0 16px 28px rgba(0,0,0,0.22);
+    }
+
+    button.primary {
+      background: linear-gradient(135deg, rgba(37, 192, 255, 0.24), rgba(156, 123, 255, 0.2));
+      border-color: rgba(37, 192, 255, 0.4);
+    }
+
+    button.success {
+      background: linear-gradient(135deg, rgba(41, 211, 145, 0.22), rgba(37, 192, 255, 0.18));
+      border-color: rgba(41, 211, 145, 0.38);
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      height: 100%;
+    }
+
+    .stat-card {
+      padding: 18px;
+      border-radius: 18px;
+      background: rgba(8, 16, 29, 0.8);
+      border: 1px solid rgba(148, 163, 184, 0.12);
+    }
+
+    .stat-card strong {
+      display: block;
+      font-size: 2rem;
+      margin-top: 12px;
+      letter-spacing: -0.04em;
+    }
+
+    .app-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 1.1fr 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .zone { padding: 18px; min-height: 840px; }
+
+    .zone-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+
+    .zone-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #c9d6ea;
+      margin-bottom: 8px;
+    }
+
+    .glow-red { color: #ff8d98; }
+    .glow-yellow { color: #ffd27f; }
+    .glow-green { color: #6ff3b6; }
+
+    .zone h2 { margin: 0; font-size: 1.25rem; }
+    .zone p { margin: 6px 0 0; }
+
+    .channel-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    .card { padding: 16px; }
+    .card h3 { margin: 0 0 4px; font-size: 1rem; }
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 0.76rem;
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      background: rgba(255,255,255,0.03);
+      color: #dce7fa;
+    }
+
+    .mail-list, .log-list, .timeline, .alerts, .compare-list, .chat-thread { display: grid; gap: 10px; }
+
+    .mail-item,
+    .call-item,
+    .setting-item,
+    .timeline-item,
+    .compare-item,
+    .assistant-msg,
+    .alert {
+      border-radius: 16px;
+      border: 1px solid rgba(148, 163, 184, 0.12);
+      background: rgba(8, 15, 27, 0.84);
+      padding: 12px 14px;
+      transition: transform 180ms ease, border-color 180ms ease;
+    }
+
+    .mail-item:hover,
+    .call-item:hover,
+    .setting-item:hover,
+    .timeline-item:hover,
+    .compare-item:hover { transform: translateY(-1px); }
+
+    .mail-item.active { border-color: rgba(37, 192, 255, 0.52); }
+    .row-between { display: flex; justify-content: space-between; gap: 10px; }
+    .tiny { font-size: 0.78rem; color: var(--muted); }
+    .mail-body {
+      margin-top: 12px;
+      min-height: 108px;
+      white-space: pre-line;
+      padding: 14px;
+      border-radius: 16px;
+      border: 1px dashed rgba(148, 163, 184, 0.18);
+      background: rgba(5, 10, 20, 0.72);
+      color: #d3def0;
+      line-height: 1.5;
+    }
+
+    .wa-shell {
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(148,163,184,0.12);
+      background: #08111f;
+    }
+
+    .wa-header, .assistant-header {
+      padding: 12px 14px;
+      background: rgba(16, 27, 45, 0.94);
+      border-bottom: 1px solid rgba(148,163,184,0.1);
+    }
+
+    .chat-thread { padding: 14px; max-height: 290px; overflow: auto; background: linear-gradient(180deg, rgba(6,12,22,0.9), rgba(10,20,34,0.8)); }
+
+    .chat-bubble {
+      max-width: 88%;
+      padding: 10px 12px;
+      border-radius: 16px;
+      line-height: 1.4;
+      font-size: 0.9rem;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+    }
+
+    .bubble-client {
+      margin-left: auto;
+      background: linear-gradient(135deg, rgba(41, 211, 145, 0.22), rgba(37, 192, 255, 0.18));
+      border: 1px solid rgba(41, 211, 145, 0.18);
+    }
+
+    .bubble-team {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(148,163,184,0.12);
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .metric {
+      padding: 14px;
+      border-radius: 18px;
+      border: 1px solid rgba(148,163,184,0.12);
+      background: rgba(8, 15, 27, 0.86);
+    }
+
+    .metric strong { display: block; font-size: 1.7rem; margin-top: 10px; }
+    .risk-bar {
+      height: 12px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(148,163,184,0.1);
+      margin-top: 10px;
+    }
+
+    .risk-fill {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, #29d391, #ffb347, #ff6b7a);
+      transition: width 300ms ease;
+    }
+
+    .timeline { max-height: 330px; overflow: auto; }
+    .timeline-item { position: relative; padding-left: 16px; }
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 14px;
+      width: 6px;
+      height: calc(100% - 28px);
+      border-radius: 999px;
+      background: rgba(148,163,184,0.18);
+    }
+
+    .timeline-item.applied::before { background: linear-gradient(180deg, #29d391, rgba(41,211,145,0.2)); }
+    .timeline-item.warning::before { background: linear-gradient(180deg, #ffb347, rgba(255,179,71,0.18)); }
+    .timeline-item.alerted::before { background: linear-gradient(180deg, #ff6b7a, rgba(255,107,122,0.18)); }
+
+    .insight {
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px dashed rgba(148,163,184,0.14);
+      color: #d8e3f5;
+      font-size: 0.86rem;
+    }
+
+    .alert.high { border-color: rgba(255,107,122,0.28); background: rgba(70, 13, 24, 0.72); }
+    .alert.medium { border-color: rgba(255,179,71,0.24); background: rgba(65, 35, 4, 0.68); }
+    .alert.low { border-color: rgba(37,192,255,0.2); background: rgba(9, 36, 52, 0.72); }
+
+    .quote-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .quote-field {
+      padding: 14px;
+      border-radius: 18px;
+      border: 1px solid rgba(148,163,184,0.12);
+      background: rgba(8, 15, 27, 0.86);
+    }
+
+    .quote-field label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #91a1bc;
+    }
+
+    .status-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .state-danger { background: rgba(255,107,122,0.12); color: #ffc7cf; border: 1px solid rgba(255,107,122,0.22); }
+    .state-warn { background: rgba(255,179,71,0.12); color: #ffe3b5; border: 1px solid rgba(255,179,71,0.22); }
+    .state-good { background: rgba(41,211,145,0.12); color: #c7ffe4; border: 1px solid rgba(41,211,145,0.22); }
+
+    .assistant-card {
+      display: grid;
+      grid-template-rows: auto 1fr auto auto;
+      min-height: 520px;
+    }
+
+    .assistant-thread {
+      padding: 14px;
+      max-height: 260px;
+      overflow: auto;
+      display: grid;
+      gap: 10px;
+    }
+
+    .assistant-msg.system {
+      border-color: rgba(37, 192, 255, 0.2);
+      background: rgba(9, 28, 44, 0.66);
+    }
+
+    .assistant-msg.user {
+      border-color: rgba(41, 211, 145, 0.2);
+      background: rgba(12, 42, 30, 0.56);
+    }
+
+    .assistant-options {
+      padding: 0 14px 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .assistant-options button {
+      padding: 10px 12px;
+      font-size: 0.88rem;
+    }
+
+    .progress-card {
+      margin: 0 14px 14px;
+      padding: 14px;
+      border-radius: 18px;
+      border: 1px solid rgba(148,163,184,0.12);
+      background: rgba(5, 10, 18, 0.82);
+    }
+
+    .checklist { display: grid; gap: 8px; margin-top: 12px; }
+    .check-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+      color: #d9e4f7;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 8px;
+      box-shadow: 0 0 0 4px rgba(255,255,255,0.03);
+    }
+
+    .dot.pending { background: #4b5563; }
+    .dot.done { background: #29d391; }
+
+    .comparison {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .compare-item.bad { border-color: rgba(255,107,122,0.22); background: rgba(58, 13, 21, 0.62); }
+    .compare-item.good { border-color: rgba(41,211,145,0.22); background: rgba(8, 44, 30, 0.52); }
+
+    .footer-note {
+      margin-top: 18px;
+      padding: 18px 20px;
+      text-align: center;
+      border-radius: 20px;
+      border: 1px solid rgba(148,163,184,0.12);
+      background: linear-gradient(135deg, rgba(37,192,255,0.08), rgba(41,211,145,0.08));
+    }
+
+    .footer-note strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 1.05rem;
+    }
+
+    @media (max-width: 1280px) {
+      .app-grid { grid-template-columns: 1fr; }
+      .zone { min-height: auto; }
+      .hero { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 760px) {
+      .shell { width: min(100vw - 18px, 100%); margin-top: 10px; }
+      .hero-card, .zone, .card { border-radius: 18px; }
+      .metric-grid, .quote-grid, .comparison, .stat-grid { grid-template-columns: 1fr; }
+      button { width: 100%; }
+      .assistant-options button { width: auto; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <section class="hero">
+      <div class="hero-card">
+        <div class="badge-row">
+          <span class="badge">Demo interactiva sin backend</span>
+          <span class="badge">Lógica 100% simulada en JavaScript</span>
+          <span class="badge">Operación omnicanal Medinistros</span>
+        </div>
+        <h1>Gestión inteligente de pedidos y cotizaciones con trazabilidad desde el primer mensaje.</h1>
+        <p>
+          Esta experiencia simula el caos operativo real: correos, WhatsApp, llamadas y ajustes internos compitiendo por definir una misma cotización.
+          El objetivo no es mostrar una maqueta, sino demostrar cómo un agente guiado por reglas reduce errores, versiones cruzadas y retrabajo.
+        </p>
+        <div class="action-row">
+          <button class="primary" id="simulateChaos">Simular caos</button>
+          <button class="success" id="openAssistant">Usar asistente IA</button>
+          <button id="compareResults">Comparar resultados</button>
+          <button id="resetDemo">Reiniciar demo</button>
+        </div>
+      </div>
+      <div class="hero-card">
+        <div class="stat-grid">
+          <div class="stat-card">
+            <span class="tiny">Eventos procesados</span>
+            <strong id="statProcessed">0</strong>
+            <span class="muted">Se actualiza a medida que llegan mensajes y cambios.</span>
+          </div>
+          <div class="stat-card">
+            <span class="tiny">Inconsistencias</span>
+            <strong id="statIssues">0</strong>
+            <span class="muted">Contradicciones, ambigüedad y cambios sin soporte.</span>
+          </div>
+          <div class="stat-card">
+            <span class="tiny">Riesgo operativo</span>
+            <strong id="statRisk">Bajo</strong>
+            <span class="muted">Mide probabilidad de emitir una cotización incorrecta.</span>
+          </div>
+          <div class="stat-card">
+            <span class="tiny">Estado consolidado</span>
+            <strong id="statStatus">Esperando</strong>
+            <span class="muted">Evoluciona de caos disperso a versión validada.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="app-grid">
+      <section class="zone">
+        <div class="zone-header">
+          <div>
+            <div class="zone-label glow-red">🔴 Entradas desordenadas · realidad actual</div>
+            <h2>Los pedidos llegan fragmentados y se contradicen entre canales.</h2>
+            <p class="section-intro">Cada tarjeta simula una fuente real con datos creíbles, fechas, contexto y cambios acumulativos.</p>
+          </div>
+          <span class="pill" id="chaosBadge">Sin eventos cargados</span>
+        </div>
+
+        <div class="channel-grid">
+          <article class="card">
+            <div class="card-top">
+              <div>
+                <h3>📧 Correos</h3>
+                <div class="tiny">Bandeja comercial con solicitudes formales y correcciones.</div>
+              </div>
+              <span class="pill" id="mailCount">0 correos</span>
+            </div>
+            <div class="mail-list" id="mailList"></div>
+            <div class="mail-body" id="mailPreview">Selecciona un correo para leer el detalle.</div>
+          </article>
+
+          <article class="card">
+            <div class="card-top">
+              <div>
+                <h3>💬 WhatsApp</h3>
+                <div class="tiny">Mensajes rápidos que alteran urgencia, cantidad y contexto.</div>
+              </div>
+              <span class="pill" id="waCount">0 mensajes</span>
+            </div>
+            <div class="wa-shell">
+              <div class="wa-header row-between">
+                <strong>Clínica Sierra Norte</strong>
+                <span class="tiny">Última actividad <span id="waLast">--:--</span></span>
+              </div>
+              <div class="chat-thread" id="waThread"></div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-top">
+              <div>
+                <h3>📞 Llamadas</h3>
+                <div class="tiny">Resumen operativo de lo dicho por el cliente y por el equipo.</div>
+              </div>
+              <span class="pill" id="callCount">0 llamadas</span>
+            </div>
+            <div class="log-list" id="callList"></div>
+          </article>
+
+          <article class="card">
+            <div class="card-top">
+              <div>
+                <h3>⚙️ Ajustes internos</h3>
+                <div class="tiny">Cambios hechos por el equipo sin siempre tener respaldo documental.</div>
+              </div>
+              <span class="pill" id="settingCount">0 ajustes</span>
+            </div>
+            <div class="log-list" id="settingList"></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="zone">
+        <div class="zone-header">
+          <div>
+            <div class="zone-label glow-yellow">🟡 Motor de consolidación</div>
+            <h2>Interpreta cambios, detecta inconsistencias y organiza una sola historia operativa.</h2>
+            <p class="section-intro">Cada evento se transforma en una línea trazable con interpretación, riesgo y alertas.</p>
+          </div>
+          <span class="pill" id="engineStatus">Motor en espera</span>
+        </div>
+
+        <article class="card">
+          <div class="metric-grid">
+            <div class="metric">
+              <span class="tiny">Canales activos</span>
+              <strong id="metricChannels">0</strong>
+            </div>
+            <div class="metric">
+              <span class="tiny">Versiones detectadas</span>
+              <strong id="metricVersions">1</strong>
+            </div>
+            <div class="metric">
+              <span class="tiny">Alertas abiertas</span>
+              <strong id="metricAlerts">0</strong>
+            </div>
+            <div class="metric">
+              <span class="tiny">Nivel de riesgo</span>
+              <strong id="metricRisk">8%</strong>
+              <div class="risk-bar"><div class="risk-fill" id="riskFill"></div></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-top">
+            <div>
+              <h3>Timeline inteligente</h3>
+              <div class="tiny">Hora · canal · evento · interpretación operativa</div>
+            </div>
+            <span class="pill" id="timelineState">Sin movimiento</span>
+          </div>
+          <div class="timeline" id="timeline"></div>
+        </article>
+
+        <article class="card">
+          <div class="card-top">
+            <div>
+              <h3>Panel de alertas</h3>
+              <div class="tiny">Moneda, cantidad, mensajes ambiguos y cambios sin soporte.</div>
+            </div>
+            <span class="pill" id="alertSummary">Todo estable</span>
+          </div>
+          <div class="alerts" id="alertList"></div>
+        </article>
+
+        <article class="card">
+          <div class="card-top">
+            <div>
+              <h3>Cotización consolidada</h3>
+              <div class="tiny">Vista ejecutiva de la versión final sugerida por el sistema.</div>
+            </div>
+            <span class="status-chip state-warn" id="quoteState">Esperando validación inicial</span>
+          </div>
+          <div class="quote-grid" id="quoteGrid"></div>
+        </article>
+      </section>
+
+      <section class="zone">
+        <div class="zone-header">
+          <div>
+            <div class="zone-label glow-green">🟢 Agente inteligente simulado</div>
+            <h2>Un asistente guiado por reglas controla la captura desde el inicio.</h2>
+            <p class="section-intro">No usa IA real: decide con lógica predefinida, valida datos faltantes y genera una cotización limpia.</p>
+          </div>
+          <span class="pill" id="assistantMode">Modo guiado</span>
+        </div>
+
+        <article class="card assistant-card">
+          <div class="assistant-header row-between">
+            <div>
+              <strong>Asistente Medinistros</strong>
+              <div class="tiny">Árbol de decisión: cliente → producto → cantidad → moneda → condiciones → cotización</div>
+            </div>
+            <span class="pill" id="assistantStep">Paso 0 de 5</span>
+          </div>
+          <div class="assistant-thread" id="assistantThread"></div>
+          <div class="assistant-options" id="assistantOptions"></div>
+          <div class="progress-card">
+            <strong>Checklist del flujo</strong>
+            <div class="checklist" id="assistantChecklist"></div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-top">
+            <div>
+              <h3>Comparar resultados</h3>
+              <div class="tiny">Diferencia entre operar sin sistema y capturar la información desde el inicio.</div>
+            </div>
+            <span class="pill" id="compareBadge">Listo para ejecutar</span>
+          </div>
+          <div class="comparison" id="comparison"></div>
+        </article>
+      </section>
+    </section>
+
+    <section class="footer-note">
+      <strong>“El problema no es la cotización… es cómo se captura la información”.</strong>
+      <span class="muted">La solución es un agente que controla la entrada desde el inicio, valida el contexto y deja una sola versión clara, trazable y lista para emitir.</span>
+    </section>
+  </div>
+
+  <script>
+    const baseQuote = {
+      cliente: "Clínica Sierra Norte",
+      producto: "Monitor multiparámetro M-900",
+      cantidad: 10,
+      moneda: "COP",
+      condiciones: "Entrega 12 días · Pago 30 días",
+      descuento: "3% por volumen",
+      ejecutivo: "Laura Méndez",
+      estado: "Borrador controlado"
+    };
+
+    const chaosEvents = [
+      {
+        id: 1,
+        channel: "Correo",
+        type: "Solicitud formal inicial",
+        time: "08:42",
+        severity: "applied",
+        interpretation: "Se crea una versión base con 10 unidades en COP para clínica regional.",
+        message: "Necesitamos 10 monitores M-900 para la sede UCI. Favor cotizar en COP con entrega estándar.",
+        source: {
+          bucket: "emails",
+          item: {
+            from: "compras@sierranorte.com",
+            subject: "Solicitud UCI · Monitores M-900",
+            snippet: "10 equipos para sede UCI, favor cotizar hoy.",
+            body: "Hola Laura,\n\nNecesitamos una cotización por 10 monitores multiparámetro M-900 para la sede UCI.\nPor favor mantener moneda COP y condiciones estándar.\n\nQuedo atenta,\nNatalia Rojas\nCoordinación de Compras"
+          }
+        },
+        apply(state) {
+          state.quote.cliente = "Clínica Sierra Norte";
+          state.quote.producto = "Monitor multiparámetro M-900";
+          state.quote.cantidad = 10;
+          state.quote.moneda = "COP";
+          state.versions += 1;
+        }
+      },
+      {
+        id: 2,
+        channel: "WhatsApp",
+        type: "Cambio urgente de cantidad",
+        time: "08:57",
+        severity: "warning",
+        interpretation: "El mensaje indica subir a 20 unidades, pero no reemplaza explícitamente la solicitud formal anterior.",
+        message: "Laura, súbele eso a 20 hoy por favor, el director cambió la urgencia.",
+        source: {
+          bucket: "whatsapp",
+          item: {
+            author: "Cliente",
+            text: "Laura, súbele eso a 20 hoy por favor, el director cambió la urgencia.",
+            time: "08:57",
+            tone: "client"
+          }
+        },
+        apply(state) {
+          state.quote.cantidad = 20;
+          state.versions += 1;
+        }
+      },
+      {
+        id: 3,
+        channel: "Llamada",
+        type: "Descuento verbal",
+        time: "09:04",
+        severity: "warning",
+        interpretation: "Se registra un descuento del 5%, pero no existe soporte escrito ni aprobación financiera adjunta.",
+        message: "Cliente confirma por llamada que espera cerrar hoy si sostenemos 5% de descuento.",
+        source: {
+          bucket: "calls",
+          item: {
+            title: "Llamada con Natalia Rojas",
+            detail: "Aprobación verbal de 5% para cierre inmediato; solicita despacho prioritario.",
+            time: "09:04"
+          }
+        },
+        apply(state) {
+          state.quote.descuento = "5% verbal";
+          state.versions += 1;
+        }
+      },
+      {
+        id: 4,
+        channel: "Interno",
+        type: "Cambio de moneda sin soporte",
+        time: "09:11",
+        severity: "alerted",
+        interpretation: "Se modifica la moneda a USD por una suposición interna, generando contradicción con la solicitud formal del cliente.",
+        message: "Comercial ajusta la cotización a USD porque cree que la compra irá por importación directa.",
+        source: {
+          bucket: "settings",
+          item: {
+            title: "Edición manual de cotización",
+            detail: "Cambio de moneda COP → USD por criterio del ejecutivo, sin correo de aprobación.",
+            time: "09:11"
+          }
+        },
+        apply(state) {
+          state.quote.moneda = "USD";
+          state.versions += 1;
+        }
+      },
+      {
+        id: 5,
+        channel: "Correo",
+        type: "Corrección de moneda",
+        time: "09:18",
+        severity: "applied",
+        interpretation: "El cliente confirma que la compra debe quedar en COP; el riesgo baja, pero queda rastro del cambio inconsistente.",
+        message: "Confirmamos mantener COP. No usar USD para esta compra. Debe salir para comité financiero local.",
+        source: {
+          bucket: "emails",
+          item: {
+            from: "direccion.medica@sierranorte.com",
+            subject: "Aclaración de moneda para comité",
+            snippet: "Se mantiene COP para aprobación local.",
+            body: "Hola equipo,\n\nAclaramos que esta solicitud debe mantenerse en COP porque será aprobada por comité financiero local.\nNo presentar versión en USD.\n\nGracias,\nDirección Médica"
+          }
+        },
+        apply(state) {
+          state.quote.moneda = "COP";
+          state.versions += 1;
+        }
+      },
+      {
+        id: 6,
+        channel: "WhatsApp",
+        type: "Mensaje ambiguo",
+        time: "09:27",
+        severity: "alerted",
+        interpretation: "\"Quita una referencia\" no especifica si se retira un accesorio, un ítem o una línea completa; requiere validación.",
+        message: "Quita una referencia antes de enviarlo, porfa.",
+        source: {
+          bucket: "whatsapp",
+          item: {
+            author: "Cliente",
+            text: "Quita una referencia antes de enviarlo, porfa.",
+            time: "09:27",
+            tone: "client"
+          }
+        },
+        apply(state) {
+          state.quote.estado = "Pendiente de aclaración";
+          state.versions += 1;
+        }
+      },
+      {
+        id: 7,
+        channel: "Interno",
+        type: "Observación operativa",
+        time: "09:33",
+        severity: "warning",
+        interpretation: "Operaciones marca despacho prioritario, pero falta reconfirmar condiciones logísticas frente al incremento de cantidad.",
+        message: "Se intenta mover la entrega a 48 horas para no perder el negocio.",
+        source: {
+          bucket: "settings",
+          item: {
+            title: "Prioridad logística",
+            detail: "Se propone entrega en 48 horas, pendiente capacidad de inventario y transporte.",
+            time: "09:33"
+          }
+        },
+        apply(state) {
+          state.quote.condiciones = "Entrega 48 horas (por validar) · Pago 30 días";
+          state.versions += 1;
+        }
+      }
+    ];
+
+    const assistantFlow = [
+      {
+        key: "cliente",
+        prompt: "Hola 👋, vamos a crear tu pedido. Necesito primero el cliente.",
+        missingCopy: "⚠️ Falta información de cliente. Selecciona quién solicita la cotización.",
+        options: ["Clínica Sierra Norte", "Hospital San Gabriel", "Red Médica Andina"]
+      },
+      {
+        key: "producto",
+        prompt: "Perfecto. Ahora necesito el producto o referencia a cotizar.",
+        missingCopy: "⚠️ Falta el producto. Sin referencia no podemos consolidar una sola versión.",
+        options: ["Monitor multiparámetro M-900", "Ventilador V-Series 8", "Bomba de infusión BI-440"]
+      },
+      {
+        key: "cantidad",
+        prompt: "¿Qué cantidad necesitas?",
+        missingCopy: "⚠️ Falta la cantidad. La cotización todavía no es emitible.",
+        options: ["10", "20", "24"]
+      },
+      {
+        key: "moneda",
+        prompt: "¿En qué moneda debo generar la cotización?",
+        missingCopy: "⚠️ Falta la moneda. Detectamos conflicto frecuente entre COP y USD.",
+        options: ["COP", "USD"]
+      },
+      {
+        key: "condiciones",
+        prompt: "Por último, selecciona las condiciones comerciales.",
+        missingCopy: "⚠️ Falta definir condiciones. Necesitamos entrega y pago para emitir.",
+        options: ["Entrega 12 días · Pago 30 días", "Entrega 48 horas · Pago 15 días", "Entrega programada · Pago contra entrega"]
+      }
+    ];
+
+    const state = {};
+
+    const $ = (id) => document.getElementById(id);
+
+    function resetState() {
+      state.channels = { emails: [], whatsapp: [], calls: [], settings: [] };
+      state.appliedEvents = [];
+      state.versions = 1;
+      state.quote = { ...baseQuote };
+      state.assistant = {
+        active: false,
+        step: 0,
+        values: { cliente: "", producto: "", cantidad: "", moneda: "", condiciones: "" },
+        thread: [
+          { role: "system", text: "Asistente listo. Cuando quieras, puedo capturar un pedido paso a paso y validar lo que falta antes de emitir una cotización." }
+        ],
+        completed: false
+      };
+      state.comparisonMode = "neutral";
+      renderAll();
+    }
+
+    function pushEvent(event) {
+      const entry = structuredClone ? structuredClone(event) : JSON.parse(JSON.stringify(event));
+      state.appliedEvents.push(entry);
+      state.channels[entry.source.bucket].push(entry.source.item);
+      event.apply(state);
+      renderAll();
+    }
+
+    function simulateChaos() {
+      resetState();
+      chaosEvents.forEach((event, idx) => {
+        setTimeout(() => pushEvent(event), idx * 180);
+      });
+    }
+
+    function getAlerts() {
+      const alerts = [];
+      const hasUSDChange = state.appliedEvents.some(e => e.type === "Cambio de moneda sin soporte");
+      const hasCOPCorrection = state.appliedEvents.some(e => e.type === "Corrección de moneda");
+      const qtyConflict = state.appliedEvents.some(e => e.type === "Cambio urgente de cantidad");
+      const verbalDiscount = state.appliedEvents.some(e => e.type === "Descuento verbal");
+      const ambiguousMsg = state.appliedEvents.some(e => e.type === "Mensaje ambiguo");
+      const deliveryRisk = state.appliedEvents.some(e => e.type === "Observación operativa");
+
+      if (qtyConflict) {
+        alerts.push({ level: "medium", title: "Cantidad en disputa", text: "El correo formal pide 10 unidades y WhatsApp empuja 20 sin anular explícitamente la versión anterior." });
+      }
+      if (verbalDiscount) {
+        alerts.push({ level: "medium", title: "Cambio sin soporte", text: "El descuento del 5% fue aprobado verbalmente. Falta respaldo de finanzas o correo del cliente." });
+      }
+      if (hasUSDChange && hasCOPCorrection) {
+        alerts.push({ level: "high", title: "Conflicto de moneda", text: "Internamente se cambió a USD, pero el cliente corrigió la compra a COP. Hay riesgo de emitir una versión equivocada." });
+      }
+      if (ambiguousMsg) {
+        alerts.push({ level: "high", title: "Mensaje ambiguo", text: "“Quita una referencia” no define si cambia el producto, el accesorio o la línea completa." });
+      }
+      if (deliveryRisk) {
+        alerts.push({ level: "low", title: "Entrega comprometida", text: "Se propone despacho en 48 horas sin confirmación de inventario ni logística." });
+      }
+      return alerts;
+    }
+
+    function getRiskScore() {
+      const alerts = getAlerts();
+      let risk = 8;
+      alerts.forEach(alert => {
+        if (alert.level === "high") risk += 28;
+        if (alert.level === "medium") risk += 16;
+        if (alert.level === "low") risk += 8;
+      });
+      risk += Math.max(0, state.versions - 1) * 3;
+      return Math.min(96, risk);
+    }
+
+    function getRiskLabel(score) {
+      if (score >= 70) return "Crítico";
+      if (score >= 40) return "Medio";
+      return "Bajo";
+    }
+
+    function getQuoteStatus() {
+      const alerts = getAlerts();
+      if (state.assistant.completed) {
+        return { text: "Lista para emitir", className: "status-chip state-good" };
+      }
+      if (alerts.some(a => a.level === "high")) {
+        return { text: "Bloqueada por inconsistencias", className: "status-chip state-danger" };
+      }
+      if (alerts.length) {
+        return { text: "Requiere revisión controlada", className: "status-chip state-warn" };
+      }
+      return { text: "Borrador estable", className: "status-chip state-good" };
+    }
+
+    function renderStats() {
+      const alerts = getAlerts();
+      const risk = getRiskScore();
+      $("statProcessed").textContent = state.appliedEvents.length;
+      $("statIssues").textContent = alerts.length;
+      $("statRisk").textContent = getRiskLabel(risk);
+      $("statStatus").textContent = state.assistant.completed ? "Controlado" : state.appliedEvents.length ? "En análisis" : "Esperando";
+      $("chaosBadge").textContent = state.appliedEvents.length ? `${state.appliedEvents.length} eventos cargados` : "Sin eventos cargados";
+      $("engineStatus").textContent = state.appliedEvents.length ? "Motor analizando" : "Motor en espera";
+      $("assistantMode").textContent = state.assistant.active ? "Sesión activa" : "Modo guiado";
+      $("compareBadge").textContent = state.comparisonMode === "neutral" ? "Listo para ejecutar" : "Comparación actualizada";
+    }
+
+    function renderChannels() {
+      $("mailCount").textContent = `${state.channels.emails.length} correos`;
+      $("waCount").textContent = `${state.channels.whatsapp.length} mensajes`;
+      $("callCount").textContent = `${state.channels.calls.length} llamadas`;
+      $("settingCount").textContent = `${state.channels.settings.length} ajustes`;
+
+      const mailList = $("mailList");
+      mailList.innerHTML = "";
+      if (!state.channels.emails.length) {
+        mailList.innerHTML = `<div class="mail-item"><strong>Bandeja vacía</strong><div class="tiny">Aún no hay correos procesados.</div></div>`;
+      } else {
+        state.channels.emails.forEach((mail, index) => {
+          const item = document.createElement("button");
+          item.className = `mail-item${index === state.channels.emails.length - 1 ? " active" : ""}`;
+          item.innerHTML = `<div class="row-between"><strong>${mail.subject}</strong><span class="tiny">${state.appliedEvents.filter(e => e.source.bucket === 'emails')[index].time}</span></div><div class="tiny">${mail.from}</div><div style="margin-top:8px">${mail.snippet}</div>`;
+          item.onclick = () => { $("mailPreview").textContent = mail.body; document.querySelectorAll('.mail-item').forEach(el => el.classList.remove('active')); item.classList.add('active'); };
+          mailList.appendChild(item);
+        });
+        $("mailPreview").textContent = state.channels.emails[state.channels.emails.length - 1].body;
+      }
+
+      const waThread = $("waThread");
+      waThread.innerHTML = "";
+      if (!state.channels.whatsapp.length) {
+        waThread.innerHTML = `<div class="chat-bubble bubble-team">Aún no hay mensajes. Usa “Simular caos” para cargar conversaciones reales.</div>`;
+        $("waLast").textContent = "--:--";
+      } else {
+        state.channels.whatsapp.forEach(msg => {
+          const bubble = document.createElement("div");
+          bubble.className = `chat-bubble ${msg.tone === 'client' ? 'bubble-client' : 'bubble-team'}`;
+          bubble.innerHTML = `${msg.text}<div class="tiny" style="margin-top:6px">${msg.time}</div>`;
+          waThread.appendChild(bubble);
+        });
+        $("waLast").textContent = state.channels.whatsapp[state.channels.whatsapp.length - 1].time;
+      }
+
+      const callList = $("callList");
+      callList.innerHTML = state.channels.calls.length
+        ? state.channels.calls.map(call => `<div class="call-item"><div class="row-between"><strong>${call.title}</strong><span class="tiny">${call.time}</span></div><div style="margin-top:8px">${call.detail}</div></div>`).join("")
+        : `<div class="call-item"><strong>Sin llamadas registradas</strong><div class="tiny">El sistema capturará aquí los resúmenes operativos de voz.</div></div>`;
+
+      const settingList = $("settingList");
+      settingList.innerHTML = state.channels.settings.length
+        ? state.channels.settings.map(setting => `<div class="setting-item"><div class="row-between"><strong>${setting.title}</strong><span class="tiny">${setting.time}</span></div><div style="margin-top:8px">${setting.detail}</div></div>`).join("")
+        : `<div class="setting-item"><strong>Sin ajustes internos</strong><div class="tiny">Cuando el equipo altere una cotización, quedará trazado aquí.</div></div>`;
+    }
+
+    function renderEngine() {
+      const alerts = getAlerts();
+      const risk = getRiskScore();
+      const channels = new Set(state.appliedEvents.map(event => event.channel));
+      $("metricChannels").textContent = channels.size;
+      $("metricVersions").textContent = Math.max(state.versions, 1);
+      $("metricAlerts").textContent = alerts.length;
+      $("metricRisk").textContent = `${risk}%`;
+      $("riskFill").style.width = `${risk}%`;
+      $("timelineState").textContent = state.appliedEvents.length ? `${state.appliedEvents.length} eventos interpretados` : "Sin movimiento";
+      $("alertSummary").textContent = alerts.length ? `${alerts.length} alertas activas` : "Todo estable";
+
+      const timeline = $("timeline");
+      if (!state.appliedEvents.length) {
+        timeline.innerHTML = `<div class="timeline-item applied"><strong>Esperando eventos</strong><div class="tiny">La historia operativa aparecerá aquí con interpretación automática.</div></div>`;
+      } else {
+        timeline.innerHTML = state.appliedEvents.map(event => `
+          <div class="timeline-item ${event.severity}">
+            <div class="row-between"><strong>${event.time} · ${event.channel}</strong><span class="pill">${event.type}</span></div>
+            <div style="margin-top:8px">${event.message}</div>
+            <div class="insight"><strong>Interpretación:</strong> ${event.interpretation}</div>
+          </div>
+        `).join("");
+      }
+
+      const alertList = $("alertList");
+      alertList.innerHTML = alerts.length
+        ? alerts.map(alert => `<div class="alert ${alert.level}"><div class="row-between"><strong>${alert.title}</strong><span class="pill">${alert.level.toUpperCase()}</span></div><div style="margin-top:8px">${alert.text}</div></div>`).join("")
+        : `<div class="alert low"><strong>Sin alertas</strong><div style="margin-top:8px">Todavía no hay inconsistencias detectadas.</div></div>`;
+
+      const quoteStatus = getQuoteStatus();
+      $("quoteState").className = quoteStatus.className;
+      $("quoteState").textContent = quoteStatus.text;
+
+      const quoteGrid = $("quoteGrid");
+      quoteGrid.innerHTML = Object.entries(state.quote).map(([key, value]) => `
+        <div class="quote-field">
+          <label>${key}</label>
+          <div>${value}</div>
+        </div>
+      `).join("");
+    }
+
+    function appendAssistantMessage(role, text) {
+      state.assistant.thread.push({ role, text });
+    }
+
+    function startAssistant() {
+      state.assistant.active = true;
+      state.assistant.completed = false;
+      state.assistant.step = 0;
+      state.assistant.values = { cliente: "", producto: "", cantidad: "", moneda: "", condiciones: "" };
+      state.assistant.thread = [
+        { role: "system", text: "Asistente IA: Hola 👋, vamos a crear tu pedido." },
+        { role: "system", text: "Necesito: cliente, producto y cantidad. Empecemos por el cliente." }
+      ];
+      renderAssistant();
+      renderStats();
+    }
+
+    function assistantSelect(value) {
+      const step = assistantFlow[state.assistant.step];
+      if (!step) return;
+      state.assistant.values[step.key] = value;
+      appendAssistantMessage("user", value);
+      state.assistant.step += 1;
+
+      const missing = assistantFlow.slice(state.assistant.step).map(item => item.key);
+      if (state.assistant.step < assistantFlow.length) {
+        const next = assistantFlow[state.assistant.step];
+        appendAssistantMessage("system", next.prompt);
+        if (missing.length) {
+          appendAssistantMessage("system", `⚠️ Falta información: ${missing.join(", ")}.`);
+        }
+      } else {
+        const values = state.assistant.values;
+        state.quote = {
+          cliente: values.cliente,
+          producto: values.producto,
+          cantidad: Number(values.cantidad),
+          moneda: values.moneda,
+          condiciones: values.condiciones,
+          descuento: "3% por volumen validado",
+          ejecutivo: "Laura Méndez",
+          estado: "Lista para emitir"
+        };
+        state.assistant.completed = true;
+        appendAssistantMessage("system", "✅ Información completa. Generé una cotización limpia, con una sola versión y trazabilidad controlada.");
+        appendAssistantMessage("system", `Resumen: ${values.cliente} · ${values.producto} · ${values.cantidad} unidades · ${values.moneda} · ${values.condiciones}.`);
+        state.comparisonMode = "with-system";
+      }
+      renderAll();
+    }
+
+    function renderAssistant() {
+      $("assistantStep").textContent = `Paso ${Math.min(state.assistant.step, assistantFlow.length)} de ${assistantFlow.length}`;
+      const thread = $("assistantThread");
+      thread.innerHTML = state.assistant.thread.map(msg => `<div class="assistant-msg ${msg.role}">${msg.text}</div>`).join("");
+      thread.scrollTop = thread.scrollHeight;
+
+      const options = $("assistantOptions");
+      options.innerHTML = "";
+      if (!state.assistant.active) {
+        const btn = document.createElement("button");
+        btn.className = "primary";
+        btn.textContent = "Iniciar captura guiada";
+        btn.onclick = startAssistant;
+        options.appendChild(btn);
+      } else if (!state.assistant.completed) {
+        const step = assistantFlow[state.assistant.step];
+        step.options.forEach(option => {
+          const btn = document.createElement("button");
+          btn.textContent = option;
+          btn.onclick = () => assistantSelect(option);
+          options.appendChild(btn);
+        });
+      } else {
+        const btn = document.createElement("button");
+        btn.className = "success";
+        btn.textContent = "Volver a capturar";
+        btn.onclick = startAssistant;
+        options.appendChild(btn);
+      }
+
+      const checklist = $("assistantChecklist");
+      checklist.innerHTML = assistantFlow.map(item => {
+        const done = Boolean(state.assistant.values[item.key]);
+        const value = state.assistant.values[item.key] || "Pendiente";
+        return `
+          <div class="check-item">
+            <div><span class="dot ${done ? 'done' : 'pending'}"></span>${item.key.charAt(0).toUpperCase() + item.key.slice(1)}</div>
+            <span class="tiny">${value}</span>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function renderComparison(mode = state.comparisonMode) {
+      const comparison = $("comparison");
+      const alerts = getAlerts();
+      const withoutSystem = [
+        "7 versiones circulando entre correo, chat, llamada e interno.",
+        `${alerts.length || 4} alertas sin resolver antes de emitir.`,
+        "Descuento verbal y moneda cambiante sin control.",
+        "Sin trazabilidad clara para auditoría o retrabajo."
+      ];
+      const withSystem = state.assistant.completed
+        ? [
+            "1 sola versión consolidada y validada.",
+            `Cliente, producto, cantidad, moneda y condiciones completos.`,
+            "Cotización lista para emitir con flujo controlado.",
+            "Trazabilidad clara desde la captura inicial."
+          ]
+        : [
+            "El asistente aún no ha cerrado una versión final.",
+            "Activa “Usar asistente IA” para guiar la captura.",
+            "El sistema pedirá lo que falta antes de emitir.",
+            "Una vez completo, mostrará una cotización limpia."
+          ];
+
+      comparison.innerHTML = `
+        <div class="compare-item bad">
+          <strong>❌ SIN SISTEMA</strong>
+          <div class="compare-list" style="margin-top:10px">${withoutSystem.map(item => `<div>${item}</div>`).join("")}</div>
+        </div>
+        <div class="compare-item good">
+          <strong>✅ CON SISTEMA</strong>
+          <div class="compare-list" style="margin-top:10px">${withSystem.map(item => `<div>${item}</div>`).join("")}</div>
+        </div>
+      `;
+    }
+
+    function compareResults() {
+      state.comparisonMode = state.assistant.completed ? "with-system" : "without-system";
+      renderComparison();
+      renderStats();
+      $("comparison").scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+
+    function renderAll() {
+      renderStats();
+      renderChannels();
+      renderEngine();
+      renderAssistant();
+      renderComparison();
+    }
+
+    $("simulateChaos").addEventListener("click", simulateChaos);
+    $("openAssistant").addEventListener("click", () => {
+      startAssistant();
+      $("assistantThread").scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+    $("compareResults").addEventListener("click", compareResults);
+    $("resetDemo").addEventListener("click", resetState);
+
+    resetState();
+  </script>
+</body>
+</html>
