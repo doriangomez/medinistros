@@ -55,7 +55,9 @@
 
     .topbar,
     .panel,
-    .card {
+    .card,
+    .tabs-bar,
+    .view-frame {
       background: linear-gradient(180deg, rgba(15, 24, 40, 0.92), rgba(7, 12, 22, 0.96));
       border: 1px solid var(--line);
       border-radius: var(--radius);
@@ -75,7 +77,10 @@
     .header-actions,
     .quick-actions,
     .mini-tags,
-    .doc-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .doc-actions,
+    .tabs-nav,
+    .meta-strip,
+    .quote-status-grid { display: flex; gap: 10px; flex-wrap: wrap; }
 
     .badge,
     .chip,
@@ -130,7 +135,7 @@
       font-size: 0.92rem;
       font-weight: 700;
       cursor: pointer;
-      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, color 180ms ease, box-shadow 180ms ease;
     }
 
     button:hover { transform: translateY(-1px); border-color: rgba(48, 196, 255, 0.34); }
@@ -159,14 +164,92 @@
       letter-spacing: -0.05em;
     }
 
-    .workspace {
+    .tabs-bar {
+      padding: 14px;
+      margin-bottom: 18px;
+      position: sticky;
+      top: 14px;
+      z-index: 3;
+    }
+
+    .tabs-nav {
       display: grid;
-      grid-template-columns: 1.05fr 1.14fr 0.95fr;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .tab-button {
+      text-align: left;
+      min-height: 74px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: rgba(8, 14, 25, 0.78);
+    }
+
+    .tab-button .tiny {
+      display: block;
+      margin-top: 4px;
+    }
+
+    .tab-button.active {
+      border-color: rgba(48, 196, 255, 0.42);
+      background: linear-gradient(135deg, rgba(48, 196, 255, 0.2), rgba(162, 132, 255, 0.18));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 14px 30px rgba(0, 0, 0, 0.22);
+    }
+
+    .view-shell {
+      position: relative;
+      min-height: 960px;
+    }
+
+    .view-frame {
+      padding: 18px;
+      min-height: 960px;
+      opacity: 0;
+      transform: translateY(16px) scale(0.985);
+      pointer-events: none;
+      position: absolute;
+      inset: 0;
+      transition: opacity 260ms ease, transform 260ms ease;
+    }
+
+    .view-frame.active {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+      position: relative;
+    }
+
+    .view-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .workspace-grid,
+    .quote-layout,
+    .assistant-layout,
+    .consolidation-layout {
+      display: grid;
       gap: 18px;
       align-items: start;
     }
 
-    .panel { padding: 18px; min-height: 980px; }
+    .workspace-grid { grid-template-columns: minmax(0, 1fr); }
+    .consolidation-layout { grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr); }
+    .quote-layout { grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.75fr); }
+    .assistant-layout { grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr); }
+
+    .panel,
+    .summary-panel { padding: 18px; min-height: 100%; }
+
+    .summary-panel {
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(8, 15, 27, 0.9), rgba(6, 11, 20, 0.96));
+    }
 
     .panel-header {
       display: flex;
@@ -184,8 +267,8 @@
       color: #cad7ea;
     }
 
-    .panel h2 { margin: 0; font-size: 1.26rem; }
-    .panel p { margin: 6px 0 0; }
+    .panel h2, .summary-panel h2 { margin: 0; font-size: 1.26rem; }
+    .panel p, .summary-panel p { margin: 6px 0 0; }
 
     .stack { display: grid; gap: 14px; }
     .card { padding: 16px; }
@@ -206,7 +289,9 @@
     .doc-grid,
     .chat-list,
     .checklist,
-    .task-list { display: grid; gap: 10px; }
+    .task-list,
+    .decision-list,
+    .status-stack { display: grid; gap: 10px; }
 
     .mail-item,
     .message,
@@ -217,14 +302,16 @@
     .doc-field,
     .chat-item,
     .check-item,
-    .task-item {
+    .task-item,
+    .decision-item,
+    .status-card {
       border-radius: 18px;
       border: 1px solid rgba(148, 163, 184, 0.12);
       background: rgba(8, 15, 27, 0.86);
       padding: 12px 14px;
     }
 
-    .mail-item { cursor: pointer; }
+    .mail-item { cursor: pointer; width: 100%; }
     .mail-item.active { border-color: rgba(48, 196, 255, 0.42); background: rgba(11, 26, 42, 0.92); }
     .row-between { display: flex; justify-content: space-between; gap: 10px; }
 
@@ -257,7 +344,7 @@
 
     .thread {
       padding: 14px;
-      max-height: 310px;
+      max-height: 420px;
       overflow: auto;
       background: linear-gradient(180deg, rgba(6, 11, 21, 0.96), rgba(10, 21, 34, 0.8));
     }
@@ -304,7 +391,7 @@
       background: linear-gradient(90deg, #3dd9a0, #ffc361 56%, #ff7f8e);
     }
 
-    .timeline { max-height: 340px; overflow: auto; }
+    .timeline { max-height: 620px; overflow: auto; }
     .timeline-item { position: relative; padding-left: 18px; }
     .timeline-item::before {
       content: "";
@@ -331,7 +418,9 @@
     .chat-item strong,
     .task-item strong,
     .log-item strong,
-    .mail-item strong { display: block; margin-bottom: 6px; }
+    .mail-item strong,
+    .decision-item strong,
+    .status-card strong { display: block; margin-bottom: 6px; }
 
     .doc-sheet {
       border-radius: 22px;
@@ -422,7 +511,7 @@
       border: 1px solid rgba(149,163,184,0.24);
     }
 
-    .chat-list { padding: 14px; max-height: 270px; overflow: auto; }
+    .chat-list { padding: 14px; max-height: 360px; overflow: auto; }
     .chat-item.system { border-color: rgba(48,196,255,0.2); background: rgba(10, 27, 43, 0.64); }
     .chat-item.user { border-color: rgba(61,217,160,0.2); background: rgba(13, 44, 32, 0.56); }
     .chat-item.audit { border-color: rgba(255,195,97,0.2); background: rgba(54, 35, 8, 0.54); }
@@ -448,6 +537,15 @@
     .dot.pending { background: var(--yellow); }
     .dot.alert { background: var(--red); }
 
+    .status-card {
+      background: rgba(10, 17, 30, 0.82);
+    }
+
+    .status-card.highlight {
+      border-color: rgba(48, 196, 255, 0.28);
+      background: linear-gradient(135deg, rgba(48,196,255,0.16), rgba(162,132,255,0.12));
+    }
+
     .footer-note {
       margin-top: 18px;
       padding: 18px 20px;
@@ -459,14 +557,22 @@
     }
 
     @media (max-width: 1280px) {
-      .topbar, .workspace { grid-template-columns: 1fr; }
-      .panel { min-height: auto; }
+      .topbar,
+      .consolidation-layout,
+      .quote-layout,
+      .assistant-layout { grid-template-columns: 1fr; }
+      .view-frame { min-height: auto; }
+    }
+
+    @media (max-width: 920px) {
+      .tabs-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
 
     @media (max-width: 760px) {
       .shell { width: min(100vw - 14px, 100%); margin-top: 8px; }
-      .stat-grid, .metric-grid, .doc-grid, .doc-summary { grid-template-columns: 1fr; }
+      .stat-grid, .metric-grid, .doc-grid, .doc-summary, .tabs-nav { grid-template-columns: 1fr; }
       button { width: 100%; }
+      .tabs-bar { position: static; }
     }
   </style>
 </head>
@@ -514,417 +620,580 @@
       </div>
     </section>
 
-    <section class="workspace">
-      <section class="panel">
-        <div class="panel-header">
+    <section class="tabs-bar">
+      <div class="tabs-nav" role="tablist" aria-label="Navegación principal">
+        <button class="tab-button active" type="button" role="tab" aria-selected="true" data-view="bandeja">
+          <strong>Bandeja de pedidos</strong>
+          <span class="tiny">Correos, WhatsApp, llamadas e interno a pantalla completa.</span>
+        </button>
+        <button class="tab-button" type="button" role="tab" aria-selected="false" data-view="consolidacion">
+          <strong>Consolidación</strong>
+          <span class="tiny">Timeline, alertas, interpretaciones y métricas cruzadas.</span>
+        </button>
+        <button class="tab-button" type="button" role="tab" aria-selected="false" data-view="cotizacion">
+          <strong>Cotización final</strong>
+          <span class="tiny">Documento listo para emisión con estado, versión y condiciones.</span>
+        </button>
+        <button class="tab-button" type="button" role="tab" aria-selected="false" data-view="asistente">
+          <strong>Asistente</strong>
+          <span class="tiny">Conversación, checklist, tareas y decisiones operativas.</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="view-shell">
+      <section class="view-frame active" id="view-bandeja" data-view="bandeja">
+        <div class="view-header">
           <div>
-            <div class="eyebrow">Bandeja omnicanal · operación comercial</div>
-            <h2>Entradas activas con decisiones reales en curso.</h2>
-            <p class="muted">Cada canal ya trae contexto, cambios y urgencia acumulada.</p>
+            <div class="eyebrow">Bandeja de pedidos · vista inmersiva</div>
+            <h2>Todos los canales del pedido activos en una sola bandeja operacional.</h2>
+            <p class="muted">La vista ocupa toda la pantalla de trabajo para resolver el pedido sin cambiar de contexto ni recargar información.</p>
           </div>
-          <span class="pill">Caso activo · M-900 / Sierra Norte</span>
+          <div class="meta-strip">
+            <span class="pill">Caso activo · M-900 / Sierra Norte</span>
+            <span class="pill">4 canales sincronizados</span>
+          </div>
         </div>
 
-        <div class="stack">
-          <article class="card">
-            <div class="card-top">
-              <div>
-                <h3>📧 Correos</h3>
-                <div class="tiny">Solicitudes formales y correcciones recibidas hoy.</div>
-              </div>
-              <span class="pill">6 correos abiertos</span>
-            </div>
-            <div class="mail-list" id="mailList"></div>
-            <div class="mail-preview" id="mailPreview"></div>
-          </article>
+        <div class="workspace-grid">
+          <article class="panel">
+            <div class="stack">
+              <article class="card">
+                <div class="card-top">
+                  <div>
+                    <h3>📧 Correos</h3>
+                    <div class="tiny">Solicitudes formales y correcciones recibidas hoy.</div>
+                  </div>
+                  <span class="pill">6 correos abiertos</span>
+                </div>
+                <div class="mail-list" id="mailList"></div>
+                <div class="mail-preview" id="mailPreview"></div>
+              </article>
 
-          <article class="card">
-            <div class="card-top">
-              <div>
-                <h3>💬 WhatsApp</h3>
-                <div class="tiny">Mensajes cortos del comprador y del ejecutivo.</div>
-              </div>
-              <span class="pill">Chat activo · hace 2 min</span>
-            </div>
-            <div class="wa-shell">
-              <div class="wa-header row-between">
-                <strong>Carolina Pardo · Compras Clínica Sierra Norte</strong>
-                <span class="tiny">Último mensaje 10:40</span>
-              </div>
-              <div class="thread">
-                <div class="bubble team">Te mandé versión con 18 unidades y entrega en 12 días.</div>
-                <div class="bubble client">súbele eso a 20</div>
-                <div class="bubble client">eso era en dólares</div>
-                <div class="bubble team">Recibido. Estoy cruzando con el correo porque la solicitud formal venía en COP.</div>
-                <div class="bubble client">urge hoy</div>
-                <div class="bubble team">Ya quedó marcado como prioridad comercial y está en revisión con tu ejecutivo.</div>
-              </div>
-            </div>
-          </article>
+              <article class="card">
+                <div class="card-top">
+                  <div>
+                    <h3>💬 WhatsApp</h3>
+                    <div class="tiny">Mensajes cortos del comprador y del ejecutivo.</div>
+                  </div>
+                  <span class="pill">Chat activo · hace 2 min</span>
+                </div>
+                <div class="wa-shell">
+                  <div class="wa-header row-between">
+                    <strong>Carolina Pardo · Compras Clínica Sierra Norte</strong>
+                    <span class="tiny">Último mensaje 10:40</span>
+                  </div>
+                  <div class="thread">
+                    <div class="bubble team">Te mandé versión con 18 unidades y entrega en 12 días.</div>
+                    <div class="bubble client">súbele eso a 20</div>
+                    <div class="bubble client">eso era en dólares</div>
+                    <div class="bubble team">Recibido. Estoy cruzando con el correo porque la solicitud formal venía en COP.</div>
+                    <div class="bubble client">urge hoy</div>
+                    <div class="bubble team">Ya quedó marcado como prioridad comercial y está en revisión con tu ejecutivo.</div>
+                  </div>
+                </div>
+              </article>
 
-          <article class="card">
-            <div class="card-top">
-              <div>
-                <h3>📞 Llamadas</h3>
-                <div class="tiny">Registro de decisiones tomadas verbalmente.</div>
-              </div>
-              <span class="pill">3 decisiones registradas</span>
-            </div>
-            <div class="log-list">
-              <div class="log-item">
-                <strong>09:32 · Cliente aprueba 5% descuento</strong>
-                <div class="tiny">Se mantiene condicionado a emisión en la moneda correcta.</div>
-              </div>
-              <div class="log-item">
-                <strong>09:54 · Solicita cambio de referencia</strong>
-                <div class="tiny">Pide confirmar si el monitor debe salir con módulo SpO2 Nellcor.</div>
-              </div>
-              <div class="log-item">
-                <strong>10:18 · Requiere despacho prioritario</strong>
-                <div class="tiny">Operaciones informa que 48 horas es viable solo para 20 unidades del lote disponible.</div>
-              </div>
-            </div>
-          </article>
+              <article class="card">
+                <div class="card-top">
+                  <div>
+                    <h3>📞 Llamadas</h3>
+                    <div class="tiny">Registro de decisiones tomadas verbalmente.</div>
+                  </div>
+                  <span class="pill">3 decisiones registradas</span>
+                </div>
+                <div class="log-list">
+                  <div class="log-item">
+                    <strong>09:32 · Cliente aprueba 5% descuento</strong>
+                    <div class="tiny">Se mantiene condicionado a emisión en la moneda correcta.</div>
+                  </div>
+                  <div class="log-item">
+                    <strong>09:54 · Solicita cambio de referencia</strong>
+                    <div class="tiny">Pide confirmar si el monitor debe salir con módulo SpO2 Nellcor.</div>
+                  </div>
+                  <div class="log-item">
+                    <strong>10:18 · Requiere despacho prioritario</strong>
+                    <div class="tiny">Operaciones informa que 48 horas es viable solo para 20 unidades del lote disponible.</div>
+                  </div>
+                </div>
+              </article>
 
-          <article class="card">
-            <div class="card-top">
-              <div>
-                <h3>🧩 Interno</h3>
-                <div class="tiny">Actividad del equipo comercial y de operaciones.</div>
-              </div>
-              <span class="pill">5 acciones del equipo</span>
-            </div>
-            <div class="log-list">
-              <div class="log-item">
-                <strong>08:57 · Ejecutivo ajusta moneda</strong>
-                <div class="tiny">Se cambia COP → USD con base en mensaje de WhatsApp, pendiente soporte formal.</div>
-              </div>
-              <div class="log-item">
-                <strong>09:11 · Se modifica condición comercial</strong>
-                <div class="tiny">Se aplica 5% de descuento para no frenar comité de compras.</div>
-              </div>
-              <div class="log-item">
-                <strong>09:46 · Coordinación reserva inventario</strong>
-                <div class="tiny">Lote físico separado para 20 unidades con vigencia de reserva hasta las 17:00.</div>
-              </div>
-              <div class="log-item">
-                <strong>10:05 · Finanzas valida cupo</strong>
-                <div class="tiny">Cliente habilitado para pago a 30 días, sujeto a emisión final en USD.</div>
-              </div>
+              <article class="card">
+                <div class="card-top">
+                  <div>
+                    <h3>🧩 Interno</h3>
+                    <div class="tiny">Actividad del equipo comercial y de operaciones.</div>
+                  </div>
+                  <span class="pill">5 acciones del equipo</span>
+                </div>
+                <div class="log-list">
+                  <div class="log-item">
+                    <strong>08:57 · Ejecutivo ajusta moneda</strong>
+                    <div class="tiny">Se cambia COP → USD con base en mensaje de WhatsApp, pendiente soporte formal.</div>
+                  </div>
+                  <div class="log-item">
+                    <strong>09:11 · Se modifica condición comercial</strong>
+                    <div class="tiny">Se aplica 5% de descuento para no frenar comité de compras.</div>
+                  </div>
+                  <div class="log-item">
+                    <strong>09:46 · Coordinación reserva inventario</strong>
+                    <div class="tiny">Lote físico separado para 20 unidades con vigencia de reserva hasta las 17:00.</div>
+                  </div>
+                  <div class="log-item">
+                    <strong>10:05 · Finanzas valida cupo</strong>
+                    <div class="tiny">Cliente habilitado para pago a 30 días, sujeto a emisión final en USD.</div>
+                  </div>
+                </div>
+              </article>
             </div>
           </article>
         </div>
       </section>
 
-      <section class="panel">
-        <div class="panel-header">
+      <section class="view-frame" id="view-consolidacion" data-view="consolidacion">
+        <div class="view-header">
           <div>
-            <div class="eyebrow">Motor de consolidación · activo</div>
-            <h2>Interpretación, timeline y alertas ya generadas.</h2>
-            <p class="muted">El motor ya cruzó fuentes, detectó contradicciones y preparó una versión consolidada.</p>
+            <div class="eyebrow">Consolidación · motor activo</div>
+            <h2>Lectura consolidada del caso con señales, versiones y decisiones inferidas.</h2>
+            <p class="muted">Aquí se concentran métricas, timeline, alertas e interpretaciones sin duplicar ni recargar la información de la operación.</p>
           </div>
-          <span class="pill">Motor sincronizado · 10:42</span>
+          <div class="meta-strip">
+            <span class="pill">Motor sincronizado · 10:42</span>
+            <span class="pill">8 eventos relevantes</span>
+          </div>
         </div>
 
-        <div class="stack">
-          <article class="card">
-            <div class="metric-grid">
-              <div class="metric">
-                <span class="tiny">Versiones detectadas</span>
-                <strong id="versionCount">7</strong>
-              </div>
-              <div class="metric">
-                <span class="tiny">Alertas abiertas</span>
-                <strong id="alertCount">3</strong>
-              </div>
-              <div class="metric">
-                <span class="tiny">Interpretaciones emitidas</span>
-                <strong>12</strong>
-              </div>
-              <div class="metric">
-                <span class="tiny">Índice de riesgo</span>
-                <strong id="riskPercent">74%</strong>
-                <div class="riskbar"><div class="riskfill" id="riskFill"></div></div>
-              </div>
+        <div class="consolidation-layout">
+          <article class="panel">
+            <div class="stack">
+              <article class="card">
+                <div class="card-top">
+                  <div>
+                    <h3>Timeline operativo</h3>
+                    <div class="tiny">Hora · canal · hallazgo · interpretación del motor</div>
+                  </div>
+                  <span class="pill">8 eventos relevantes</span>
+                </div>
+                <div class="timeline">
+                  <div class="timeline-item ok">
+                    <strong>08:41 · Correo · Solicitud base recibida</strong>
+                    <div class="tiny">El cliente solicita 18 monitores M-900 en COP con pago a 30 días.</div>
+                  </div>
+                  <div class="timeline-item warn">
+                    <strong>08:57 · Interno · Ajuste comercial</strong>
+                    <div class="tiny">El ejecutivo cambia moneda a USD sin adjunto formal. Se registra desalineación documental.</div>
+                  </div>
+                  <div class="timeline-item alert">
+                    <strong>09:08 · WhatsApp · Cambio de cantidad</strong>
+                    <div class="tiny">Mensaje “súbele eso a 20” altera cantidad sin modificar el correo original.</div>
+                  </div>
+                  <div class="timeline-item ok">
+                    <strong>09:32 · Llamada · Descuento aprobado</strong>
+                    <div class="tiny">Se autoriza 5% de descuento por cierre de mes; se mantiene como concesión vigente.</div>
+                  </div>
+                  <div class="timeline-item alert">
+                    <strong>09:54 · Llamada · Cambio de referencia</strong>
+                    <div class="tiny">Se solicita revisar módulo SpO2; el sistema marca posible afectación sobre SKU final.</div>
+                  </div>
+                  <div class="timeline-item warn">
+                    <strong>10:05 · Interno · Validación financiera</strong>
+                    <div class="tiny">Finanzas habilita 30 días, pero condiciona emisión final en USD para no reprocesar cartera.</div>
+                  </div>
+                  <div class="timeline-item alert">
+                    <strong>10:20 · Correo · Corrección de referencia</strong>
+                    <div class="tiny">Cliente corrige el equipo a M-900 Plus con accesorio ECG de 5 derivaciones.</div>
+                  </div>
+                  <div class="timeline-item ok">
+                    <strong>10:38 · Agente · Consolidación lista</strong>
+                    <div class="tiny">Se propone versión única: USD, 20 unidades, 5% descuento, entrega 48 horas.</div>
+                  </div>
+                </div>
+              </article>
+
+              <article class="card">
+                <div class="card-top">
+                  <div>
+                    <h3>Alertas detectadas</h3>
+                    <div class="tiny">Contradicciones activas sobre moneda, cantidad y referencia.</div>
+                  </div>
+                  <span class="pill">Atención prioritaria</span>
+                </div>
+                <div class="alerts" id="alertList">
+                  <div class="alert-item high">
+                    <strong>⚠️ Cambio de moneda sin confirmación formal</strong>
+                    <div class="tiny">WhatsApp e interno apuntan a USD, pero el correo base estaba en COP. Falta soporte final del cliente.</div>
+                  </div>
+                  <div class="alert-item high">
+                    <strong>⚠️ Cantidad inconsistente entre canales</strong>
+                    <div class="tiny">Correo inicial: 18 unidades. WhatsApp y reserva logística: 20 unidades.</div>
+                  </div>
+                  <div class="alert-item medium">
+                    <strong>⚠️ Referencia de equipo corregida en llamada y correo</strong>
+                    <div class="tiny">Se debe emitir como M-900 Plus con ECG 5 derivaciones para evitar devolución.</div>
+                  </div>
+                </div>
+              </article>
             </div>
           </article>
 
-          <article class="card">
-            <div class="card-top">
-              <div>
-                <h3>Timeline operativo</h3>
-                <div class="tiny">Hora · canal · hallazgo · interpretación del motor</div>
-              </div>
-              <span class="pill">8 eventos relevantes</span>
-            </div>
-            <div class="timeline">
-              <div class="timeline-item ok">
-                <strong>08:41 · Correo · Solicitud base recibida</strong>
-                <div class="tiny">El cliente solicita 18 monitores M-900 en COP con pago a 30 días.</div>
-              </div>
-              <div class="timeline-item warn">
-                <strong>08:57 · Interno · Ajuste comercial</strong>
-                <div class="tiny">El ejecutivo cambia moneda a USD sin adjunto formal. Se registra desalineación documental.</div>
-              </div>
-              <div class="timeline-item alert">
-                <strong>09:08 · WhatsApp · Cambio de cantidad</strong>
-                <div class="tiny">Mensaje “súbele eso a 20” altera cantidad sin modificar el correo original.</div>
-              </div>
-              <div class="timeline-item ok">
-                <strong>09:32 · Llamada · Descuento aprobado</strong>
-                <div class="tiny">Se autoriza 5% de descuento por cierre de mes; se mantiene como concesión vigente.</div>
-              </div>
-              <div class="timeline-item alert">
-                <strong>09:54 · Llamada · Cambio de referencia</strong>
-                <div class="tiny">Se solicita revisar módulo SpO2; el sistema marca posible afectación sobre SKU final.</div>
-              </div>
-              <div class="timeline-item warn">
-                <strong>10:05 · Interno · Validación financiera</strong>
-                <div class="tiny">Finanzas habilita 30 días, pero condiciona emisión final en USD para no reprocesar cartera.</div>
-              </div>
-              <div class="timeline-item alert">
-                <strong>10:20 · Correo · Corrección de referencia</strong>
-                <div class="tiny">Cliente corrige el equipo a M-900 Plus con accesorio ECG de 5 derivaciones.</div>
-              </div>
-              <div class="timeline-item ok">
-                <strong>10:38 · Agente · Consolidación lista</strong>
-                <div class="tiny">Se propone versión única: USD, 20 unidades, 5% descuento, entrega 48 horas.</div>
-              </div>
-            </div>
-          </article>
+          <article class="summary-panel">
+            <div class="stack">
+              <article class="card">
+                <div class="card-top">
+                  <div>
+                    <h3>Métricas del motor</h3>
+                    <div class="tiny">Indicadores de consolidación y riesgo del expediente.</div>
+                  </div>
+                  <span class="pill">Lectura continua</span>
+                </div>
+                <div class="metric-grid">
+                  <div class="metric">
+                    <span class="tiny">Versiones detectadas</span>
+                    <strong id="versionCount">7</strong>
+                  </div>
+                  <div class="metric">
+                    <span class="tiny">Alertas abiertas</span>
+                    <strong id="alertCount">3</strong>
+                  </div>
+                  <div class="metric">
+                    <span class="tiny">Interpretaciones emitidas</span>
+                    <strong>12</strong>
+                  </div>
+                  <div class="metric">
+                    <span class="tiny">Índice de riesgo</span>
+                    <strong id="riskPercent">74%</strong>
+                    <div class="riskbar"><div class="riskfill" id="riskFill"></div></div>
+                  </div>
+                </div>
+              </article>
 
-          <article class="card">
-            <div class="card-top">
-              <div>
-                <h3>Alertas detectadas</h3>
-                <div class="tiny">Contradicciones activas sobre moneda, cantidad y referencia.</div>
-              </div>
-              <span class="pill">Atención prioritaria</span>
-            </div>
-            <div class="alerts" id="alertList">
-              <div class="alert-item high">
-                <strong>⚠️ Cambio de moneda sin confirmación formal</strong>
-                <div class="tiny">WhatsApp e interno apuntan a USD, pero el correo base estaba en COP. Falta soporte final del cliente.</div>
-              </div>
-              <div class="alert-item high">
-                <strong>⚠️ Cantidad inconsistente entre canales</strong>
-                <div class="tiny">Correo inicial: 18 unidades. WhatsApp y reserva logística: 20 unidades.</div>
-              </div>
-              <div class="alert-item medium">
-                <strong>⚠️ Referencia de equipo corregida en llamada y correo</strong>
-                <div class="tiny">Se debe emitir como M-900 Plus con ECG 5 derivaciones para evitar devolución.</div>
-              </div>
-            </div>
-          </article>
-
-          <article class="card">
-            <div class="card-top">
-              <div>
-                <h3>Cotización consolidada</h3>
-                <div class="tiny">Documento operativo listo para revisión y emisión.</div>
-              </div>
-              <span class="pill" id="docPill">Versión 7 · revisión comercial</span>
-            </div>
-            <div class="doc-sheet">
-              <div class="doc-head">
-                <div>
-                  <div class="doc-brand">Medinistros · expediente comercial</div>
-                  <h4 class="doc-title">Cotización MC-2025-1184</h4>
-                  <div class="tiny">Ejecutivo: Laura Méndez · Cuenta estratégica: Clínica Sierra Norte</div>
+              <article class="card">
+                <div class="card-top">
+                  <div>
+                    <h3>Interpretaciones principales</h3>
+                    <div class="tiny">Resumen que usa el motor para consolidar una sola versión operativa.</div>
+                  </div>
+                  <span class="pill">Lectura automática</span>
                 </div>
-                <div class="doc-status" id="docStatus">En revisión</div>
-              </div>
-
-              <div class="doc-grid">
-                <div class="doc-field">
-                  <label>Cliente</label>
-                  <div>Clínica Sierra Norte S.A.S.</div>
+                <div class="ops-list">
+                  <div class="op-card">
+                    <strong>Moneda preferida por el comprador: USD</strong>
+                    <div class="tiny">La evidencia más reciente proviene de WhatsApp y validación interna financiera, pero no del correo original.</div>
+                  </div>
+                  <div class="op-card">
+                    <strong>Cantidad operativa definitiva: 20</strong>
+                    <div class="tiny">Coincide con chat, inventario separado y urgencia de despacho.</div>
+                  </div>
+                  <div class="op-card">
+                    <strong>Riesgo de error principal: emitir con versión vieja del SKU</strong>
+                    <div class="tiny">Llamada y correo posterior corrigen referencia, por lo que una emisión apresurada causaría devolución.</div>
+                  </div>
                 </div>
-                <div class="doc-field">
-                  <label>Contacto</label>
-                  <div>Carolina Pardo · Compras biomédicas</div>
-                </div>
-                <div class="doc-field">
-                  <label>Producto</label>
-                  <div id="quoteProduct">Monitor multiparámetro M-900 Plus</div>
-                </div>
-                <div class="doc-field">
-                  <label>Referencia validada</label>
-                  <div id="quoteReference">SKU M900P-ECG5 / módulo SpO2 + ECG 5 deriv.</div>
-                </div>
-                <div class="doc-field">
-                  <label>Cantidad</label>
-                  <div id="quoteQuantity">20 unidades</div>
-                </div>
-                <div class="doc-field">
-                  <label>Moneda</label>
-                  <div id="quoteCurrency">USD</div>
-                </div>
-                <div class="doc-field">
-                  <label>Descuento</label>
-                  <div id="quoteDiscount">5% autorizado por cierre de mes</div>
-                </div>
-                <div class="doc-field">
-                  <label>Condiciones</label>
-                  <div id="quoteTerms">Entrega 48 horas · Pago a 30 días · Reserva inventario hasta 17:00</div>
-                </div>
-              </div>
-
-              <table>
-                <thead>
-                  <tr>
-                    <th>Ítem</th>
-                    <th>Cant.</th>
-                    <th>Moneda</th>
-                    <th>Precio unit.</th>
-                    <th>Total</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td id="tableItem">Monitor multiparámetro M-900 Plus con ECG 5 derivaciones</td>
-                    <td id="tableQty">20</td>
-                    <td id="tableCurrency">USD</td>
-                    <td id="tableUnit">3,420</td>
-                    <td id="tableTotal">68,400</td>
-                  </tr>
-                </tbody>
-              </table>
-
-              <div class="doc-summary">
-                <div class="summary-box">
-                  <strong>Condiciones comerciales consolidadas</strong>
-                  <div class="tiny">Incluye instalación básica remota, entrenamiento virtual y vigencia de oferta por 72 horas.</div>
-                </div>
-                <div class="summary-box">
-                  <strong>Estado actual</strong>
-                  <div class="tiny" id="docStateCopy">Pendiente confirmación final de moneda frente al soporte formal del cliente.</div>
-                </div>
-              </div>
-
-              <div class="doc-actions" style="margin-top:12px;">
-                <span class="tag">Aprobación comercial parcial</span>
-                <span class="tag">Finanzas alineadas</span>
-                <span class="tag" id="docTag">Falta soporte formal del cliente</span>
-              </div>
+              </article>
             </div>
           </article>
         </div>
       </section>
 
-      <section class="panel">
-        <div class="panel-header">
+      <section class="view-frame" id="view-cotizacion" data-view="cotizacion">
+        <div class="view-header">
           <div>
-            <div class="eyebrow">Agente de operación asistida</div>
-            <h2>Conversación en curso con decisiones y seguimiento.</h2>
-            <p class="muted">El asistente ya detectó inconsistencias, propuso una versión y dejó tareas activas.</p>
+            <div class="eyebrow">Cotización final · lista para emisión</div>
+            <h2>Documento consolidado presentado como resultado final del expediente.</h2>
+            <p class="muted">La vista prioriza el documento completo y acompaña con condiciones, estado y versión para salida comercial.</p>
           </div>
-          <span class="pill">Agente asignado · Laura Méndez</span>
+          <div class="meta-strip">
+            <span class="pill" id="docPill">Versión 7 · revisión comercial</span>
+            <span class="pill">Expediente comercial vivo</span>
+          </div>
         </div>
 
-        <div class="stack">
-          <article class="card" style="padding:0;">
-            <div class="agent-shell">
-              <div class="agent-header row-between">
-                <strong>Asistente Medinistros</strong>
-                <span class="tiny">Seguimiento activo · 10:41</span>
+        <div class="quote-layout">
+          <article class="panel">
+            <article class="card">
+              <div class="card-top">
+                <div>
+                  <h3>Documento completo</h3>
+                  <div class="tiny">Versión consolidada lista para revisión y emisión.</div>
+                </div>
+                <span class="pill">Salida comercial</span>
               </div>
-              <div class="chat-list" id="agentChat">
-                <div class="chat-item system">
-                  <strong>Asistente</strong>
-                  <div>Detecté inconsistencias en la cotización. ¿Deseas confirmar la moneda y la cantidad antes de emitir?</div>
+              <div class="doc-sheet">
+                <div class="doc-head">
+                  <div>
+                    <div class="doc-brand">Medinistros · expediente comercial</div>
+                    <h4 class="doc-title">Cotización MC-2025-1184</h4>
+                    <div class="tiny">Ejecutivo: Laura Méndez · Cuenta estratégica: Clínica Sierra Norte</div>
+                  </div>
+                  <div class="doc-status" id="docStatus">En revisión</div>
                 </div>
-                <div class="chat-item user">
-                  <strong>Usuario</strong>
-                  <div>Deja USD y 20 unidades.</div>
+
+                <div class="doc-grid">
+                  <div class="doc-field">
+                    <label>Cliente</label>
+                    <div>Clínica Sierra Norte S.A.S.</div>
+                  </div>
+                  <div class="doc-field">
+                    <label>Contacto</label>
+                    <div>Carolina Pardo · Compras biomédicas</div>
+                  </div>
+                  <div class="doc-field">
+                    <label>Producto</label>
+                    <div id="quoteProduct">Monitor multiparámetro M-900 Plus</div>
+                  </div>
+                  <div class="doc-field">
+                    <label>Referencia validada</label>
+                    <div id="quoteReference">SKU M900P-ECG5 / módulo SpO2 + ECG 5 deriv.</div>
+                  </div>
+                  <div class="doc-field">
+                    <label>Cantidad</label>
+                    <div id="quoteQuantity">20 unidades</div>
+                  </div>
+                  <div class="doc-field">
+                    <label>Moneda</label>
+                    <div id="quoteCurrency">USD</div>
+                  </div>
+                  <div class="doc-field">
+                    <label>Descuento</label>
+                    <div id="quoteDiscount">5% autorizado por cierre de mes</div>
+                  </div>
+                  <div class="doc-field">
+                    <label>Condiciones</label>
+                    <div id="quoteTerms">Entrega 48 horas · Pago a 30 días · Reserva inventario hasta 17:00</div>
+                  </div>
                 </div>
-                <div class="chat-item audit">
-                  <strong>Sistema</strong>
-                  <div>Actualizado. Cotización lista para revisión. Mantengo alerta por soporte formal de moneda.</div>
+
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Ítem</th>
+                      <th>Cant.</th>
+                      <th>Moneda</th>
+                      <th>Precio unit.</th>
+                      <th>Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td id="tableItem">Monitor multiparámetro M-900 Plus con ECG 5 derivaciones</td>
+                      <td id="tableQty">20</td>
+                      <td id="tableCurrency">USD</td>
+                      <td id="tableUnit">3,420</td>
+                      <td id="tableTotal">68,400</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <div class="doc-summary">
+                  <div class="summary-box">
+                    <strong>Condiciones comerciales consolidadas</strong>
+                    <div class="tiny">Incluye instalación básica remota, entrenamiento virtual y vigencia de oferta por 72 horas.</div>
+                  </div>
+                  <div class="summary-box">
+                    <strong>Estado actual</strong>
+                    <div class="tiny" id="docStateCopy">Pendiente confirmación final de moneda frente al soporte formal del cliente.</div>
+                  </div>
                 </div>
-                <div class="chat-item system">
-                  <strong>Asistente</strong>
-                  <div>También marqué la corrección de referencia a M-900 Plus con ECG 5 derivaciones para que la emisión no salga con SKU anterior.</div>
+
+                <div class="doc-actions" style="margin-top:12px;">
+                  <span class="tag">Aprobación comercial parcial</span>
+                  <span class="tag">Finanzas alineadas</span>
+                  <span class="tag" id="docTag">Falta soporte formal del cliente</span>
                 </div>
               </div>
+            </article>
+          </article>
+
+          <article class="summary-panel">
+            <div class="stack">
+              <article class="card">
+                <div class="card-top">
+                  <div>
+                    <h3>Condiciones</h3>
+                    <div class="tiny">Bloque resumido de condiciones clave para la emisión.</div>
+                  </div>
+                  <span class="pill">Checklist comercial</span>
+                </div>
+                <div class="status-stack">
+                  <div class="status-card">
+                    <strong>Entrega</strong>
+                    <div class="tiny">48 horas con inventario reservado hasta las 17:00.</div>
+                  </div>
+                  <div class="status-card">
+                    <strong>Pago</strong>
+                    <div class="tiny">Crédito a 30 días habilitado por finanzas.</div>
+                  </div>
+                  <div class="status-card">
+                    <strong>Vigencia</strong>
+                    <div class="tiny">Oferta válida por 72 horas con soporte de comité.</div>
+                  </div>
+                </div>
+              </article>
+
+              <article class="card">
+                <div class="card-top">
+                  <div>
+                    <h3>Estado</h3>
+                    <div class="tiny">Situación actual del documento antes de enviarlo.</div>
+                  </div>
+                  <span class="pill" id="orderStatusMirror">Cotización en proceso</span>
+                </div>
+                <div class="status-stack">
+                  <div class="status-card highlight">
+                    <strong id="quoteStatusHeadline">Pendiente soporte formal de moneda</strong>
+                    <div class="tiny">La salida final depende del respaldo documental del cliente para no reprocesar cartera.</div>
+                  </div>
+                </div>
+              </article>
+
+              <article class="card">
+                <div class="card-top">
+                  <div>
+                    <h3>Versión</h3>
+                    <div class="tiny">Seguimiento de avance sobre la versión consolidada visible.</div>
+                  </div>
+                  <span class="pill" id="versionPillMirror">Versión 7</span>
+                </div>
+                <div class="status-stack">
+                  <div class="status-card">
+                    <strong>Versión visible</strong>
+                    <div class="tiny" id="versionNarrative">La versión actual integra USD, 20 unidades, 5% de descuento y corrección de referencia.</div>
+                  </div>
+                  <div class="status-card">
+                    <strong>Trazabilidad</strong>
+                    <div class="tiny">Se conservaron 7 iteraciones para auditoría sin romper la continuidad del expediente.</div>
+                  </div>
+                </div>
+              </article>
             </div>
-            <div class="quick-actions" style="padding:14px;">
-              <button class="primary" id="appendAudit">Registrar confirmación en expediente</button>
-              <button id="requestFormal">Solicitar soporte formal</button>
-              <button class="success" id="syncQuote">Sincronizar cotización</button>
+          </article>
+        </div>
+      </section>
+
+      <section class="view-frame" id="view-asistente" data-view="asistente">
+        <div class="view-header">
+          <div>
+            <div class="eyebrow">Asistente · continuidad operativa</div>
+            <h2>Seguimiento asistido con conversación, validaciones y decisiones listas para ejecutar.</h2>
+            <p class="muted">La navegación mantiene el estado del asistente para que el usuario continúe exactamente donde lo dejó.</p>
+          </div>
+          <div class="meta-strip">
+            <span class="pill">Agente asignado · Laura Méndez</span>
+            <span class="pill">Seguimiento activo · 10:41</span>
+          </div>
+        </div>
+
+        <div class="assistant-layout">
+          <article class="panel">
+            <div class="stack">
+              <article class="card" style="padding:0;">
+                <div class="agent-shell">
+                  <div class="agent-header row-between">
+                    <strong>Asistente Medinistros</strong>
+                    <span class="tiny">Seguimiento activo · 10:41</span>
+                  </div>
+                  <div class="chat-list" id="agentChat">
+                    <div class="chat-item system">
+                      <strong>Asistente</strong>
+                      <div>Detecté inconsistencias en la cotización. ¿Deseas confirmar la moneda y la cantidad antes de emitir?</div>
+                    </div>
+                    <div class="chat-item user">
+                      <strong>Usuario</strong>
+                      <div>Deja USD y 20 unidades.</div>
+                    </div>
+                    <div class="chat-item audit">
+                      <strong>Sistema</strong>
+                      <div>Actualizado. Cotización lista para revisión. Mantengo alerta por soporte formal de moneda.</div>
+                    </div>
+                    <div class="chat-item system">
+                      <strong>Asistente</strong>
+                      <div>También marqué la corrección de referencia a M-900 Plus con ECG 5 derivaciones para que la emisión no salga con SKU anterior.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="quick-actions" style="padding:14px;">
+                  <button class="primary" id="appendAudit">Registrar confirmación en expediente</button>
+                  <button id="requestFormal">Solicitar soporte formal</button>
+                  <button class="success" id="syncQuote">Sincronizar cotización</button>
+                </div>
+              </article>
+
+              <article class="card">
+                <div class="card-top">
+                  <div>
+                    <h3>Decisiones</h3>
+                    <div class="tiny">Resumen ejecutivo de decisiones activas para el siguiente paso.</div>
+                  </div>
+                  <span class="pill">Resolución guiada</span>
+                </div>
+                <div class="decision-list">
+                  <div class="decision-item">
+                    <strong>Moneda operativa fijada en USD</strong>
+                    <div class="tiny">La decisión ya fue aplicada al expediente y solo espera soporte formal del cliente.</div>
+                  </div>
+                  <div class="decision-item">
+                    <strong>Cantidad final definida en 20 unidades</strong>
+                    <div class="tiny">La reserva de inventario y la urgencia del despacho respaldan esta versión.</div>
+                  </div>
+                  <div class="decision-item">
+                    <strong>Referencia final corregida a M-900 Plus con ECG 5 derivaciones</strong>
+                    <div class="tiny">Se evita emitir el SKU anterior y reducir riesgo de devolución.</div>
+                  </div>
+                </div>
+              </article>
             </div>
           </article>
 
-          <article class="card">
-            <div class="card-top">
-              <div>
-                <h3>Checklist operativo</h3>
-                <div class="tiny">Estado de las validaciones necesarias para emitir.</div>
-              </div>
-              <span class="pill" id="checkStatus">3/4 completadas</span>
-            </div>
-            <div class="checklist" id="checklist">
-              <div class="check-item"><span><span class="dot done"></span>Cantidad consolidada en 20 unidades</span><span class="tiny">Hecho</span></div>
-              <div class="check-item"><span><span class="dot done"></span>Descuento 5% aprobado por llamada</span><span class="tiny">Hecho</span></div>
-              <div class="check-item"><span><span class="dot done"></span>Referencia M-900 Plus confirmada</span><span class="tiny">Hecho</span></div>
-              <div class="check-item" id="formalCheck"><span><span class="dot pending"></span>Soporte formal de moneda en expediente</span><span class="tiny">Pendiente</span></div>
-            </div>
-          </article>
+          <article class="summary-panel">
+            <div class="stack">
+              <article class="card">
+                <div class="card-top">
+                  <div>
+                    <h3>Checklist operativo</h3>
+                    <div class="tiny">Estado de las validaciones necesarias para emitir.</div>
+                  </div>
+                  <span class="pill" id="checkStatus">3/4 completadas</span>
+                </div>
+                <div class="checklist" id="checklist">
+                  <div class="check-item"><span><span class="dot done"></span>Cantidad consolidada en 20 unidades</span><span class="tiny">Hecho</span></div>
+                  <div class="check-item"><span><span class="dot done"></span>Descuento 5% aprobado por llamada</span><span class="tiny">Hecho</span></div>
+                  <div class="check-item"><span><span class="dot done"></span>Referencia M-900 Plus confirmada</span><span class="tiny">Hecho</span></div>
+                  <div class="check-item" id="formalCheck"><span><span class="dot pending"></span>Soporte formal de moneda en expediente</span><span class="tiny">Pendiente</span></div>
+                </div>
+              </article>
 
-          <article class="card">
-            <div class="card-top">
-              <div>
-                <h3>Tareas del agente</h3>
-                <div class="tiny">Siguientes acciones sugeridas para el ejecutivo.</div>
-              </div>
-              <span class="pill">2 urgentes · 1 seguimiento</span>
-            </div>
-            <div class="task-list" id="taskList">
-              <div class="task-item">
-                <div>
-                  <strong>Solicitar correo de confirmación de moneda</strong>
-                  <div class="tiny">Necesario para cerrar la alerta documental antes de emisión.</div>
+              <article class="card">
+                <div class="card-top">
+                  <div>
+                    <h3>Tareas del agente</h3>
+                    <div class="tiny">Siguientes acciones sugeridas para el ejecutivo.</div>
+                  </div>
+                  <span class="pill">2 urgentes · 1 seguimiento</span>
                 </div>
-                <span class="badge alert">Urgente</span>
-              </div>
-              <div class="task-item">
-                <div>
-                  <strong>Emitir versión PDF con referencia corregida</strong>
-                  <div class="tiny">La última versión aún no ha sido enviada al cliente.</div>
+                <div class="task-list" id="taskList">
+                  <div class="task-item">
+                    <div>
+                      <strong>Solicitar correo de confirmación de moneda</strong>
+                      <div class="tiny">Necesario para cerrar la alerta documental antes de emisión.</div>
+                    </div>
+                    <span class="badge alert">Urgente</span>
+                  </div>
+                  <div class="task-item">
+                    <div>
+                      <strong>Emitir versión PDF con referencia corregida</strong>
+                      <div class="tiny">La última versión aún no ha sido enviada al cliente.</div>
+                    </div>
+                    <span class="badge warn">En curso</span>
+                  </div>
+                  <div class="task-item">
+                    <div>
+                      <strong>Confirmar inventario reservado a las 16:30</strong>
+                      <div class="tiny">Operaciones retiene lote solo hasta el cierre de jornada.</div>
+                    </div>
+                    <span class="badge">Seguimiento</span>
+                  </div>
                 </div>
-                <span class="badge warn">En curso</span>
-              </div>
-              <div class="task-item">
-                <div>
-                  <strong>Confirmar inventario reservado a las 16:30</strong>
-                  <div class="tiny">Operaciones retiene lote solo hasta el cierre de jornada.</div>
-                </div>
-                <span class="badge">Seguimiento</span>
-              </div>
-            </div>
-          </article>
-
-          <article class="card">
-            <div class="card-top">
-              <div>
-                <h3>Interpretaciones principales</h3>
-                <div class="tiny">Resumen que usa el agente para responder y priorizar.</div>
-              </div>
-              <span class="pill">Lectura automática</span>
-            </div>
-            <div class="ops-list">
-              <div class="op-card">
-                <strong>Moneda preferida por el comprador: USD</strong>
-                <div class="tiny">La evidencia más reciente proviene de WhatsApp y validación interna financiera, pero no del correo original.</div>
-              </div>
-              <div class="op-card">
-                <strong>Cantidad operativa definitiva: 20</strong>
-                <div class="tiny">Coincide con chat, inventario separado y urgencia de despacho.</div>
-              </div>
-              <div class="op-card">
-                <strong>Riesgo de error principal: emitir con versión vieja del SKU</strong>
-                <div class="tiny">Llamada y correo posterior corrigen referencia, por lo que una emisión apresurada causaría devolución.</div>
-              </div>
+              </article>
             </div>
           </article>
         </div>
@@ -985,7 +1254,22 @@
 
     const mailList = document.getElementById('mailList');
     const mailPreview = document.getElementById('mailPreview');
+    const tabButtons = Array.from(document.querySelectorAll('.tab-button'));
+    const viewFrames = Array.from(document.querySelectorAll('.view-frame'));
     let activeMail = 0;
+    let activeView = 'bandeja';
+
+    function setActiveView(viewName) {
+      activeView = viewName;
+      tabButtons.forEach((button) => {
+        const isActive = button.dataset.view === viewName;
+        button.classList.toggle('active', isActive);
+        button.setAttribute('aria-selected', String(isActive));
+      });
+      viewFrames.forEach((frame) => {
+        frame.classList.toggle('active', frame.dataset.view === viewName);
+      });
+    }
 
     function renderMails() {
       mailList.innerHTML = '';
@@ -1008,6 +1292,13 @@
       mailPreview.textContent = `${mail.subject}\n${mail.from} · ${mail.time}\n\n${mail.body}`;
     }
 
+    function syncMirrors() {
+      const orderStatus = document.getElementById('orderStatus').textContent;
+      const versionCount = document.getElementById('versionCount').textContent;
+      document.getElementById('orderStatusMirror').textContent = orderStatus;
+      document.getElementById('versionPillMirror').textContent = `Versión ${versionCount}`;
+    }
+
     function pushAgentMessage(type, title, text) {
       const wrap = document.getElementById('agentChat');
       const item = document.createElement('div');
@@ -1023,6 +1314,8 @@
       document.getElementById('checkStatus').textContent = '4/4 completadas';
       document.getElementById('docTag').textContent = 'Soporte formal recibido';
       document.getElementById('docStateCopy').textContent = 'La moneda quedó respaldada formalmente; la cotización puede pasar a emisión.';
+      document.getElementById('quoteStatusHeadline').textContent = 'Documento listo para emisión';
+      document.getElementById('versionNarrative').textContent = 'La versión actual quedó formalizada, sincronizada y lista para emitirse al cliente.';
       document.getElementById('alertList').innerHTML = `
         <div class="alert-item medium">
           <strong>⚠️ Cantidad inconsistente entre versiones anteriores</strong>
@@ -1037,7 +1330,14 @@
       document.getElementById('riskPercent').textContent = '38%';
       document.getElementById('riskFill').style.width = '38%';
       document.getElementById('riskHeadline').textContent = 'Medio';
+      syncMirrors();
     }
+
+    tabButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        setActiveView(button.dataset.view);
+      });
+    });
 
     document.getElementById('confirmUsd20').addEventListener('click', () => {
       document.getElementById('quoteCurrency').textContent = 'USD';
@@ -1047,22 +1347,29 @@
       document.getElementById('tableTotal').textContent = '68,400';
       document.getElementById('processedCount').textContent = '187';
       document.getElementById('versionCount').textContent = '8';
+      document.getElementById('versionPillMirror').textContent = 'Versión 8';
+      document.getElementById('versionNarrative').textContent = 'La versión actual integra la confirmación operativa en USD y 20 unidades mientras se espera soporte formal.';
       pushAgentMessage('user', 'Usuario', 'Confirmado: la versión final debe quedar en USD y 20 unidades.');
       pushAgentMessage('audit', 'Sistema', 'Versión 8 consolidada en expediente. Se mantiene pendiente soporte formal del cliente para moneda.');
+      syncMirrors();
     });
 
     document.getElementById('flagForReview').addEventListener('click', () => {
       document.getElementById('docStatus').textContent = 'Revisión formal';
       document.getElementById('docPill').textContent = 'Versión 7 · validación documental';
       document.getElementById('orderStatus').textContent = 'Escalada a revisión';
+      document.getElementById('quoteStatusHeadline').textContent = 'Expediente escalado a revisión formal';
       pushAgentMessage('system', 'Asistente', 'Escalé la cotización para revisión formal. No emitiré PDF hasta recibir soporte de moneda.');
+      syncMirrors();
     });
 
     document.getElementById('readyForReview').addEventListener('click', () => {
       document.getElementById('docStatus').textContent = 'Lista para revisión';
       document.getElementById('orderStatus').textContent = 'Lista para revisión';
       document.getElementById('docPill').textContent = 'Versión 7 · lista para revisión';
+      document.getElementById('quoteStatusHeadline').textContent = 'Lista para revisión comercial';
       pushAgentMessage('audit', 'Sistema', 'La cotización quedó marcada como lista para revisión del ejecutivo comercial.');
+      syncMirrors();
     });
 
     document.getElementById('appendAudit').addEventListener('click', () => {
@@ -1079,10 +1386,14 @@
       document.getElementById('docStatus').textContent = 'Lista para emitir';
       document.getElementById('docPill').textContent = 'Versión 8 · lista para emitir';
       document.getElementById('orderStatus').textContent = 'Lista para emitir';
+      document.getElementById('orderStatusMirror').textContent = 'Lista para emitir';
       pushAgentMessage('audit', 'Sistema', 'Soporte formal recibido y cotización sincronizada. Expediente listo para emisión.');
+      syncMirrors();
     });
 
     renderMails();
+    syncMirrors();
+    setActiveView(activeView);
   </script>
 </body>
 </html>
