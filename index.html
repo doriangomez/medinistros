@@ -3,125 +3,140 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Medinistros | Simulador de pedidos y cotizaciones</title>
+  <title>Medinistros | Centro operativo omnicanal</title>
   <style>
     :root {
-      --bg: #07111f;
-      --bg-soft: #0d1728;
-      --panel: rgba(10, 18, 31, 0.9);
-      --panel-strong: rgba(7, 14, 26, 0.98);
-      --line: rgba(148, 163, 184, 0.12);
-      --text: #e5eefb;
-      --muted: #91a1bc;
-      --accent: #25c0ff;
-      --accent-2: #29d391;
-      --warn: #ffb347;
-      --danger: #ff6b7a;
-      --violet: #9c7bff;
-      --shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
-      --radius: 22px;
+      --bg: #07111d;
+      --bg-soft: #0c1727;
+      --panel: rgba(10, 18, 31, 0.92);
+      --panel-2: rgba(7, 13, 24, 0.96);
+      --line: rgba(148, 163, 184, 0.14);
+      --text: #e7f0fc;
+      --muted: #8da0bd;
+      --accent: #30c4ff;
+      --accent-soft: rgba(48, 196, 255, 0.14);
+      --green: #3dd9a0;
+      --yellow: #ffc361;
+      --red: #ff7f8e;
+      --violet: #a284ff;
+      --shadow: 0 24px 60px rgba(0, 0, 0, 0.42);
+      --radius: 24px;
     }
 
     * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    html, body { margin: 0; min-height: 100%; }
     body {
-      margin: 0;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: var(--text);
       background:
-        radial-gradient(circle at top left, rgba(37, 192, 255, 0.18), transparent 24%),
-        radial-gradient(circle at top right, rgba(156, 123, 255, 0.12), transparent 28%),
-        linear-gradient(180deg, #08111f 0%, #050b15 100%);
-      min-height: 100vh;
+        radial-gradient(circle at top left, rgba(48, 196, 255, 0.18), transparent 26%),
+        radial-gradient(circle at top right, rgba(162, 132, 255, 0.12), transparent 28%),
+        linear-gradient(180deg, #09111d 0%, #050a12 100%);
     }
 
     body::before {
       content: "";
       position: fixed;
       inset: 0;
-      background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-      background-size: 32px 32px;
-      opacity: 0.18;
       pointer-events: none;
+      opacity: 0.18;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 30px 30px;
     }
 
     .shell {
+      width: min(1520px, calc(100vw - 28px));
+      margin: 18px auto 28px;
       position: relative;
       z-index: 1;
-      width: min(1480px, calc(100vw - 32px));
-      margin: 22px auto 40px;
     }
 
-    .hero {
-      display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      gap: 18px;
-      margin-bottom: 18px;
-    }
-
-    .hero-card,
-    .zone,
+    .topbar,
+    .panel,
     .card {
-      background: linear-gradient(180deg, rgba(14, 24, 41, 0.9), rgba(7, 12, 22, 0.96));
+      background: linear-gradient(180deg, rgba(15, 24, 40, 0.92), rgba(7, 12, 22, 0.96));
       border: 1px solid var(--line);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
-      backdrop-filter: blur(14px);
+      backdrop-filter: blur(12px);
     }
 
-    .hero-card { padding: 24px; }
-    .badge-row, .action-row, .mini-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .topbar {
+      padding: 22px 24px;
+      margin-bottom: 18px;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 18px;
+    }
 
-    .badge {
-      padding: 8px 12px;
+    .badge-row,
+    .header-actions,
+    .quick-actions,
+    .mini-tags,
+    .doc-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+    .badge,
+    .chip,
+    .pill,
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
       border-radius: 999px;
-      border: 1px solid rgba(37, 192, 255, 0.26);
-      color: #bfe8ff;
-      background: rgba(37, 192, 255, 0.08);
-      font-size: 0.82rem;
-      letter-spacing: 0.01em;
+      padding: 7px 12px;
+      font-size: 0.78rem;
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      color: #dce8fb;
+      background: rgba(255,255,255,0.04);
+    }
+
+    .badge.live {
+      color: #bff5e2;
+      border-color: rgba(61, 217, 160, 0.22);
+      background: rgba(61, 217, 160, 0.12);
+    }
+
+    .badge.warn {
+      color: #ffe2b0;
+      border-color: rgba(255, 195, 97, 0.22);
+      background: rgba(255, 195, 97, 0.1);
+    }
+
+    .badge.alert {
+      color: #ffc5cf;
+      border-color: rgba(255, 127, 142, 0.26);
+      background: rgba(255, 127, 142, 0.1);
     }
 
     h1 {
-      margin: 14px 0 10px;
-      font-size: clamp(2rem, 3vw, 3.25rem);
-      line-height: 1.05;
-      letter-spacing: -0.04em;
+      margin: 16px 0 10px;
+      font-size: clamp(2rem, 3vw, 3.4rem);
+      line-height: 1.02;
+      letter-spacing: -0.05em;
     }
 
-    .hero p, .section-intro, .muted { color: var(--muted); }
-    .hero p { font-size: 1rem; line-height: 1.6; max-width: 62ch; }
-
-    .action-row { margin-top: 22px; }
+    .lead, .muted, .tiny { color: var(--muted); }
+    .lead { font-size: 1rem; line-height: 1.6; max-width: 68ch; }
+    .tiny { font-size: 0.8rem; }
 
     button {
-      border: 1px solid rgba(148, 163, 184, 0.16);
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      background: rgba(10, 16, 29, 0.9);
       color: var(--text);
-      background: rgba(9, 15, 27, 0.88);
+      padding: 12px 15px;
       border-radius: 14px;
-      padding: 12px 16px;
-      font-size: 0.95rem;
-      font-weight: 600;
+      font-size: 0.92rem;
+      font-weight: 700;
       cursor: pointer;
-      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
     }
 
-    button:hover {
-      transform: translateY(-1px);
-      border-color: rgba(37, 192, 255, 0.42);
-      box-shadow: 0 16px 28px rgba(0,0,0,0.22);
-    }
-
-    button.primary {
-      background: linear-gradient(135deg, rgba(37, 192, 255, 0.24), rgba(156, 123, 255, 0.2));
-      border-color: rgba(37, 192, 255, 0.4);
-    }
-
-    button.success {
-      background: linear-gradient(135deg, rgba(41, 211, 145, 0.22), rgba(37, 192, 255, 0.18));
-      border-color: rgba(41, 211, 145, 0.38);
-    }
+    button:hover { transform: translateY(-1px); border-color: rgba(48, 196, 255, 0.34); }
+    button.primary { background: linear-gradient(135deg, rgba(48, 196, 255, 0.22), rgba(162, 132, 255, 0.18)); }
+    button.success { background: linear-gradient(135deg, rgba(61, 217, 160, 0.22), rgba(48, 196, 255, 0.16)); }
+    button.warning { background: linear-gradient(135deg, rgba(255, 195, 97, 0.22), rgba(255, 127, 142, 0.12)); }
 
     .stat-grid {
       display: grid;
@@ -130,63 +145,50 @@
       height: 100%;
     }
 
-    .stat-card {
-      padding: 18px;
+    .stat {
+      padding: 16px;
       border-radius: 18px;
-      background: rgba(8, 16, 29, 0.8);
       border: 1px solid rgba(148, 163, 184, 0.12);
+      background: rgba(8, 16, 29, 0.84);
     }
 
-    .stat-card strong {
+    .stat strong {
       display: block;
-      font-size: 2rem;
-      margin-top: 12px;
-      letter-spacing: -0.04em;
+      margin-top: 10px;
+      font-size: 1.95rem;
+      letter-spacing: -0.05em;
     }
 
-    .app-grid {
+    .workspace {
       display: grid;
-      grid-template-columns: 1.15fr 1.1fr 1fr;
+      grid-template-columns: 1.05fr 1.14fr 0.95fr;
       gap: 18px;
       align-items: start;
     }
 
-    .zone { padding: 18px; min-height: 840px; }
+    .panel { padding: 18px; min-height: 980px; }
 
-    .zone-header {
+    .panel-header {
       display: flex;
       justify-content: space-between;
-      gap: 12px;
       align-items: flex-start;
+      gap: 12px;
       margin-bottom: 16px;
     }
 
-    .zone-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.8rem;
-      letter-spacing: 0.08em;
+    .eyebrow {
+      font-size: 0.78rem;
       text-transform: uppercase;
-      color: #c9d6ea;
+      letter-spacing: 0.08em;
       margin-bottom: 8px;
+      color: #cad7ea;
     }
 
-    .glow-red { color: #ff8d98; }
-    .glow-yellow { color: #ffd27f; }
-    .glow-green { color: #6ff3b6; }
+    .panel h2 { margin: 0; font-size: 1.26rem; }
+    .panel p { margin: 6px 0 0; }
 
-    .zone h2 { margin: 0; font-size: 1.25rem; }
-    .zone p { margin: 6px 0 0; }
-
-    .channel-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 14px;
-    }
-
+    .stack { display: grid; gap: 14px; }
     .card { padding: 16px; }
-    .card h3 { margin: 0 0 4px; font-size: 1rem; }
     .card-top {
       display: flex;
       justify-content: space-between;
@@ -195,95 +197,87 @@
       margin-bottom: 12px;
     }
 
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      border-radius: 999px;
-      padding: 6px 10px;
-      font-size: 0.76rem;
-      border: 1px solid rgba(148, 163, 184, 0.16);
-      background: rgba(255,255,255,0.03);
-      color: #dce7fa;
-    }
-
-    .mail-list, .log-list, .timeline, .alerts, .compare-list, .chat-thread { display: grid; gap: 10px; }
+    .mail-list,
+    .thread,
+    .log-list,
+    .timeline,
+    .alerts,
+    .ops-list,
+    .doc-grid,
+    .chat-list,
+    .checklist,
+    .task-list { display: grid; gap: 10px; }
 
     .mail-item,
-    .call-item,
-    .setting-item,
+    .message,
+    .log-item,
     .timeline-item,
-    .compare-item,
-    .assistant-msg,
-    .alert {
-      border-radius: 16px;
+    .alert-item,
+    .op-card,
+    .doc-field,
+    .chat-item,
+    .check-item,
+    .task-item {
+      border-radius: 18px;
       border: 1px solid rgba(148, 163, 184, 0.12);
-      background: rgba(8, 15, 27, 0.84);
+      background: rgba(8, 15, 27, 0.86);
       padding: 12px 14px;
-      transition: transform 180ms ease, border-color 180ms ease;
     }
 
-    .mail-item:hover,
-    .call-item:hover,
-    .setting-item:hover,
-    .timeline-item:hover,
-    .compare-item:hover { transform: translateY(-1px); }
-
-    .mail-item.active { border-color: rgba(37, 192, 255, 0.52); }
+    .mail-item { cursor: pointer; }
+    .mail-item.active { border-color: rgba(48, 196, 255, 0.42); background: rgba(11, 26, 42, 0.92); }
     .row-between { display: flex; justify-content: space-between; gap: 10px; }
-    .tiny { font-size: 0.78rem; color: var(--muted); }
-    .mail-body {
+
+    .mail-preview {
       margin-top: 12px;
-      min-height: 108px;
       white-space: pre-line;
-      padding: 14px;
-      border-radius: 16px;
+      min-height: 148px;
+      border-radius: 18px;
       border: 1px dashed rgba(148, 163, 184, 0.18);
-      background: rgba(5, 10, 20, 0.72);
-      color: #d3def0;
-      line-height: 1.5;
+      background: rgba(5, 10, 18, 0.8);
+      padding: 14px;
+      line-height: 1.58;
+      color: #d7e2f3;
     }
 
-    .wa-shell {
-      border-radius: 20px;
+    .wa-shell,
+    .agent-shell {
+      border-radius: 22px;
       overflow: hidden;
       border: 1px solid rgba(148,163,184,0.12);
-      background: #08111f;
+      background: #08111c;
     }
 
-    .wa-header, .assistant-header {
-      padding: 12px 14px;
-      background: rgba(16, 27, 45, 0.94);
-      border-bottom: 1px solid rgba(148,163,184,0.1);
+    .wa-header,
+    .agent-header {
+      padding: 13px 14px;
+      background: rgba(15, 25, 42, 0.96);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.1);
     }
 
-    .chat-thread { padding: 14px; max-height: 290px; overflow: auto; background: linear-gradient(180deg, rgba(6,12,22,0.9), rgba(10,20,34,0.8)); }
+    .thread {
+      padding: 14px;
+      max-height: 310px;
+      overflow: auto;
+      background: linear-gradient(180deg, rgba(6, 11, 21, 0.96), rgba(10, 21, 34, 0.8));
+    }
 
-    .chat-bubble {
-      max-width: 88%;
+    .bubble {
+      max-width: 86%;
       padding: 10px 12px;
       border-radius: 16px;
-      line-height: 1.4;
-      font-size: 0.9rem;
+      line-height: 1.42;
+      font-size: 0.92rem;
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
     }
 
-    .bubble-client {
-      margin-left: auto;
-      background: linear-gradient(135deg, rgba(41, 211, 145, 0.22), rgba(37, 192, 255, 0.18));
-      border: 1px solid rgba(41, 211, 145, 0.18);
-    }
-
-    .bubble-team {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(148,163,184,0.12);
-    }
+    .client { margin-left: auto; background: linear-gradient(135deg, rgba(61, 217, 160, 0.2), rgba(48, 196, 255, 0.16)); border: 1px solid rgba(61, 217, 160, 0.18); }
+    .team { background: rgba(255,255,255,0.05); border: 1px solid rgba(148,163,184,0.12); }
 
     .metric-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 12px;
-      margin-bottom: 14px;
     }
 
     .metric {
@@ -293,142 +287,152 @@
       background: rgba(8, 15, 27, 0.86);
     }
 
-    .metric strong { display: block; font-size: 1.7rem; margin-top: 10px; }
-    .risk-bar {
+    .metric strong { display: block; margin-top: 10px; font-size: 1.7rem; letter-spacing: -0.04em; }
+
+    .riskbar {
+      margin-top: 10px;
       height: 12px;
-      border-radius: 999px;
       overflow: hidden;
+      border-radius: 999px;
       background: rgba(255,255,255,0.06);
       border: 1px solid rgba(148,163,184,0.1);
-      margin-top: 10px;
     }
 
-    .risk-fill {
+    .riskfill {
       height: 100%;
-      width: 0;
-      background: linear-gradient(90deg, #29d391, #ffb347, #ff6b7a);
-      transition: width 300ms ease;
+      width: 74%;
+      background: linear-gradient(90deg, #3dd9a0, #ffc361 56%, #ff7f8e);
     }
 
-    .timeline { max-height: 330px; overflow: auto; }
-    .timeline-item { position: relative; padding-left: 16px; }
+    .timeline { max-height: 340px; overflow: auto; }
+    .timeline-item { position: relative; padding-left: 18px; }
     .timeline-item::before {
       content: "";
       position: absolute;
       left: 0;
       top: 14px;
-      width: 6px;
+      width: 7px;
       height: calc(100% - 28px);
       border-radius: 999px;
-      background: rgba(148,163,184,0.18);
+      background: rgba(148,163,184,0.22);
     }
 
-    .timeline-item.applied::before { background: linear-gradient(180deg, #29d391, rgba(41,211,145,0.2)); }
-    .timeline-item.warning::before { background: linear-gradient(180deg, #ffb347, rgba(255,179,71,0.18)); }
-    .timeline-item.alerted::before { background: linear-gradient(180deg, #ff6b7a, rgba(255,107,122,0.18)); }
+    .timeline-item.ok::before { background: linear-gradient(180deg, #3dd9a0, rgba(61, 217, 160, 0.16)); }
+    .timeline-item.warn::before { background: linear-gradient(180deg, #ffc361, rgba(255, 195, 97, 0.16)); }
+    .timeline-item.alert::before { background: linear-gradient(180deg, #ff7f8e, rgba(255, 127, 142, 0.16)); }
 
-    .insight {
-      margin-top: 8px;
-      padding-top: 8px;
-      border-top: 1px dashed rgba(148,163,184,0.14);
-      color: #d8e3f5;
-      font-size: 0.86rem;
+    .alert-item.high { border-color: rgba(255,127,142,0.24); background: rgba(63, 15, 25, 0.72); }
+    .alert-item.medium { border-color: rgba(255,195,97,0.24); background: rgba(66, 37, 7, 0.68); }
+    .alert-item.low { border-color: rgba(48,196,255,0.2); background: rgba(8, 33, 49, 0.7); }
+
+    .op-card strong,
+    .timeline-item strong,
+    .alert-item strong,
+    .chat-item strong,
+    .task-item strong,
+    .log-item strong,
+    .mail-item strong { display: block; margin-bottom: 6px; }
+
+    .doc-sheet {
+      border-radius: 22px;
+      padding: 18px;
+      background: linear-gradient(180deg, rgba(245, 248, 255, 0.96), rgba(231, 238, 249, 0.94));
+      color: #0f1d31;
+      border: 1px solid rgba(195, 206, 223, 0.9);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.7);
     }
 
-    .alert.high { border-color: rgba(255,107,122,0.28); background: rgba(70, 13, 24, 0.72); }
-    .alert.medium { border-color: rgba(255,179,71,0.24); background: rgba(65, 35, 4, 0.68); }
-    .alert.low { border-color: rgba(37,192,255,0.2); background: rgba(9, 36, 52, 0.72); }
+    .doc-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
 
-    .quote-grid {
-      display: grid;
+    .doc-brand {
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #3b5b84;
+      margin-bottom: 6px;
+    }
+
+    .doc-title {
+      margin: 0;
+      font-size: 1.35rem;
+      letter-spacing: -0.03em;
+    }
+
+    .doc-status {
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: #8a5100;
+      background: rgba(255, 195, 97, 0.2);
+      border: 1px solid rgba(196, 132, 10, 0.24);
+    }
+
+    .doc-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+      margin-bottom: 12px;
+    }
+
+    .doc-field {
+      background: rgba(255,255,255,0.68);
+      border-color: rgba(149, 163, 184, 0.28);
+      color: #152943;
+    }
+
+    .doc-field label {
+      display: block;
+      margin-bottom: 8px;
+      color: #597190;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: rgba(255,255,255,0.72);
+      border-radius: 18px;
+      overflow: hidden;
+      margin: 10px 0 12px;
+      font-size: 0.92rem;
+    }
+
+    th, td { padding: 12px; border-bottom: 1px solid rgba(148,163,184,0.18); text-align: left; }
+    th { color: #607792; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; }
+    tr:last-child td { border-bottom: none; }
+
+    .doc-summary {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
       gap: 12px;
       margin-top: 12px;
     }
 
-    .quote-field {
+    .summary-box {
       padding: 14px;
       border-radius: 18px;
-      border: 1px solid rgba(148,163,184,0.12);
-      background: rgba(8, 15, 27, 0.86);
+      background: rgba(255,255,255,0.7);
+      border: 1px solid rgba(149,163,184,0.24);
     }
 
-    .quote-field label {
-      display: block;
-      margin-bottom: 8px;
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #91a1bc;
-    }
+    .chat-list { padding: 14px; max-height: 270px; overflow: auto; }
+    .chat-item.system { border-color: rgba(48,196,255,0.2); background: rgba(10, 27, 43, 0.64); }
+    .chat-item.user { border-color: rgba(61,217,160,0.2); background: rgba(13, 44, 32, 0.56); }
+    .chat-item.audit { border-color: rgba(255,195,97,0.2); background: rgba(54, 35, 8, 0.54); }
 
-    .status-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      font-size: 0.82rem;
-      font-weight: 700;
-      margin-bottom: 10px;
-    }
-
-    .state-danger { background: rgba(255,107,122,0.12); color: #ffc7cf; border: 1px solid rgba(255,107,122,0.22); }
-    .state-warn { background: rgba(255,179,71,0.12); color: #ffe3b5; border: 1px solid rgba(255,179,71,0.22); }
-    .state-good { background: rgba(41,211,145,0.12); color: #c7ffe4; border: 1px solid rgba(41,211,145,0.22); }
-
-    .assistant-card {
-      display: grid;
-      grid-template-rows: auto 1fr auto auto;
-      min-height: 520px;
-    }
-
-    .assistant-thread {
-      padding: 14px;
-      max-height: 260px;
-      overflow: auto;
-      display: grid;
-      gap: 10px;
-    }
-
-    .assistant-msg.system {
-      border-color: rgba(37, 192, 255, 0.2);
-      background: rgba(9, 28, 44, 0.66);
-    }
-
-    .assistant-msg.user {
-      border-color: rgba(41, 211, 145, 0.2);
-      background: rgba(12, 42, 30, 0.56);
-    }
-
-    .assistant-options {
-      padding: 0 14px 12px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .assistant-options button {
-      padding: 10px 12px;
-      font-size: 0.88rem;
-    }
-
-    .progress-card {
-      margin: 0 14px 14px;
-      padding: 14px;
-      border-radius: 18px;
-      border: 1px solid rgba(148,163,184,0.12);
-      background: rgba(5, 10, 18, 0.82);
-    }
-
-    .checklist { display: grid; gap: 8px; margin-top: 12px; }
-    .check-item {
+    .check-item,
+    .task-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 10px;
-      font-size: 0.9rem;
-      color: #d9e4f7;
+      gap: 12px;
     }
 
     .dot {
@@ -440,133 +444,121 @@
       box-shadow: 0 0 0 4px rgba(255,255,255,0.03);
     }
 
-    .dot.pending { background: #4b5563; }
-    .dot.done { background: #29d391; }
-
-    .comparison {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-    }
-
-    .compare-item.bad { border-color: rgba(255,107,122,0.22); background: rgba(58, 13, 21, 0.62); }
-    .compare-item.good { border-color: rgba(41,211,145,0.22); background: rgba(8, 44, 30, 0.52); }
+    .dot.done { background: var(--green); }
+    .dot.pending { background: var(--yellow); }
+    .dot.alert { background: var(--red); }
 
     .footer-note {
       margin-top: 18px;
       padding: 18px 20px;
+      border-radius: 22px;
+      border: 1px solid var(--line);
+      background: linear-gradient(135deg, rgba(48,196,255,0.08), rgba(61,217,160,0.08));
       text-align: center;
-      border-radius: 20px;
-      border: 1px solid rgba(148,163,184,0.12);
-      background: linear-gradient(135deg, rgba(37,192,255,0.08), rgba(41,211,145,0.08));
-    }
-
-    .footer-note strong {
-      display: block;
-      margin-bottom: 8px;
-      font-size: 1.05rem;
+      color: #d9e6f7;
     }
 
     @media (max-width: 1280px) {
-      .app-grid { grid-template-columns: 1fr; }
-      .zone { min-height: auto; }
-      .hero { grid-template-columns: 1fr; }
+      .topbar, .workspace { grid-template-columns: 1fr; }
+      .panel { min-height: auto; }
     }
 
     @media (max-width: 760px) {
-      .shell { width: min(100vw - 18px, 100%); margin-top: 10px; }
-      .hero-card, .zone, .card { border-radius: 18px; }
-      .metric-grid, .quote-grid, .comparison, .stat-grid { grid-template-columns: 1fr; }
+      .shell { width: min(100vw - 14px, 100%); margin-top: 8px; }
+      .stat-grid, .metric-grid, .doc-grid, .doc-summary { grid-template-columns: 1fr; }
       button { width: 100%; }
-      .assistant-options button { width: auto; }
     }
   </style>
 </head>
 <body>
   <div class="shell">
-    <section class="hero">
-      <div class="hero-card">
+    <section class="topbar">
+      <div>
         <div class="badge-row">
-          <span class="badge">Demo interactiva sin backend</span>
-          <span class="badge">Lógica 100% simulada en JavaScript</span>
-          <span class="badge">Operación omnicanal Medinistros</span>
+          <span class="badge live">● Operación en línea · 14 pedidos activos</span>
+          <span class="badge warn">3 inconsistencias escaladas a revisión comercial</span>
+          <span class="badge">Última sincronización 10:42</span>
         </div>
-        <h1>Gestión inteligente de pedidos y cotizaciones con trazabilidad desde el primer mensaje.</h1>
-        <p>
-          Esta experiencia simula el caos operativo real: correos, WhatsApp, llamadas y ajustes internos compitiendo por definir una misma cotización.
-          El objetivo no es mostrar una maqueta, sino demostrar cómo un agente guiado por reglas reduce errores, versiones cruzadas y retrabajo.
+        <h1>Centro operativo de pedidos y cotizaciones omnicanal.</h1>
+        <p class="lead">
+          Medinistros ya está consolidando conversaciones, decisiones comerciales y correcciones cruzadas para emitir una sola versión válida de cada cotización.
+          El caso visible corresponde a Clínica Sierra Norte y muestra actividad real de correo, WhatsApp, llamadas e intervención del equipo comercial.
         </p>
-        <div class="action-row">
-          <button class="primary" id="simulateChaos">Simular caos</button>
-          <button class="success" id="openAssistant">Usar asistente IA</button>
-          <button id="compareResults">Comparar resultados</button>
-          <button id="resetDemo">Reiniciar demo</button>
+        <div class="header-actions">
+          <button class="primary" id="confirmUsd20">Confirmar USD y 20 unidades</button>
+          <button class="warning" id="flagForReview">Escalar para revisión formal</button>
+          <button class="success" id="readyForReview">Marcar lista para revisión</button>
         </div>
       </div>
-      <div class="hero-card">
-        <div class="stat-grid">
-          <div class="stat-card">
-            <span class="tiny">Eventos procesados</span>
-            <strong id="statProcessed">0</strong>
-            <span class="muted">Se actualiza a medida que llegan mensajes y cambios.</span>
-          </div>
-          <div class="stat-card">
-            <span class="tiny">Inconsistencias</span>
-            <strong id="statIssues">0</strong>
-            <span class="muted">Contradicciones, ambigüedad y cambios sin soporte.</span>
-          </div>
-          <div class="stat-card">
-            <span class="tiny">Riesgo operativo</span>
-            <strong id="statRisk">Bajo</strong>
-            <span class="muted">Mide probabilidad de emitir una cotización incorrecta.</span>
-          </div>
-          <div class="stat-card">
-            <span class="tiny">Estado consolidado</span>
-            <strong id="statStatus">Esperando</strong>
-            <span class="muted">Evoluciona de caos disperso a versión validada.</span>
-          </div>
+      <div class="stat-grid">
+        <div class="stat">
+          <span class="tiny">Eventos procesados hoy</span>
+          <strong id="processedCount">184</strong>
+          <span class="muted">Incluye mensajes, llamadas, ajustes internos y aprobaciones.</span>
+        </div>
+        <div class="stat">
+          <span class="tiny">Canales activos</span>
+          <strong>4</strong>
+          <span class="muted">Correo, WhatsApp, llamadas y actividad interna comercial.</span>
+        </div>
+        <div class="stat">
+          <span class="tiny">Riesgo operativo</span>
+          <strong id="riskHeadline">Medio-alto</strong>
+          <span class="muted">La orden sigue viva, pero aún requiere alineación documental.</span>
+        </div>
+        <div class="stat">
+          <span class="tiny">Estado del expediente</span>
+          <strong id="orderStatus">Cotización en proceso</strong>
+          <span class="muted">Versión consolidada en revisión por el ejecutivo asignado.</span>
         </div>
       </div>
     </section>
 
-    <section class="app-grid">
-      <section class="zone">
-        <div class="zone-header">
+    <section class="workspace">
+      <section class="panel">
+        <div class="panel-header">
           <div>
-            <div class="zone-label glow-red">🔴 Entradas desordenadas · realidad actual</div>
-            <h2>Los pedidos llegan fragmentados y se contradicen entre canales.</h2>
-            <p class="section-intro">Cada tarjeta simula una fuente real con datos creíbles, fechas, contexto y cambios acumulativos.</p>
+            <div class="eyebrow">Bandeja omnicanal · operación comercial</div>
+            <h2>Entradas activas con decisiones reales en curso.</h2>
+            <p class="muted">Cada canal ya trae contexto, cambios y urgencia acumulada.</p>
           </div>
-          <span class="pill" id="chaosBadge">Sin eventos cargados</span>
+          <span class="pill">Caso activo · M-900 / Sierra Norte</span>
         </div>
 
-        <div class="channel-grid">
+        <div class="stack">
           <article class="card">
             <div class="card-top">
               <div>
                 <h3>📧 Correos</h3>
-                <div class="tiny">Bandeja comercial con solicitudes formales y correcciones.</div>
+                <div class="tiny">Solicitudes formales y correcciones recibidas hoy.</div>
               </div>
-              <span class="pill" id="mailCount">0 correos</span>
+              <span class="pill">6 correos abiertos</span>
             </div>
             <div class="mail-list" id="mailList"></div>
-            <div class="mail-body" id="mailPreview">Selecciona un correo para leer el detalle.</div>
+            <div class="mail-preview" id="mailPreview"></div>
           </article>
 
           <article class="card">
             <div class="card-top">
               <div>
                 <h3>💬 WhatsApp</h3>
-                <div class="tiny">Mensajes rápidos que alteran urgencia, cantidad y contexto.</div>
+                <div class="tiny">Mensajes cortos del comprador y del ejecutivo.</div>
               </div>
-              <span class="pill" id="waCount">0 mensajes</span>
+              <span class="pill">Chat activo · hace 2 min</span>
             </div>
             <div class="wa-shell">
               <div class="wa-header row-between">
-                <strong>Clínica Sierra Norte</strong>
-                <span class="tiny">Última actividad <span id="waLast">--:--</span></span>
+                <strong>Carolina Pardo · Compras Clínica Sierra Norte</strong>
+                <span class="tiny">Último mensaje 10:40</span>
               </div>
-              <div class="chat-thread" id="waThread"></div>
+              <div class="thread">
+                <div class="bubble team">Te mandé versión con 18 unidades y entrega en 12 días.</div>
+                <div class="bubble client">súbele eso a 20</div>
+                <div class="bubble client">eso era en dólares</div>
+                <div class="bubble team">Recibido. Estoy cruzando con el correo porque la solicitud formal venía en COP.</div>
+                <div class="bubble client">urge hoy</div>
+                <div class="bubble team">Ya quedó marcado como prioridad comercial y está en revisión con tu ejecutivo.</div>
+              </div>
             </div>
           </article>
 
@@ -574,691 +566,523 @@
             <div class="card-top">
               <div>
                 <h3>📞 Llamadas</h3>
-                <div class="tiny">Resumen operativo de lo dicho por el cliente y por el equipo.</div>
+                <div class="tiny">Registro de decisiones tomadas verbalmente.</div>
               </div>
-              <span class="pill" id="callCount">0 llamadas</span>
+              <span class="pill">3 decisiones registradas</span>
             </div>
-            <div class="log-list" id="callList"></div>
+            <div class="log-list">
+              <div class="log-item">
+                <strong>09:32 · Cliente aprueba 5% descuento</strong>
+                <div class="tiny">Se mantiene condicionado a emisión en la moneda correcta.</div>
+              </div>
+              <div class="log-item">
+                <strong>09:54 · Solicita cambio de referencia</strong>
+                <div class="tiny">Pide confirmar si el monitor debe salir con módulo SpO2 Nellcor.</div>
+              </div>
+              <div class="log-item">
+                <strong>10:18 · Requiere despacho prioritario</strong>
+                <div class="tiny">Operaciones informa que 48 horas es viable solo para 20 unidades del lote disponible.</div>
+              </div>
+            </div>
           </article>
 
           <article class="card">
             <div class="card-top">
               <div>
-                <h3>⚙️ Ajustes internos</h3>
-                <div class="tiny">Cambios hechos por el equipo sin siempre tener respaldo documental.</div>
+                <h3>🧩 Interno</h3>
+                <div class="tiny">Actividad del equipo comercial y de operaciones.</div>
               </div>
-              <span class="pill" id="settingCount">0 ajustes</span>
+              <span class="pill">5 acciones del equipo</span>
             </div>
-            <div class="log-list" id="settingList"></div>
+            <div class="log-list">
+              <div class="log-item">
+                <strong>08:57 · Ejecutivo ajusta moneda</strong>
+                <div class="tiny">Se cambia COP → USD con base en mensaje de WhatsApp, pendiente soporte formal.</div>
+              </div>
+              <div class="log-item">
+                <strong>09:11 · Se modifica condición comercial</strong>
+                <div class="tiny">Se aplica 5% de descuento para no frenar comité de compras.</div>
+              </div>
+              <div class="log-item">
+                <strong>09:46 · Coordinación reserva inventario</strong>
+                <div class="tiny">Lote físico separado para 20 unidades con vigencia de reserva hasta las 17:00.</div>
+              </div>
+              <div class="log-item">
+                <strong>10:05 · Finanzas valida cupo</strong>
+                <div class="tiny">Cliente habilitado para pago a 30 días, sujeto a emisión final en USD.</div>
+              </div>
+            </div>
           </article>
         </div>
       </section>
 
-      <section class="zone">
-        <div class="zone-header">
+      <section class="panel">
+        <div class="panel-header">
           <div>
-            <div class="zone-label glow-yellow">🟡 Motor de consolidación</div>
-            <h2>Interpreta cambios, detecta inconsistencias y organiza una sola historia operativa.</h2>
-            <p class="section-intro">Cada evento se transforma en una línea trazable con interpretación, riesgo y alertas.</p>
+            <div class="eyebrow">Motor de consolidación · activo</div>
+            <h2>Interpretación, timeline y alertas ya generadas.</h2>
+            <p class="muted">El motor ya cruzó fuentes, detectó contradicciones y preparó una versión consolidada.</p>
           </div>
-          <span class="pill" id="engineStatus">Motor en espera</span>
+          <span class="pill">Motor sincronizado · 10:42</span>
         </div>
 
-        <article class="card">
-          <div class="metric-grid">
-            <div class="metric">
-              <span class="tiny">Canales activos</span>
-              <strong id="metricChannels">0</strong>
+        <div class="stack">
+          <article class="card">
+            <div class="metric-grid">
+              <div class="metric">
+                <span class="tiny">Versiones detectadas</span>
+                <strong id="versionCount">7</strong>
+              </div>
+              <div class="metric">
+                <span class="tiny">Alertas abiertas</span>
+                <strong id="alertCount">3</strong>
+              </div>
+              <div class="metric">
+                <span class="tiny">Interpretaciones emitidas</span>
+                <strong>12</strong>
+              </div>
+              <div class="metric">
+                <span class="tiny">Índice de riesgo</span>
+                <strong id="riskPercent">74%</strong>
+                <div class="riskbar"><div class="riskfill" id="riskFill"></div></div>
+              </div>
             </div>
-            <div class="metric">
-              <span class="tiny">Versiones detectadas</span>
-              <strong id="metricVersions">1</strong>
-            </div>
-            <div class="metric">
-              <span class="tiny">Alertas abiertas</span>
-              <strong id="metricAlerts">0</strong>
-            </div>
-            <div class="metric">
-              <span class="tiny">Nivel de riesgo</span>
-              <strong id="metricRisk">8%</strong>
-              <div class="risk-bar"><div class="risk-fill" id="riskFill"></div></div>
-            </div>
-          </div>
-        </article>
+          </article>
 
-        <article class="card">
-          <div class="card-top">
-            <div>
-              <h3>Timeline inteligente</h3>
-              <div class="tiny">Hora · canal · evento · interpretación operativa</div>
+          <article class="card">
+            <div class="card-top">
+              <div>
+                <h3>Timeline operativo</h3>
+                <div class="tiny">Hora · canal · hallazgo · interpretación del motor</div>
+              </div>
+              <span class="pill">8 eventos relevantes</span>
             </div>
-            <span class="pill" id="timelineState">Sin movimiento</span>
-          </div>
-          <div class="timeline" id="timeline"></div>
-        </article>
+            <div class="timeline">
+              <div class="timeline-item ok">
+                <strong>08:41 · Correo · Solicitud base recibida</strong>
+                <div class="tiny">El cliente solicita 18 monitores M-900 en COP con pago a 30 días.</div>
+              </div>
+              <div class="timeline-item warn">
+                <strong>08:57 · Interno · Ajuste comercial</strong>
+                <div class="tiny">El ejecutivo cambia moneda a USD sin adjunto formal. Se registra desalineación documental.</div>
+              </div>
+              <div class="timeline-item alert">
+                <strong>09:08 · WhatsApp · Cambio de cantidad</strong>
+                <div class="tiny">Mensaje “súbele eso a 20” altera cantidad sin modificar el correo original.</div>
+              </div>
+              <div class="timeline-item ok">
+                <strong>09:32 · Llamada · Descuento aprobado</strong>
+                <div class="tiny">Se autoriza 5% de descuento por cierre de mes; se mantiene como concesión vigente.</div>
+              </div>
+              <div class="timeline-item alert">
+                <strong>09:54 · Llamada · Cambio de referencia</strong>
+                <div class="tiny">Se solicita revisar módulo SpO2; el sistema marca posible afectación sobre SKU final.</div>
+              </div>
+              <div class="timeline-item warn">
+                <strong>10:05 · Interno · Validación financiera</strong>
+                <div class="tiny">Finanzas habilita 30 días, pero condiciona emisión final en USD para no reprocesar cartera.</div>
+              </div>
+              <div class="timeline-item alert">
+                <strong>10:20 · Correo · Corrección de referencia</strong>
+                <div class="tiny">Cliente corrige el equipo a M-900 Plus con accesorio ECG de 5 derivaciones.</div>
+              </div>
+              <div class="timeline-item ok">
+                <strong>10:38 · Agente · Consolidación lista</strong>
+                <div class="tiny">Se propone versión única: USD, 20 unidades, 5% descuento, entrega 48 horas.</div>
+              </div>
+            </div>
+          </article>
 
-        <article class="card">
-          <div class="card-top">
-            <div>
-              <h3>Panel de alertas</h3>
-              <div class="tiny">Moneda, cantidad, mensajes ambiguos y cambios sin soporte.</div>
+          <article class="card">
+            <div class="card-top">
+              <div>
+                <h3>Alertas detectadas</h3>
+                <div class="tiny">Contradicciones activas sobre moneda, cantidad y referencia.</div>
+              </div>
+              <span class="pill">Atención prioritaria</span>
             </div>
-            <span class="pill" id="alertSummary">Todo estable</span>
-          </div>
-          <div class="alerts" id="alertList"></div>
-        </article>
+            <div class="alerts" id="alertList">
+              <div class="alert-item high">
+                <strong>⚠️ Cambio de moneda sin confirmación formal</strong>
+                <div class="tiny">WhatsApp e interno apuntan a USD, pero el correo base estaba en COP. Falta soporte final del cliente.</div>
+              </div>
+              <div class="alert-item high">
+                <strong>⚠️ Cantidad inconsistente entre canales</strong>
+                <div class="tiny">Correo inicial: 18 unidades. WhatsApp y reserva logística: 20 unidades.</div>
+              </div>
+              <div class="alert-item medium">
+                <strong>⚠️ Referencia de equipo corregida en llamada y correo</strong>
+                <div class="tiny">Se debe emitir como M-900 Plus con ECG 5 derivaciones para evitar devolución.</div>
+              </div>
+            </div>
+          </article>
 
-        <article class="card">
-          <div class="card-top">
-            <div>
-              <h3>Cotización consolidada</h3>
-              <div class="tiny">Vista ejecutiva de la versión final sugerida por el sistema.</div>
+          <article class="card">
+            <div class="card-top">
+              <div>
+                <h3>Cotización consolidada</h3>
+                <div class="tiny">Documento operativo listo para revisión y emisión.</div>
+              </div>
+              <span class="pill" id="docPill">Versión 7 · revisión comercial</span>
             </div>
-            <span class="status-chip state-warn" id="quoteState">Esperando validación inicial</span>
-          </div>
-          <div class="quote-grid" id="quoteGrid"></div>
-        </article>
+            <div class="doc-sheet">
+              <div class="doc-head">
+                <div>
+                  <div class="doc-brand">Medinistros · expediente comercial</div>
+                  <h4 class="doc-title">Cotización MC-2025-1184</h4>
+                  <div class="tiny">Ejecutivo: Laura Méndez · Cuenta estratégica: Clínica Sierra Norte</div>
+                </div>
+                <div class="doc-status" id="docStatus">En revisión</div>
+              </div>
+
+              <div class="doc-grid">
+                <div class="doc-field">
+                  <label>Cliente</label>
+                  <div>Clínica Sierra Norte S.A.S.</div>
+                </div>
+                <div class="doc-field">
+                  <label>Contacto</label>
+                  <div>Carolina Pardo · Compras biomédicas</div>
+                </div>
+                <div class="doc-field">
+                  <label>Producto</label>
+                  <div id="quoteProduct">Monitor multiparámetro M-900 Plus</div>
+                </div>
+                <div class="doc-field">
+                  <label>Referencia validada</label>
+                  <div id="quoteReference">SKU M900P-ECG5 / módulo SpO2 + ECG 5 deriv.</div>
+                </div>
+                <div class="doc-field">
+                  <label>Cantidad</label>
+                  <div id="quoteQuantity">20 unidades</div>
+                </div>
+                <div class="doc-field">
+                  <label>Moneda</label>
+                  <div id="quoteCurrency">USD</div>
+                </div>
+                <div class="doc-field">
+                  <label>Descuento</label>
+                  <div id="quoteDiscount">5% autorizado por cierre de mes</div>
+                </div>
+                <div class="doc-field">
+                  <label>Condiciones</label>
+                  <div id="quoteTerms">Entrega 48 horas · Pago a 30 días · Reserva inventario hasta 17:00</div>
+                </div>
+              </div>
+
+              <table>
+                <thead>
+                  <tr>
+                    <th>Ítem</th>
+                    <th>Cant.</th>
+                    <th>Moneda</th>
+                    <th>Precio unit.</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td id="tableItem">Monitor multiparámetro M-900 Plus con ECG 5 derivaciones</td>
+                    <td id="tableQty">20</td>
+                    <td id="tableCurrency">USD</td>
+                    <td id="tableUnit">3,420</td>
+                    <td id="tableTotal">68,400</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="doc-summary">
+                <div class="summary-box">
+                  <strong>Condiciones comerciales consolidadas</strong>
+                  <div class="tiny">Incluye instalación básica remota, entrenamiento virtual y vigencia de oferta por 72 horas.</div>
+                </div>
+                <div class="summary-box">
+                  <strong>Estado actual</strong>
+                  <div class="tiny" id="docStateCopy">Pendiente confirmación final de moneda frente al soporte formal del cliente.</div>
+                </div>
+              </div>
+
+              <div class="doc-actions" style="margin-top:12px;">
+                <span class="tag">Aprobación comercial parcial</span>
+                <span class="tag">Finanzas alineadas</span>
+                <span class="tag" id="docTag">Falta soporte formal del cliente</span>
+              </div>
+            </div>
+          </article>
+        </div>
       </section>
 
-      <section class="zone">
-        <div class="zone-header">
+      <section class="panel">
+        <div class="panel-header">
           <div>
-            <div class="zone-label glow-green">🟢 Agente inteligente simulado</div>
-            <h2>Un asistente guiado por reglas controla la captura desde el inicio.</h2>
-            <p class="section-intro">No usa IA real: decide con lógica predefinida, valida datos faltantes y genera una cotización limpia.</p>
+            <div class="eyebrow">Agente de operación asistida</div>
+            <h2>Conversación en curso con decisiones y seguimiento.</h2>
+            <p class="muted">El asistente ya detectó inconsistencias, propuso una versión y dejó tareas activas.</p>
           </div>
-          <span class="pill" id="assistantMode">Modo guiado</span>
+          <span class="pill">Agente asignado · Laura Méndez</span>
         </div>
 
-        <article class="card assistant-card">
-          <div class="assistant-header row-between">
-            <div>
-              <strong>Asistente Medinistros</strong>
-              <div class="tiny">Árbol de decisión: cliente → producto → cantidad → moneda → condiciones → cotización</div>
+        <div class="stack">
+          <article class="card" style="padding:0;">
+            <div class="agent-shell">
+              <div class="agent-header row-between">
+                <strong>Asistente Medinistros</strong>
+                <span class="tiny">Seguimiento activo · 10:41</span>
+              </div>
+              <div class="chat-list" id="agentChat">
+                <div class="chat-item system">
+                  <strong>Asistente</strong>
+                  <div>Detecté inconsistencias en la cotización. ¿Deseas confirmar la moneda y la cantidad antes de emitir?</div>
+                </div>
+                <div class="chat-item user">
+                  <strong>Usuario</strong>
+                  <div>Deja USD y 20 unidades.</div>
+                </div>
+                <div class="chat-item audit">
+                  <strong>Sistema</strong>
+                  <div>Actualizado. Cotización lista para revisión. Mantengo alerta por soporte formal de moneda.</div>
+                </div>
+                <div class="chat-item system">
+                  <strong>Asistente</strong>
+                  <div>También marqué la corrección de referencia a M-900 Plus con ECG 5 derivaciones para que la emisión no salga con SKU anterior.</div>
+                </div>
+              </div>
             </div>
-            <span class="pill" id="assistantStep">Paso 0 de 5</span>
-          </div>
-          <div class="assistant-thread" id="assistantThread"></div>
-          <div class="assistant-options" id="assistantOptions"></div>
-          <div class="progress-card">
-            <strong>Checklist del flujo</strong>
-            <div class="checklist" id="assistantChecklist"></div>
-          </div>
-        </article>
+            <div class="quick-actions" style="padding:14px;">
+              <button class="primary" id="appendAudit">Registrar confirmación en expediente</button>
+              <button id="requestFormal">Solicitar soporte formal</button>
+              <button class="success" id="syncQuote">Sincronizar cotización</button>
+            </div>
+          </article>
 
-        <article class="card">
-          <div class="card-top">
-            <div>
-              <h3>Comparar resultados</h3>
-              <div class="tiny">Diferencia entre operar sin sistema y capturar la información desde el inicio.</div>
+          <article class="card">
+            <div class="card-top">
+              <div>
+                <h3>Checklist operativo</h3>
+                <div class="tiny">Estado de las validaciones necesarias para emitir.</div>
+              </div>
+              <span class="pill" id="checkStatus">3/4 completadas</span>
             </div>
-            <span class="pill" id="compareBadge">Listo para ejecutar</span>
-          </div>
-          <div class="comparison" id="comparison"></div>
-        </article>
+            <div class="checklist" id="checklist">
+              <div class="check-item"><span><span class="dot done"></span>Cantidad consolidada en 20 unidades</span><span class="tiny">Hecho</span></div>
+              <div class="check-item"><span><span class="dot done"></span>Descuento 5% aprobado por llamada</span><span class="tiny">Hecho</span></div>
+              <div class="check-item"><span><span class="dot done"></span>Referencia M-900 Plus confirmada</span><span class="tiny">Hecho</span></div>
+              <div class="check-item" id="formalCheck"><span><span class="dot pending"></span>Soporte formal de moneda en expediente</span><span class="tiny">Pendiente</span></div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-top">
+              <div>
+                <h3>Tareas del agente</h3>
+                <div class="tiny">Siguientes acciones sugeridas para el ejecutivo.</div>
+              </div>
+              <span class="pill">2 urgentes · 1 seguimiento</span>
+            </div>
+            <div class="task-list" id="taskList">
+              <div class="task-item">
+                <div>
+                  <strong>Solicitar correo de confirmación de moneda</strong>
+                  <div class="tiny">Necesario para cerrar la alerta documental antes de emisión.</div>
+                </div>
+                <span class="badge alert">Urgente</span>
+              </div>
+              <div class="task-item">
+                <div>
+                  <strong>Emitir versión PDF con referencia corregida</strong>
+                  <div class="tiny">La última versión aún no ha sido enviada al cliente.</div>
+                </div>
+                <span class="badge warn">En curso</span>
+              </div>
+              <div class="task-item">
+                <div>
+                  <strong>Confirmar inventario reservado a las 16:30</strong>
+                  <div class="tiny">Operaciones retiene lote solo hasta el cierre de jornada.</div>
+                </div>
+                <span class="badge">Seguimiento</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-top">
+              <div>
+                <h3>Interpretaciones principales</h3>
+                <div class="tiny">Resumen que usa el agente para responder y priorizar.</div>
+              </div>
+              <span class="pill">Lectura automática</span>
+            </div>
+            <div class="ops-list">
+              <div class="op-card">
+                <strong>Moneda preferida por el comprador: USD</strong>
+                <div class="tiny">La evidencia más reciente proviene de WhatsApp y validación interna financiera, pero no del correo original.</div>
+              </div>
+              <div class="op-card">
+                <strong>Cantidad operativa definitiva: 20</strong>
+                <div class="tiny">Coincide con chat, inventario separado y urgencia de despacho.</div>
+              </div>
+              <div class="op-card">
+                <strong>Riesgo de error principal: emitir con versión vieja del SKU</strong>
+                <div class="tiny">Llamada y correo posterior corrigen referencia, por lo que una emisión apresurada causaría devolución.</div>
+              </div>
+            </div>
+          </article>
+        </div>
       </section>
     </section>
 
-    <section class="footer-note">
-      <strong>“El problema no es la cotización… es cómo se captura la información”.</strong>
-      <span class="muted">La solución es un agente que controla la entrada desde el inicio, valida el contexto y deja una sola versión clara, trazable y lista para emitir.</span>
-    </section>
+    <div class="footer-note">
+      <strong>Vista operativa unificada de Medinistros.</strong>
+      La plataforma mantiene la cotización viva mientras el equipo comercial toma decisiones, detecta inconsistencias y prepara una sola versión emitible.
+    </div>
   </div>
 
   <script>
-    const baseQuote = {
-      cliente: "Clínica Sierra Norte",
-      producto: "Monitor multiparámetro M-900",
-      cantidad: 10,
-      moneda: "COP",
-      condiciones: "Entrega 12 días · Pago 30 días",
-      descuento: "3% por volumen",
-      ejecutivo: "Laura Méndez",
-      estado: "Borrador controlado"
-    };
-
-    const chaosEvents = [
+    const mails = [
       {
-        id: 1,
-        channel: "Correo",
-        type: "Solicitud formal inicial",
-        time: "08:42",
-        severity: "applied",
-        interpretation: "Se crea una versión base con 10 unidades en COP para clínica regional.",
-        message: "Necesitamos 10 monitores M-900 para la sede UCI. Favor cotizar en COP con entrega estándar.",
-        source: {
-          bucket: "emails",
-          item: {
-            from: "compras@sierranorte.com",
-            subject: "Solicitud UCI · Monitores M-900",
-            snippet: "10 equipos para sede UCI, favor cotizar hoy.",
-            body: "Hola Laura,\n\nNecesitamos una cotización por 10 monitores multiparámetro M-900 para la sede UCI.\nPor favor mantener moneda COP y condiciones estándar.\n\nQuedo atenta,\nNatalia Rojas\nCoordinación de Compras"
-          }
-        },
-        apply(state) {
-          state.quote.cliente = "Clínica Sierra Norte";
-          state.quote.producto = "Monitor multiparámetro M-900";
-          state.quote.cantidad = 10;
-          state.quote.moneda = "COP";
-          state.versions += 1;
-        }
+        subject: 'Re: Ajuste cantidad cotización M-900',
+        from: 'compras.biomedica@sierranorte.com',
+        time: '10:20',
+        snippet: 'Favor dejar la propuesta en 20 unidades y actualizar referencia.',
+        body: 'Equipo Medinistros,\n\nPor favor ajusten la propuesta final a 20 unidades del monitor multiparámetro M-900 Plus.\nAsegúrense de incluir el accesorio ECG de 5 derivaciones en la referencia.\nNecesitamos versión actualizada hoy antes del comité de las 12:30.\n\nGracias,\nCarolina Pardo\nCompras Biomédicas'
       },
       {
-        id: 2,
-        channel: "WhatsApp",
-        type: "Cambio urgente de cantidad",
-        time: "08:57",
-        severity: "warning",
-        interpretation: "El mensaje indica subir a 20 unidades, pero no reemplaza explícitamente la solicitud formal anterior.",
-        message: "Laura, súbele eso a 20 hoy por favor, el director cambió la urgencia.",
-        source: {
-          bucket: "whatsapp",
-          item: {
-            author: "Cliente",
-            text: "Laura, súbele eso a 20 hoy por favor, el director cambió la urgencia.",
-            time: "08:57",
-            tone: "client"
-          }
-        },
-        apply(state) {
-          state.quote.cantidad = 20;
-          state.versions += 1;
-        }
+        subject: 'Cambio de moneda urgente',
+        from: 'carolina.pardo@sierranorte.com',
+        time: '09:48',
+        snippet: 'Revisar emisión en USD para no frenar aprobación financiera.',
+        body: 'Hola Laura,\n\nTe confirmo que el comité financiero está revisando la operación en USD.\nSi la versión sale en COP tendríamos que reprocesar la solicitud y perderíamos la ventana de compra de hoy.\n\nQuedo atenta.\nCarolina'
       },
       {
-        id: 3,
-        channel: "Llamada",
-        type: "Descuento verbal",
-        time: "09:04",
-        severity: "warning",
-        interpretation: "Se registra un descuento del 5%, pero no existe soporte escrito ni aprobación financiera adjunta.",
-        message: "Cliente confirma por llamada que espera cerrar hoy si sostenemos 5% de descuento.",
-        source: {
-          bucket: "calls",
-          item: {
-            title: "Llamada con Natalia Rojas",
-            detail: "Aprobación verbal de 5% para cierre inmediato; solicita despacho prioritario.",
-            time: "09:04"
-          }
-        },
-        apply(state) {
-          state.quote.descuento = "5% verbal";
-          state.versions += 1;
-        }
+        subject: 'Corrección referencia equipo',
+        from: 'ingenieria.clinica@sierranorte.com',
+        time: '09:15',
+        snippet: 'Debe salir como M-900 Plus con ECG 5 derivaciones.',
+        body: 'Buen día,\n\nLa referencia correcta para esta compra es Monitor M-900 Plus.\nLa versión estándar no nos sirve para UCI intermedia.\nFavor incluir ECG de 5 derivaciones y mantener el módulo SpO2.\n\nSaludos,\nIng. Clínica Sierra Norte'
       },
       {
-        id: 4,
-        channel: "Interno",
-        type: "Cambio de moneda sin soporte",
-        time: "09:11",
-        severity: "alerted",
-        interpretation: "Se modifica la moneda a USD por una suposición interna, generando contradicción con la solicitud formal del cliente.",
-        message: "Comercial ajusta la cotización a USD porque cree que la compra irá por importación directa.",
-        source: {
-          bucket: "settings",
-          item: {
-            title: "Edición manual de cotización",
-            detail: "Cambio de moneda COP → USD por criterio del ejecutivo, sin correo de aprobación.",
-            time: "09:11"
-          }
-        },
-        apply(state) {
-          state.quote.moneda = "USD";
-          state.versions += 1;
-        }
+        subject: 'Comité solicita vigencia de oferta',
+        from: 'direccion.medica@sierranorte.com',
+        time: '08:59',
+        snippet: 'Incluir vigencia mínima de 72 horas en condiciones.',
+        body: 'Hola equipo,\n\nPara poder presentar la oferta al comité necesitamos que la vigencia quede por 72 horas y que se especifique entrega máxima en 48 horas si hay stock.\n\nGracias.'
       },
       {
-        id: 5,
-        channel: "Correo",
-        type: "Corrección de moneda",
-        time: "09:18",
-        severity: "applied",
-        interpretation: "El cliente confirma que la compra debe quedar en COP; el riesgo baja, pero queda rastro del cambio inconsistente.",
-        message: "Confirmamos mantener COP. No usar USD para esta compra. Debe salir para comité financiero local.",
-        source: {
-          bucket: "emails",
-          item: {
-            from: "direccion.medica@sierranorte.com",
-            subject: "Aclaración de moneda para comité",
-            snippet: "Se mantiene COP para aprobación local.",
-            body: "Hola equipo,\n\nAclaramos que esta solicitud debe mantenerse en COP porque será aprobada por comité financiero local.\nNo presentar versión en USD.\n\nGracias,\nDirección Médica"
-          }
-        },
-        apply(state) {
-          state.quote.moneda = "COP";
-          state.versions += 1;
-        }
+        subject: 'Re: aprobación descuento comercial',
+        from: 'laura.mendez@medinistros.com',
+        time: '09:34',
+        snippet: 'Se documenta descuento de 5% autorizado en llamada.',
+        body: 'Se deja registrado que el cliente aprobó en llamada el cierre con 5% de descuento sobre la propuesta consolidada.\nPendiente: alinear moneda definitiva para emitir sin reproceso.'
       },
       {
-        id: 6,
-        channel: "WhatsApp",
-        type: "Mensaje ambiguo",
-        time: "09:27",
-        severity: "alerted",
-        interpretation: "\"Quita una referencia\" no especifica si se retira un accesorio, un ítem o una línea completa; requiere validación.",
-        message: "Quita una referencia antes de enviarlo, porfa.",
-        source: {
-          bucket: "whatsapp",
-          item: {
-            author: "Cliente",
-            text: "Quita una referencia antes de enviarlo, porfa.",
-            time: "09:27",
-            tone: "client"
-          }
-        },
-        apply(state) {
-          state.quote.estado = "Pendiente de aclaración";
-          state.versions += 1;
-        }
-      },
-      {
-        id: 7,
-        channel: "Interno",
-        type: "Observación operativa",
-        time: "09:33",
-        severity: "warning",
-        interpretation: "Operaciones marca despacho prioritario, pero falta reconfirmar condiciones logísticas frente al incremento de cantidad.",
-        message: "Se intenta mover la entrega a 48 horas para no perder el negocio.",
-        source: {
-          bucket: "settings",
-          item: {
-            title: "Prioridad logística",
-            detail: "Se propone entrega en 48 horas, pendiente capacidad de inventario y transporte.",
-            time: "09:33"
-          }
-        },
-        apply(state) {
-          state.quote.condiciones = "Entrega 48 horas (por validar) · Pago 30 días";
-          state.versions += 1;
-        }
+        subject: 'Solicitud inicial monitores UCI',
+        from: 'compras.biomedica@sierranorte.com',
+        time: '08:41',
+        snippet: '18 unidades M-900, COP, pago a 30 días.',
+        body: 'Buen día,\n\nSolicitamos cotización de 18 monitores M-900 para reposición de UCI intermedia.\nMoneda COP.\nPago a 30 días.\n\nAtentos a su propuesta.\nCompras Biomédicas'
       }
     ];
 
-    const assistantFlow = [
-      {
-        key: "cliente",
-        prompt: "Hola 👋, vamos a crear tu pedido. Necesito primero el cliente.",
-        missingCopy: "⚠️ Falta información de cliente. Selecciona quién solicita la cotización.",
-        options: ["Clínica Sierra Norte", "Hospital San Gabriel", "Red Médica Andina"]
-      },
-      {
-        key: "producto",
-        prompt: "Perfecto. Ahora necesito el producto o referencia a cotizar.",
-        missingCopy: "⚠️ Falta el producto. Sin referencia no podemos consolidar una sola versión.",
-        options: ["Monitor multiparámetro M-900", "Ventilador V-Series 8", "Bomba de infusión BI-440"]
-      },
-      {
-        key: "cantidad",
-        prompt: "¿Qué cantidad necesitas?",
-        missingCopy: "⚠️ Falta la cantidad. La cotización todavía no es emitible.",
-        options: ["10", "20", "24"]
-      },
-      {
-        key: "moneda",
-        prompt: "¿En qué moneda debo generar la cotización?",
-        missingCopy: "⚠️ Falta la moneda. Detectamos conflicto frecuente entre COP y USD.",
-        options: ["COP", "USD"]
-      },
-      {
-        key: "condiciones",
-        prompt: "Por último, selecciona las condiciones comerciales.",
-        missingCopy: "⚠️ Falta definir condiciones. Necesitamos entrega y pago para emitir.",
-        options: ["Entrega 12 días · Pago 30 días", "Entrega 48 horas · Pago 15 días", "Entrega programada · Pago contra entrega"]
-      }
-    ];
+    const mailList = document.getElementById('mailList');
+    const mailPreview = document.getElementById('mailPreview');
+    let activeMail = 0;
 
-    const state = {};
-
-    const $ = (id) => document.getElementById(id);
-
-    function resetState() {
-      state.channels = { emails: [], whatsapp: [], calls: [], settings: [] };
-      state.appliedEvents = [];
-      state.versions = 1;
-      state.quote = { ...baseQuote };
-      state.assistant = {
-        active: false,
-        step: 0,
-        values: { cliente: "", producto: "", cantidad: "", moneda: "", condiciones: "" },
-        thread: [
-          { role: "system", text: "Asistente listo. Cuando quieras, puedo capturar un pedido paso a paso y validar lo que falta antes de emitir una cotización." }
-        ],
-        completed: false
-      };
-      state.comparisonMode = "neutral";
-      renderAll();
-    }
-
-    function pushEvent(event) {
-      const entry = structuredClone ? structuredClone(event) : JSON.parse(JSON.stringify(event));
-      state.appliedEvents.push(entry);
-      state.channels[entry.source.bucket].push(entry.source.item);
-      event.apply(state);
-      renderAll();
-    }
-
-    function simulateChaos() {
-      resetState();
-      chaosEvents.forEach((event, idx) => {
-        setTimeout(() => pushEvent(event), idx * 180);
-      });
-    }
-
-    function getAlerts() {
-      const alerts = [];
-      const hasUSDChange = state.appliedEvents.some(e => e.type === "Cambio de moneda sin soporte");
-      const hasCOPCorrection = state.appliedEvents.some(e => e.type === "Corrección de moneda");
-      const qtyConflict = state.appliedEvents.some(e => e.type === "Cambio urgente de cantidad");
-      const verbalDiscount = state.appliedEvents.some(e => e.type === "Descuento verbal");
-      const ambiguousMsg = state.appliedEvents.some(e => e.type === "Mensaje ambiguo");
-      const deliveryRisk = state.appliedEvents.some(e => e.type === "Observación operativa");
-
-      if (qtyConflict) {
-        alerts.push({ level: "medium", title: "Cantidad en disputa", text: "El correo formal pide 10 unidades y WhatsApp empuja 20 sin anular explícitamente la versión anterior." });
-      }
-      if (verbalDiscount) {
-        alerts.push({ level: "medium", title: "Cambio sin soporte", text: "El descuento del 5% fue aprobado verbalmente. Falta respaldo de finanzas o correo del cliente." });
-      }
-      if (hasUSDChange && hasCOPCorrection) {
-        alerts.push({ level: "high", title: "Conflicto de moneda", text: "Internamente se cambió a USD, pero el cliente corrigió la compra a COP. Hay riesgo de emitir una versión equivocada." });
-      }
-      if (ambiguousMsg) {
-        alerts.push({ level: "high", title: "Mensaje ambiguo", text: "“Quita una referencia” no define si cambia el producto, el accesorio o la línea completa." });
-      }
-      if (deliveryRisk) {
-        alerts.push({ level: "low", title: "Entrega comprometida", text: "Se propone despacho en 48 horas sin confirmación de inventario ni logística." });
-      }
-      return alerts;
-    }
-
-    function getRiskScore() {
-      const alerts = getAlerts();
-      let risk = 8;
-      alerts.forEach(alert => {
-        if (alert.level === "high") risk += 28;
-        if (alert.level === "medium") risk += 16;
-        if (alert.level === "low") risk += 8;
-      });
-      risk += Math.max(0, state.versions - 1) * 3;
-      return Math.min(96, risk);
-    }
-
-    function getRiskLabel(score) {
-      if (score >= 70) return "Crítico";
-      if (score >= 40) return "Medio";
-      return "Bajo";
-    }
-
-    function getQuoteStatus() {
-      const alerts = getAlerts();
-      if (state.assistant.completed) {
-        return { text: "Lista para emitir", className: "status-chip state-good" };
-      }
-      if (alerts.some(a => a.level === "high")) {
-        return { text: "Bloqueada por inconsistencias", className: "status-chip state-danger" };
-      }
-      if (alerts.length) {
-        return { text: "Requiere revisión controlada", className: "status-chip state-warn" };
-      }
-      return { text: "Borrador estable", className: "status-chip state-good" };
-    }
-
-    function renderStats() {
-      const alerts = getAlerts();
-      const risk = getRiskScore();
-      $("statProcessed").textContent = state.appliedEvents.length;
-      $("statIssues").textContent = alerts.length;
-      $("statRisk").textContent = getRiskLabel(risk);
-      $("statStatus").textContent = state.assistant.completed ? "Controlado" : state.appliedEvents.length ? "En análisis" : "Esperando";
-      $("chaosBadge").textContent = state.appliedEvents.length ? `${state.appliedEvents.length} eventos cargados` : "Sin eventos cargados";
-      $("engineStatus").textContent = state.appliedEvents.length ? "Motor analizando" : "Motor en espera";
-      $("assistantMode").textContent = state.assistant.active ? "Sesión activa" : "Modo guiado";
-      $("compareBadge").textContent = state.comparisonMode === "neutral" ? "Listo para ejecutar" : "Comparación actualizada";
-    }
-
-    function renderChannels() {
-      $("mailCount").textContent = `${state.channels.emails.length} correos`;
-      $("waCount").textContent = `${state.channels.whatsapp.length} mensajes`;
-      $("callCount").textContent = `${state.channels.calls.length} llamadas`;
-      $("settingCount").textContent = `${state.channels.settings.length} ajustes`;
-
-      const mailList = $("mailList");
-      mailList.innerHTML = "";
-      if (!state.channels.emails.length) {
-        mailList.innerHTML = `<div class="mail-item"><strong>Bandeja vacía</strong><div class="tiny">Aún no hay correos procesados.</div></div>`;
-      } else {
-        state.channels.emails.forEach((mail, index) => {
-          const item = document.createElement("button");
-          item.className = `mail-item${index === state.channels.emails.length - 1 ? " active" : ""}`;
-          item.innerHTML = `<div class="row-between"><strong>${mail.subject}</strong><span class="tiny">${state.appliedEvents.filter(e => e.source.bucket === 'emails')[index].time}</span></div><div class="tiny">${mail.from}</div><div style="margin-top:8px">${mail.snippet}</div>`;
-          item.onclick = () => { $("mailPreview").textContent = mail.body; document.querySelectorAll('.mail-item').forEach(el => el.classList.remove('active')); item.classList.add('active'); };
-          mailList.appendChild(item);
-        });
-        $("mailPreview").textContent = state.channels.emails[state.channels.emails.length - 1].body;
-      }
-
-      const waThread = $("waThread");
-      waThread.innerHTML = "";
-      if (!state.channels.whatsapp.length) {
-        waThread.innerHTML = `<div class="chat-bubble bubble-team">Aún no hay mensajes. Usa “Simular caos” para cargar conversaciones reales.</div>`;
-        $("waLast").textContent = "--:--";
-      } else {
-        state.channels.whatsapp.forEach(msg => {
-          const bubble = document.createElement("div");
-          bubble.className = `chat-bubble ${msg.tone === 'client' ? 'bubble-client' : 'bubble-team'}`;
-          bubble.innerHTML = `${msg.text}<div class="tiny" style="margin-top:6px">${msg.time}</div>`;
-          waThread.appendChild(bubble);
-        });
-        $("waLast").textContent = state.channels.whatsapp[state.channels.whatsapp.length - 1].time;
-      }
-
-      const callList = $("callList");
-      callList.innerHTML = state.channels.calls.length
-        ? state.channels.calls.map(call => `<div class="call-item"><div class="row-between"><strong>${call.title}</strong><span class="tiny">${call.time}</span></div><div style="margin-top:8px">${call.detail}</div></div>`).join("")
-        : `<div class="call-item"><strong>Sin llamadas registradas</strong><div class="tiny">El sistema capturará aquí los resúmenes operativos de voz.</div></div>`;
-
-      const settingList = $("settingList");
-      settingList.innerHTML = state.channels.settings.length
-        ? state.channels.settings.map(setting => `<div class="setting-item"><div class="row-between"><strong>${setting.title}</strong><span class="tiny">${setting.time}</span></div><div style="margin-top:8px">${setting.detail}</div></div>`).join("")
-        : `<div class="setting-item"><strong>Sin ajustes internos</strong><div class="tiny">Cuando el equipo altere una cotización, quedará trazado aquí.</div></div>`;
-    }
-
-    function renderEngine() {
-      const alerts = getAlerts();
-      const risk = getRiskScore();
-      const channels = new Set(state.appliedEvents.map(event => event.channel));
-      $("metricChannels").textContent = channels.size;
-      $("metricVersions").textContent = Math.max(state.versions, 1);
-      $("metricAlerts").textContent = alerts.length;
-      $("metricRisk").textContent = `${risk}%`;
-      $("riskFill").style.width = `${risk}%`;
-      $("timelineState").textContent = state.appliedEvents.length ? `${state.appliedEvents.length} eventos interpretados` : "Sin movimiento";
-      $("alertSummary").textContent = alerts.length ? `${alerts.length} alertas activas` : "Todo estable";
-
-      const timeline = $("timeline");
-      if (!state.appliedEvents.length) {
-        timeline.innerHTML = `<div class="timeline-item applied"><strong>Esperando eventos</strong><div class="tiny">La historia operativa aparecerá aquí con interpretación automática.</div></div>`;
-      } else {
-        timeline.innerHTML = state.appliedEvents.map(event => `
-          <div class="timeline-item ${event.severity}">
-            <div class="row-between"><strong>${event.time} · ${event.channel}</strong><span class="pill">${event.type}</span></div>
-            <div style="margin-top:8px">${event.message}</div>
-            <div class="insight"><strong>Interpretación:</strong> ${event.interpretation}</div>
-          </div>
-        `).join("");
-      }
-
-      const alertList = $("alertList");
-      alertList.innerHTML = alerts.length
-        ? alerts.map(alert => `<div class="alert ${alert.level}"><div class="row-between"><strong>${alert.title}</strong><span class="pill">${alert.level.toUpperCase()}</span></div><div style="margin-top:8px">${alert.text}</div></div>`).join("")
-        : `<div class="alert low"><strong>Sin alertas</strong><div style="margin-top:8px">Todavía no hay inconsistencias detectadas.</div></div>`;
-
-      const quoteStatus = getQuoteStatus();
-      $("quoteState").className = quoteStatus.className;
-      $("quoteState").textContent = quoteStatus.text;
-
-      const quoteGrid = $("quoteGrid");
-      quoteGrid.innerHTML = Object.entries(state.quote).map(([key, value]) => `
-        <div class="quote-field">
-          <label>${key}</label>
-          <div>${value}</div>
-        </div>
-      `).join("");
-    }
-
-    function appendAssistantMessage(role, text) {
-      state.assistant.thread.push({ role, text });
-    }
-
-    function startAssistant() {
-      state.assistant.active = true;
-      state.assistant.completed = false;
-      state.assistant.step = 0;
-      state.assistant.values = { cliente: "", producto: "", cantidad: "", moneda: "", condiciones: "" };
-      state.assistant.thread = [
-        { role: "system", text: "Asistente IA: Hola 👋, vamos a crear tu pedido." },
-        { role: "system", text: "Necesito: cliente, producto y cantidad. Empecemos por el cliente." }
-      ];
-      renderAssistant();
-      renderStats();
-    }
-
-    function assistantSelect(value) {
-      const step = assistantFlow[state.assistant.step];
-      if (!step) return;
-      state.assistant.values[step.key] = value;
-      appendAssistantMessage("user", value);
-      state.assistant.step += 1;
-
-      const missing = assistantFlow.slice(state.assistant.step).map(item => item.key);
-      if (state.assistant.step < assistantFlow.length) {
-        const next = assistantFlow[state.assistant.step];
-        appendAssistantMessage("system", next.prompt);
-        if (missing.length) {
-          appendAssistantMessage("system", `⚠️ Falta información: ${missing.join(", ")}.`);
-        }
-      } else {
-        const values = state.assistant.values;
-        state.quote = {
-          cliente: values.cliente,
-          producto: values.producto,
-          cantidad: Number(values.cantidad),
-          moneda: values.moneda,
-          condiciones: values.condiciones,
-          descuento: "3% por volumen validado",
-          ejecutivo: "Laura Méndez",
-          estado: "Lista para emitir"
-        };
-        state.assistant.completed = true;
-        appendAssistantMessage("system", "✅ Información completa. Generé una cotización limpia, con una sola versión y trazabilidad controlada.");
-        appendAssistantMessage("system", `Resumen: ${values.cliente} · ${values.producto} · ${values.cantidad} unidades · ${values.moneda} · ${values.condiciones}.`);
-        state.comparisonMode = "with-system";
-      }
-      renderAll();
-    }
-
-    function renderAssistant() {
-      $("assistantStep").textContent = `Paso ${Math.min(state.assistant.step, assistantFlow.length)} de ${assistantFlow.length}`;
-      const thread = $("assistantThread");
-      thread.innerHTML = state.assistant.thread.map(msg => `<div class="assistant-msg ${msg.role}">${msg.text}</div>`).join("");
-      thread.scrollTop = thread.scrollHeight;
-
-      const options = $("assistantOptions");
-      options.innerHTML = "";
-      if (!state.assistant.active) {
-        const btn = document.createElement("button");
-        btn.className = "primary";
-        btn.textContent = "Iniciar captura guiada";
-        btn.onclick = startAssistant;
-        options.appendChild(btn);
-      } else if (!state.assistant.completed) {
-        const step = assistantFlow[state.assistant.step];
-        step.options.forEach(option => {
-          const btn = document.createElement("button");
-          btn.textContent = option;
-          btn.onclick = () => assistantSelect(option);
-          options.appendChild(btn);
-        });
-      } else {
-        const btn = document.createElement("button");
-        btn.className = "success";
-        btn.textContent = "Volver a capturar";
-        btn.onclick = startAssistant;
-        options.appendChild(btn);
-      }
-
-      const checklist = $("assistantChecklist");
-      checklist.innerHTML = assistantFlow.map(item => {
-        const done = Boolean(state.assistant.values[item.key]);
-        const value = state.assistant.values[item.key] || "Pendiente";
-        return `
-          <div class="check-item">
-            <div><span class="dot ${done ? 'done' : 'pending'}"></span>${item.key.charAt(0).toUpperCase() + item.key.slice(1)}</div>
-            <span class="tiny">${value}</span>
-          </div>
+    function renderMails() {
+      mailList.innerHTML = '';
+      mails.forEach((mail, index) => {
+        const article = document.createElement('button');
+        article.type = 'button';
+        article.className = `mail-item ${index === activeMail ? 'active' : ''}`;
+        article.innerHTML = `
+          <div class="row-between"><strong>${mail.subject}</strong><span class="tiny">${mail.time}</span></div>
+          <div class="tiny">${mail.from}</div>
+          <div style="margin-top:8px;">${mail.snippet}</div>
         `;
-      }).join("");
+        article.addEventListener('click', () => {
+          activeMail = index;
+          renderMails();
+        });
+        mailList.appendChild(article);
+      });
+      const mail = mails[activeMail];
+      mailPreview.textContent = `${mail.subject}\n${mail.from} · ${mail.time}\n\n${mail.body}`;
     }
 
-    function renderComparison(mode = state.comparisonMode) {
-      const comparison = $("comparison");
-      const alerts = getAlerts();
-      const withoutSystem = [
-        "7 versiones circulando entre correo, chat, llamada e interno.",
-        `${alerts.length || 4} alertas sin resolver antes de emitir.`,
-        "Descuento verbal y moneda cambiante sin control.",
-        "Sin trazabilidad clara para auditoría o retrabajo."
-      ];
-      const withSystem = state.assistant.completed
-        ? [
-            "1 sola versión consolidada y validada.",
-            `Cliente, producto, cantidad, moneda y condiciones completos.`,
-            "Cotización lista para emitir con flujo controlado.",
-            "Trazabilidad clara desde la captura inicial."
-          ]
-        : [
-            "El asistente aún no ha cerrado una versión final.",
-            "Activa “Usar asistente IA” para guiar la captura.",
-            "El sistema pedirá lo que falta antes de emitir.",
-            "Una vez completo, mostrará una cotización limpia."
-          ];
+    function pushAgentMessage(type, title, text) {
+      const wrap = document.getElementById('agentChat');
+      const item = document.createElement('div');
+      item.className = `chat-item ${type}`;
+      item.innerHTML = `<strong>${title}</strong><div>${text}</div>`;
+      wrap.appendChild(item);
+      wrap.scrollTop = wrap.scrollHeight;
+    }
 
-      comparison.innerHTML = `
-        <div class="compare-item bad">
-          <strong>❌ SIN SISTEMA</strong>
-          <div class="compare-list" style="margin-top:10px">${withoutSystem.map(item => `<div>${item}</div>`).join("")}</div>
+    function markFormalSupportDone() {
+      const formalCheck = document.getElementById('formalCheck');
+      formalCheck.innerHTML = '<span><span class="dot done"></span>Soporte formal de moneda en expediente</span><span class="tiny">Hecho</span>';
+      document.getElementById('checkStatus').textContent = '4/4 completadas';
+      document.getElementById('docTag').textContent = 'Soporte formal recibido';
+      document.getElementById('docStateCopy').textContent = 'La moneda quedó respaldada formalmente; la cotización puede pasar a emisión.';
+      document.getElementById('alertList').innerHTML = `
+        <div class="alert-item medium">
+          <strong>⚠️ Cantidad inconsistente entre versiones anteriores</strong>
+          <div class="tiny">El historial conserva 18 y 20 unidades, pero la versión vigente ya quedó consolidada en 20.</div>
         </div>
-        <div class="compare-item good">
-          <strong>✅ CON SISTEMA</strong>
-          <div class="compare-list" style="margin-top:10px">${withSystem.map(item => `<div>${item}</div>`).join("")}</div>
+        <div class="alert-item low">
+          <strong>⚠️ Referencia corregida recientemente</strong>
+          <div class="tiny">Revisar que el PDF final salga como M-900 Plus con ECG 5 derivaciones.</div>
         </div>
       `;
+      document.getElementById('alertCount').textContent = '2';
+      document.getElementById('riskPercent').textContent = '38%';
+      document.getElementById('riskFill').style.width = '38%';
+      document.getElementById('riskHeadline').textContent = 'Medio';
     }
 
-    function compareResults() {
-      state.comparisonMode = state.assistant.completed ? "with-system" : "without-system";
-      renderComparison();
-      renderStats();
-      $("comparison").scrollIntoView({ behavior: "smooth", block: "nearest" });
-    }
-
-    function renderAll() {
-      renderStats();
-      renderChannels();
-      renderEngine();
-      renderAssistant();
-      renderComparison();
-    }
-
-    $("simulateChaos").addEventListener("click", simulateChaos);
-    $("openAssistant").addEventListener("click", () => {
-      startAssistant();
-      $("assistantThread").scrollIntoView({ behavior: "smooth", block: "nearest" });
+    document.getElementById('confirmUsd20').addEventListener('click', () => {
+      document.getElementById('quoteCurrency').textContent = 'USD';
+      document.getElementById('tableCurrency').textContent = 'USD';
+      document.getElementById('quoteQuantity').textContent = '20 unidades';
+      document.getElementById('tableQty').textContent = '20';
+      document.getElementById('tableTotal').textContent = '68,400';
+      document.getElementById('processedCount').textContent = '187';
+      document.getElementById('versionCount').textContent = '8';
+      pushAgentMessage('user', 'Usuario', 'Confirmado: la versión final debe quedar en USD y 20 unidades.');
+      pushAgentMessage('audit', 'Sistema', 'Versión 8 consolidada en expediente. Se mantiene pendiente soporte formal del cliente para moneda.');
     });
-    $("compareResults").addEventListener("click", compareResults);
-    $("resetDemo").addEventListener("click", resetState);
 
-    resetState();
+    document.getElementById('flagForReview').addEventListener('click', () => {
+      document.getElementById('docStatus').textContent = 'Revisión formal';
+      document.getElementById('docPill').textContent = 'Versión 7 · validación documental';
+      document.getElementById('orderStatus').textContent = 'Escalada a revisión';
+      pushAgentMessage('system', 'Asistente', 'Escalé la cotización para revisión formal. No emitiré PDF hasta recibir soporte de moneda.');
+    });
+
+    document.getElementById('readyForReview').addEventListener('click', () => {
+      document.getElementById('docStatus').textContent = 'Lista para revisión';
+      document.getElementById('orderStatus').textContent = 'Lista para revisión';
+      document.getElementById('docPill').textContent = 'Versión 7 · lista para revisión';
+      pushAgentMessage('audit', 'Sistema', 'La cotización quedó marcada como lista para revisión del ejecutivo comercial.');
+    });
+
+    document.getElementById('appendAudit').addEventListener('click', () => {
+      pushAgentMessage('audit', 'Sistema', 'Se registró en expediente la confirmación verbal de USD y 20 unidades con sello horario 10:43.');
+      document.getElementById('processedCount').textContent = '188';
+    });
+
+    document.getElementById('requestFormal').addEventListener('click', () => {
+      pushAgentMessage('system', 'Asistente', 'Envié solicitud de correo formal al comprador para dejar respaldada la moneda antes de emitir.');
+    });
+
+    document.getElementById('syncQuote').addEventListener('click', () => {
+      markFormalSupportDone();
+      document.getElementById('docStatus').textContent = 'Lista para emitir';
+      document.getElementById('docPill').textContent = 'Versión 8 · lista para emitir';
+      document.getElementById('orderStatus').textContent = 'Lista para emitir';
+      pushAgentMessage('audit', 'Sistema', 'Soporte formal recibido y cotización sincronizada. Expediente listo para emisión.');
+    });
+
+    renderMails();
   </script>
 </body>
 </html>
