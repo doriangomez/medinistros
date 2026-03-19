@@ -3,24 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Medinistros | Centro operativo omnicanal</title>
+  <title>Medinistros | Canales realistas</title>
   <style>
     :root {
-      --bg: #07111d;
-      --bg-soft: #0c1727;
-      --panel: rgba(10, 18, 31, 0.92);
-      --panel-2: rgba(7, 13, 24, 0.96);
-      --line: rgba(148, 163, 184, 0.14);
-      --text: #e7f0fc;
-      --muted: #8da0bd;
-      --accent: #30c4ff;
-      --accent-soft: rgba(48, 196, 255, 0.14);
-      --green: #3dd9a0;
-      --yellow: #ffc361;
-      --red: #ff7f8e;
-      --violet: #a284ff;
-      --shadow: 0 24px 60px rgba(0, 0, 0, 0.42);
-      --radius: 24px;
+      --bg: #eef3f8;
+      --surface: #ffffff;
+      --surface-soft: #f5f7fb;
+      --surface-dark: #0f1724;
+      --line: #d9e1ec;
+      --text: #142033;
+      --muted: #61718a;
+      --brand: #1967d2;
+      --brand-soft: #e8f0fe;
+      --green: #16a34a;
+      --green-soft: #dcfce7;
+      --amber: #d97706;
+      --amber-soft: #fff4d6;
+      --red: #dc2626;
+      --red-soft: #fee2e2;
+      --teal: #118a7e;
+      --shadow: 0 20px 50px rgba(20, 32, 51, 0.09);
+      --radius: 22px;
     }
 
     * { box-sizing: border-box; }
@@ -29,229 +32,102 @@
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: var(--text);
       background:
-        radial-gradient(circle at top left, rgba(48, 196, 255, 0.18), transparent 26%),
-        radial-gradient(circle at top right, rgba(162, 132, 255, 0.12), transparent 28%),
-        linear-gradient(180deg, #09111d 0%, #050a12 100%);
-    }
-
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      opacity: 0.18;
-      background-image:
-        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-      background-size: 30px 30px;
+        radial-gradient(circle at top left, rgba(25,103,210,0.08), transparent 25%),
+        radial-gradient(circle at top right, rgba(17,138,126,0.08), transparent 28%),
+        linear-gradient(180deg, #edf3f8 0%, #e7edf5 100%);
     }
 
     .shell {
-      width: min(1520px, calc(100vw - 28px));
+      width: min(1600px, calc(100vw - 28px));
       margin: 18px auto 28px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .topbar,
-    .panel,
-    .card,
-    .tabs-bar,
-    .view-frame {
-      background: linear-gradient(180deg, rgba(15, 24, 40, 0.92), rgba(7, 12, 22, 0.96));
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(12px);
-    }
-
-    .topbar {
-      padding: 22px 24px;
-      margin-bottom: 18px;
       display: grid;
-      grid-template-columns: 1.2fr 1fr;
       gap: 18px;
     }
 
-    .badge-row,
-    .header-actions,
-    .quick-actions,
-    .mini-tags,
-    .doc-actions,
-    .tabs-nav,
-    .meta-strip,
-    .quote-status-grid { display: flex; gap: 10px; flex-wrap: wrap; }
+    .hero,
+    .panel,
+    .quote-panel,
+    .summary-card,
+    .channel-card,
+    .surface {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
 
-    .badge,
-    .chip,
-    .pill,
-    .tag {
+    .hero {
+      padding: 24px 26px;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 18px;
+    }
+
+    .eyebrow {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      border-radius: 999px;
       padding: 7px 12px;
+      border-radius: 999px;
+      background: var(--brand-soft);
+      color: var(--brand);
       font-size: 0.78rem;
-      border: 1px solid rgba(148, 163, 184, 0.16);
-      color: #dce8fb;
-      background: rgba(255,255,255,0.04);
-    }
-
-    .badge.live {
-      color: #bff5e2;
-      border-color: rgba(61, 217, 160, 0.22);
-      background: rgba(61, 217, 160, 0.12);
-    }
-
-    .badge.warn {
-      color: #ffe2b0;
-      border-color: rgba(255, 195, 97, 0.22);
-      background: rgba(255, 195, 97, 0.1);
-    }
-
-    .badge.alert {
-      color: #ffc5cf;
-      border-color: rgba(255, 127, 142, 0.26);
-      background: rgba(255, 127, 142, 0.1);
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
     }
 
     h1 {
-      margin: 16px 0 10px;
-      font-size: clamp(2rem, 3vw, 3.4rem);
+      margin: 14px 0 10px;
+      font-size: clamp(2rem, 3vw, 3.2rem);
       line-height: 1.02;
       letter-spacing: -0.05em;
     }
 
-    .lead, .muted, .tiny { color: var(--muted); }
-    .lead { font-size: 1rem; line-height: 1.6; max-width: 68ch; }
-    .tiny { font-size: 0.8rem; }
+    p { margin: 0; }
+    .lead { color: var(--muted); line-height: 1.6; max-width: 72ch; }
+    .hero-grid,
+    .workspace,
+    .channel-stack,
+    .summary-grid,
+    .meta-list,
+    .event-list,
+    .alert-list,
+    .mail-list,
+    .crm-list,
+    .ops-list { display: grid; gap: 12px; }
 
-    button {
-      border: 1px solid rgba(148, 163, 184, 0.18);
-      background: rgba(10, 16, 29, 0.9);
-      color: var(--text);
-      padding: 12px 15px;
-      border-radius: 14px;
-      font-size: 0.92rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, color 180ms ease, box-shadow 180ms ease;
-    }
-
-    button:hover { transform: translateY(-1px); border-color: rgba(48, 196, 255, 0.34); }
-    button.primary { background: linear-gradient(135deg, rgba(48, 196, 255, 0.22), rgba(162, 132, 255, 0.18)); }
-    button.success { background: linear-gradient(135deg, rgba(61, 217, 160, 0.22), rgba(48, 196, 255, 0.16)); }
-    button.warning { background: linear-gradient(135deg, rgba(255, 195, 97, 0.22), rgba(255, 127, 142, 0.12)); }
-
-    .stat-grid {
-      display: grid;
+    .hero-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-      height: 100%;
+      align-self: stretch;
     }
 
     .stat {
-      padding: 16px;
+      padding: 18px;
       border-radius: 18px;
-      border: 1px solid rgba(148, 163, 184, 0.12);
-      background: rgba(8, 16, 29, 0.84);
+      background: var(--surface-soft);
+      border: 1px solid var(--line);
     }
 
     .stat strong {
       display: block;
-      margin-top: 10px;
-      font-size: 1.95rem;
-      letter-spacing: -0.05em;
+      margin-top: 8px;
+      font-size: 1.8rem;
+      letter-spacing: -0.04em;
     }
 
-    .tabs-bar {
-      padding: 14px;
-      margin-bottom: 18px;
-      position: sticky;
-      top: 14px;
-      z-index: 3;
-    }
+    .tiny, .muted { color: var(--muted); }
+    .tiny { font-size: 0.82rem; }
 
-    .tabs-nav {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 12px;
-    }
-
-    .tab-button {
-      text-align: left;
-      min-height: 74px;
-      padding: 14px 16px;
-      border-radius: 18px;
-      background: rgba(8, 14, 25, 0.78);
-    }
-
-    .tab-button .tiny {
-      display: block;
-      margin-top: 4px;
-    }
-
-    .tab-button.active {
-      border-color: rgba(48, 196, 255, 0.42);
-      background: linear-gradient(135deg, rgba(48, 196, 255, 0.2), rgba(162, 132, 255, 0.18));
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 14px 30px rgba(0, 0, 0, 0.22);
-    }
-
-    .view-shell {
-      position: relative;
-      min-height: 960px;
-    }
-
-    .view-frame {
-      padding: 18px;
-      min-height: 960px;
-      opacity: 0;
-      transform: translateY(16px) scale(0.985);
-      pointer-events: none;
-      position: absolute;
-      inset: 0;
-      transition: opacity 260ms ease, transform 260ms ease;
-    }
-
-    .view-frame.active {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-      pointer-events: auto;
-      position: relative;
-    }
-
-    .view-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 16px;
-      margin-bottom: 18px;
-    }
-
-    .workspace-grid,
-    .quote-layout,
-    .assistant-layout,
-    .consolidation-layout {
-      display: grid;
-      gap: 18px;
+    .workspace {
+      grid-template-columns: minmax(0, 1.25fr) minmax(340px, 0.75fr);
       align-items: start;
     }
 
-    .workspace-grid { grid-template-columns: minmax(0, 1fr); }
-    .consolidation-layout { grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr); }
-    .quote-layout { grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.75fr); }
-    .assistant-layout { grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr); }
+    .channel-stack { gap: 18px; }
+    .channel-card { padding: 18px; }
 
-    .panel,
-    .summary-panel { padding: 18px; min-height: 100%; }
-
-    .summary-panel {
-      border-radius: var(--radius);
-      border: 1px solid var(--line);
-      background: linear-gradient(180deg, rgba(8, 15, 27, 0.9), rgba(6, 11, 20, 0.96));
-    }
-
-    .panel-header {
+    .card-head {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
@@ -259,269 +135,116 @@
       margin-bottom: 16px;
     }
 
-    .eyebrow {
-      font-size: 0.78rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 8px;
-      color: #cad7ea;
-    }
+    .card-head h2,
+    .card-head h3,
+    .quote-panel h2,
+    .summary-card h3 { margin: 0; }
 
-    .panel h2, .summary-panel h2 { margin: 0; font-size: 1.26rem; }
-    .panel p, .summary-panel p { margin: 6px 0 0; }
-
-    .stack { display: grid; gap: 14px; }
-    .card { padding: 16px; }
-    .card-top {
-      display: flex;
-      justify-content: space-between;
+    .pill,
+    .tag {
+      display: inline-flex;
       align-items: center;
-      gap: 12px;
-      margin-bottom: 12px;
+      gap: 6px;
+      padding: 7px 11px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--surface-soft);
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-weight: 700;
     }
 
-    .mail-list,
-    .thread,
-    .log-list,
-    .timeline,
-    .alerts,
-    .ops-list,
-    .doc-grid,
-    .chat-list,
-    .checklist,
-    .task-list,
-    .decision-list,
-    .status-stack { display: grid; gap: 10px; }
+    .mail-workspace,
+    .crm-workspace,
+    .ops-workspace {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: minmax(300px, 0.9fr) minmax(0, 1.1fr);
+    }
+
+    .mail-pane,
+    .mail-detail,
+    .crm-pane,
+    .crm-detail,
+    .ops-pane,
+    .ops-detail {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      overflow: hidden;
+      background: var(--surface);
+    }
+
+    .mail-header,
+    .detail-header,
+    .crm-header,
+    .ops-header {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+      background: var(--surface-soft);
+    }
+
+    .mail-list {
+      max-height: 380px;
+      overflow: auto;
+      gap: 0;
+    }
 
     .mail-item,
-    .message,
-    .log-item,
-    .timeline-item,
-    .alert-item,
-    .op-card,
-    .doc-field,
-    .chat-item,
-    .check-item,
-    .task-item,
-    .decision-item,
-    .status-card {
-      border-radius: 18px;
-      border: 1px solid rgba(148, 163, 184, 0.12);
-      background: rgba(8, 15, 27, 0.86);
-      padding: 12px 14px;
+    .crm-item,
+    .ops-item {
+      width: 100%;
+      border: none;
+      background: transparent;
+      border-bottom: 1px solid var(--line);
+      padding: 14px 16px;
+      text-align: left;
+      cursor: pointer;
+      transition: background 160ms ease;
+      font: inherit;
+      color: inherit;
     }
 
-    .mail-item { cursor: pointer; width: 100%; }
-    .mail-item.active { border-color: rgba(48, 196, 255, 0.42); background: rgba(11, 26, 42, 0.92); }
-    .row-between { display: flex; justify-content: space-between; gap: 10px; }
+    .mail-item:last-child,
+    .crm-item:last-child,
+    .ops-item:last-child { border-bottom: none; }
+    .mail-item:hover,
+    .crm-item:hover,
+    .ops-item:hover { background: #f8fbff; }
+    .mail-item.active,
+    .crm-item.active,
+    .ops-item.active { background: #edf5ff; }
 
-    .mail-preview {
-      margin-top: 12px;
-      white-space: pre-line;
-      min-height: 148px;
-      border-radius: 18px;
-      border: 1px dashed rgba(148, 163, 184, 0.18);
-      background: rgba(5, 10, 18, 0.8);
-      padding: 14px;
-      line-height: 1.58;
-      color: #d7e2f3;
-    }
-
-    .wa-shell,
-    .agent-shell {
-      border-radius: 22px;
-      overflow: hidden;
-      border: 1px solid rgba(148,163,184,0.12);
-      background: #08111c;
-    }
-
-    .wa-header,
-    .agent-header {
-      padding: 13px 14px;
-      background: rgba(15, 25, 42, 0.96);
-      border-bottom: 1px solid rgba(148, 163, 184, 0.1);
-    }
-
-    .thread {
-      padding: 14px;
-      max-height: 420px;
-      overflow: auto;
-      background: linear-gradient(180deg, rgba(6, 11, 21, 0.96), rgba(10, 21, 34, 0.8));
-    }
-
-    .bubble {
-      max-width: 86%;
-      padding: 10px 12px;
-      border-radius: 16px;
-      line-height: 1.42;
-      font-size: 0.92rem;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
-    }
-
-    .client { margin-left: auto; background: linear-gradient(135deg, rgba(61, 217, 160, 0.2), rgba(48, 196, 255, 0.16)); border: 1px solid rgba(61, 217, 160, 0.18); }
-    .team { background: rgba(255,255,255,0.05); border: 1px solid rgba(148,163,184,0.12); }
-
-    .metric-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-    }
-
-    .metric {
-      padding: 14px;
-      border-radius: 18px;
-      border: 1px solid rgba(148,163,184,0.12);
-      background: rgba(8, 15, 27, 0.86);
-    }
-
-    .metric strong { display: block; margin-top: 10px; font-size: 1.7rem; letter-spacing: -0.04em; }
-
-    .riskbar {
-      margin-top: 10px;
-      height: 12px;
-      overflow: hidden;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(148,163,184,0.1);
-    }
-
-    .riskfill {
-      height: 100%;
-      width: 74%;
-      background: linear-gradient(90deg, #3dd9a0, #ffc361 56%, #ff7f8e);
-    }
-
-    .timeline { max-height: 620px; overflow: auto; }
-    .timeline-item { position: relative; padding-left: 18px; }
-    .timeline-item::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 14px;
-      width: 7px;
-      height: calc(100% - 28px);
-      border-radius: 999px;
-      background: rgba(148,163,184,0.22);
-    }
-
-    .timeline-item.ok::before { background: linear-gradient(180deg, #3dd9a0, rgba(61, 217, 160, 0.16)); }
-    .timeline-item.warn::before { background: linear-gradient(180deg, #ffc361, rgba(255, 195, 97, 0.16)); }
-    .timeline-item.alert::before { background: linear-gradient(180deg, #ff7f8e, rgba(255, 127, 142, 0.16)); }
-
-    .alert-item.high { border-color: rgba(255,127,142,0.24); background: rgba(63, 15, 25, 0.72); }
-    .alert-item.medium { border-color: rgba(255,195,97,0.24); background: rgba(66, 37, 7, 0.68); }
-    .alert-item.low { border-color: rgba(48,196,255,0.2); background: rgba(8, 33, 49, 0.7); }
-
-    .op-card strong,
-    .timeline-item strong,
-    .alert-item strong,
-    .chat-item strong,
-    .task-item strong,
-    .log-item strong,
-    .mail-item strong,
-    .decision-item strong,
-    .status-card strong { display: block; margin-bottom: 6px; }
-
-    .doc-sheet {
-      border-radius: 22px;
-      padding: 18px;
-      background: linear-gradient(180deg, rgba(245, 248, 255, 0.96), rgba(231, 238, 249, 0.94));
-      color: #0f1d31;
-      border: 1px solid rgba(195, 206, 223, 0.9);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.7);
-    }
-
-    .doc-head {
+    .mail-top,
+    .chat-top,
+    .crm-top,
+    .ops-top,
+    .row-between {
       display: flex;
       justify-content: space-between;
+      gap: 10px;
       align-items: flex-start;
-      gap: 12px;
-      margin-bottom: 14px;
     }
 
-    .doc-brand {
-      font-size: 0.8rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: #3b5b84;
+    .mail-sender {
+      display: flex;
+      align-items: center;
+      gap: 10px;
       margin-bottom: 6px;
     }
 
-    .doc-title {
-      margin: 0;
-      font-size: 1.35rem;
-      letter-spacing: -0.03em;
-    }
-
-    .doc-status {
-      padding: 8px 12px;
-      border-radius: 999px;
-      font-size: 0.8rem;
+    .avatar,
+    .chat-avatar,
+    .crm-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: inline-grid;
+      place-items: center;
       font-weight: 800;
-      color: #8a5100;
-      background: rgba(255, 195, 97, 0.2);
-      border: 1px solid rgba(196, 132, 10, 0.24);
-    }
-
-    .doc-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      margin-bottom: 12px;
-    }
-
-    .doc-field {
-      background: rgba(255,255,255,0.68);
-      border-color: rgba(149, 163, 184, 0.28);
-      color: #152943;
-    }
-
-    .doc-field label {
-      display: block;
-      margin-bottom: 8px;
-      color: #597190;
-      font-size: 0.78rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: rgba(255,255,255,0.72);
-      border-radius: 18px;
-      overflow: hidden;
-      margin: 10px 0 12px;
-      font-size: 0.92rem;
-    }
-
-    th, td { padding: 12px; border-bottom: 1px solid rgba(148,163,184,0.18); text-align: left; }
-    th { color: #607792; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; }
-    tr:last-child td { border-bottom: none; }
-
-    .doc-summary {
-      display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      gap: 12px;
-      margin-top: 12px;
-    }
-
-    .summary-box {
-      padding: 14px;
-      border-radius: 18px;
-      background: rgba(255,255,255,0.7);
-      border: 1px solid rgba(149,163,184,0.24);
-    }
-
-    .chat-list { padding: 14px; max-height: 360px; overflow: auto; }
-    .chat-item.system { border-color: rgba(48,196,255,0.2); background: rgba(10, 27, 43, 0.64); }
-    .chat-item.user { border-color: rgba(61,217,160,0.2); background: rgba(13, 44, 32, 0.56); }
-    .chat-item.audit { border-color: rgba(255,195,97,0.2); background: rgba(54, 35, 8, 0.54); }
-
-    .check-item,
-    .task-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
+      font-size: 0.85rem;
+      color: white;
+      background: linear-gradient(135deg, #1967d2, #4f8cff);
+      flex-shrink: 0;
     }
 
     .dot {
@@ -529,871 +252,930 @@
       height: 10px;
       border-radius: 50%;
       display: inline-block;
-      margin-right: 8px;
-      box-shadow: 0 0 0 4px rgba(255,255,255,0.03);
+      background: #c4cfdd;
+      flex-shrink: 0;
     }
 
-    .dot.done { background: var(--green); }
-    .dot.pending { background: var(--yellow); }
-    .dot.alert { background: var(--red); }
+    .dot.unread { background: var(--brand); }
+    .dot.ok { background: var(--green); }
+    .dot.warn { background: var(--amber); }
 
-    .status-card {
-      background: rgba(10, 17, 30, 0.82);
+    .mail-body {
+      padding: 20px;
+      background: linear-gradient(180deg, #fff, #fbfdff);
+      min-height: 380px;
     }
 
-    .status-card.highlight {
-      border-color: rgba(48, 196, 255, 0.28);
-      background: linear-gradient(135deg, rgba(48,196,255,0.16), rgba(162,132,255,0.12));
+    .email-meta {
+      display: grid;
+      gap: 8px;
+      padding-bottom: 14px;
+      margin-bottom: 14px;
+      border-bottom: 1px solid var(--line);
+      font-size: 0.93rem;
     }
 
-    .footer-note {
+    .email-line {
+      display: grid;
+      grid-template-columns: 64px 1fr;
+      gap: 10px;
+    }
+
+    .email-content {
+      white-space: pre-line;
+      line-height: 1.65;
+      color: #26364d;
+    }
+
+    .email-footer {
       margin-top: 18px;
-      padding: 18px 20px;
-      border-radius: 22px;
+      padding-top: 14px;
+      border-top: 1px dashed var(--line);
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .whatsapp-shell {
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid #d7dfdb;
+      background: #e5ddd5;
+    }
+
+    .wa-topbar {
+      padding: 13px 16px;
+      background: #f0f2f5;
+      border-bottom: 1px solid #dde1e6;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .wa-thread {
+      padding: 18px 18px 12px;
+      display: grid;
+      gap: 10px;
+      max-height: 360px;
+      overflow: auto;
+      background:
+        linear-gradient(rgba(255,255,255,0.2), rgba(255,255,255,0.2)),
+        linear-gradient(135deg, rgba(17,138,126,0.04), rgba(0,0,0,0.02));
+    }
+
+    .wa-bubble {
+      max-width: 78%;
+      padding: 10px 12px 18px;
+      border-radius: 10px;
+      position: relative;
+      font-size: 0.94rem;
+      line-height: 1.45;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .wa-bubble.client {
+      justify-self: start;
+      background: #fff;
+    }
+
+    .wa-bubble.user {
+      justify-self: end;
+      background: #d9fdd3;
+    }
+
+    .wa-time {
+      position: absolute;
+      right: 10px;
+      bottom: 4px;
+      font-size: 0.72rem;
+      color: #667781;
+    }
+
+    .crm-list,
+    .ops-list { max-height: 330px; overflow: auto; gap: 0; }
+
+    .crm-detail-body,
+    .ops-detail-body {
+      padding: 18px;
+      min-height: 330px;
+      background: #fbfcfe;
+    }
+
+    .call-banner {
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: #101827;
+      color: #eff6ff;
+      margin-bottom: 16px;
+    }
+
+    .transcript {
+      display: grid;
+      gap: 14px;
+    }
+
+    .transcript-block {
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: white;
       border: 1px solid var(--line);
-      background: linear-gradient(135deg, rgba(48,196,255,0.08), rgba(61,217,160,0.08));
-      text-align: center;
-      color: #d9e6f7;
     }
 
-    @media (max-width: 1280px) {
-      .topbar,
-      .consolidation-layout,
-      .quote-layout,
-      .assistant-layout { grid-template-columns: 1fr; }
-      .view-frame { min-height: auto; }
+    .transcript-block strong {
+      display: block;
+      margin-bottom: 8px;
     }
 
-    @media (max-width: 920px) {
-      .tabs-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .ops-detail-body {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      color: #26364d;
+    }
+
+    .log-entry {
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: white;
+      border: 1px solid var(--line);
+      margin-bottom: 10px;
+    }
+
+    .quote-panel {
+      padding: 18px;
+      position: sticky;
+      top: 18px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .quote-state {
+      border-radius: 18px;
+      padding: 16px;
+      background: #101827;
+      color: #dbeafe;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.9rem;
+      line-height: 1.65;
+      white-space: pre-wrap;
+    }
+
+    .quote-sheet {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+      background: linear-gradient(180deg, #fff, #f9fbfd);
+    }
+
+    .quote-grid,
+    .summary-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .field,
+    .summary-card {
+      padding: 14px;
+      border-radius: 16px;
+      background: var(--surface-soft);
+      border: 1px solid var(--line);
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+
+    .event-list,
+    .alert-list {
+      max-height: 240px;
+      overflow: auto;
+    }
+
+    .event-item,
+    .alert-item {
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: var(--surface-soft);
+    }
+
+    .alert-item.high { background: var(--red-soft); border-color: #fecaca; }
+    .alert-item.medium { background: var(--amber-soft); border-color: #fde68a; }
+    .alert-item.low { background: var(--brand-soft); border-color: #bfdbfe; }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    button.action {
+      appearance: none;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: white;
+      padding: 11px 14px;
+      font: inherit;
+      font-weight: 700;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    button.action.primary { background: var(--brand); color: white; border-color: var(--brand); }
+    button.action.success { background: var(--green); color: white; border-color: var(--green); }
+
+    @media (max-width: 1240px) {
+      .hero,
+      .workspace,
+      .mail-workspace,
+      .crm-workspace,
+      .ops-workspace { grid-template-columns: 1fr; }
+      .quote-panel { position: static; }
     }
 
     @media (max-width: 760px) {
-      .shell { width: min(100vw - 14px, 100%); margin-top: 8px; }
-      .stat-grid, .metric-grid, .doc-grid, .doc-summary, .tabs-nav { grid-template-columns: 1fr; }
-      button { width: 100%; }
-      .tabs-bar { position: static; }
+      .shell { width: min(100vw - 12px, 100%); margin-top: 8px; }
+      .hero-grid,
+      .quote-grid,
+      .summary-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
-  <div class="shell">
-    <section class="topbar">
+  <main class="shell">
+    <section class="hero">
       <div>
-        <div class="badge-row">
-          <span class="badge live">● Operación en línea · 14 pedidos activos</span>
-          <span class="badge warn">3 inconsistencias escaladas a revisión comercial</span>
-          <span class="badge">Última sincronización 10:42</span>
-        </div>
-        <h1>Centro operativo de pedidos y cotizaciones omnicanal.</h1>
+        <span class="eyebrow">Motor omnicanal realista</span>
+        <h1>Correo formal, WhatsApp caótico, llamada verbal e interno operativo convergen en una sola cotización.</h1>
         <p class="lead">
-          Medinistros ya está consolidando conversaciones, decisiones comerciales y correcciones cruzadas para emitir una sola versión válida de cada cotización.
-          El caso visible corresponde a Clínica Sierra Norte y muestra actividad real de correo, WhatsApp, llamadas e intervención del equipo comercial.
+          La interfaz simula herramientas empresariales reales para que cada canal se sienta auténtico: bandeja tipo Outlook/Gmail, conversación tipo WhatsApp Web, vista CRM de llamadas y log operativo interno. Al abrir cada evidencia, el sistema procesa señales y consolida una única propuesta comercial.
         </p>
-        <div class="header-actions">
-          <button class="primary" id="confirmUsd20">Confirmar USD y 20 unidades</button>
-          <button class="warning" id="flagForReview">Escalar para revisión formal</button>
-          <button class="success" id="readyForReview">Marcar lista para revisión</button>
-        </div>
       </div>
-      <div class="stat-grid">
-        <div class="stat">
-          <span class="tiny">Eventos procesados hoy</span>
-          <strong id="processedCount">184</strong>
-          <span class="muted">Incluye mensajes, llamadas, ajustes internos y aprobaciones.</span>
-        </div>
-        <div class="stat">
-          <span class="tiny">Canales activos</span>
+      <div class="hero-grid">
+        <article class="stat">
+          <span class="tiny">Cliente activo</span>
+          <strong id="heroClient">Clínica Sierra Norte</strong>
+          <span class="muted">Caso vivo del producto M-900 Plus.</span>
+        </article>
+        <article class="stat">
+          <span class="tiny">Canales conectados</span>
           <strong>4</strong>
-          <span class="muted">Correo, WhatsApp, llamadas y actividad interna comercial.</span>
-        </div>
-        <div class="stat">
-          <span class="tiny">Riesgo operativo</span>
-          <strong id="riskHeadline">Medio-alto</strong>
-          <span class="muted">La orden sigue viva, pero aún requiere alineación documental.</span>
-        </div>
-        <div class="stat">
-          <span class="tiny">Estado del expediente</span>
-          <strong id="orderStatus">Cotización en proceso</strong>
-          <span class="muted">Versión consolidada en revisión por el ejecutivo asignado.</span>
-        </div>
+          <span class="muted">Correo, WhatsApp, llamadas e interno.</span>
+        </article>
+        <article class="stat">
+          <span class="tiny">Eventos procesados</span>
+          <strong id="processedCounter">9</strong>
+          <span class="muted">Cada apertura actualiza la cotización unificada.</span>
+        </article>
+        <article class="stat">
+          <span class="tiny">Estado global</span>
+          <strong id="globalStatus">Cotización en construcción</strong>
+          <span class="muted">Se consolida una sola versión comercial.</span>
+        </article>
       </div>
     </section>
 
-    <section class="tabs-bar">
-      <div class="tabs-nav" role="tablist" aria-label="Navegación principal">
-        <button class="tab-button active" type="button" role="tab" aria-selected="true" data-view="bandeja">
-          <strong>Bandeja de pedidos</strong>
-          <span class="tiny">Correos, WhatsApp, llamadas e interno a pantalla completa.</span>
-        </button>
-        <button class="tab-button" type="button" role="tab" aria-selected="false" data-view="consolidacion">
-          <strong>Consolidación</strong>
-          <span class="tiny">Timeline, alertas, interpretaciones y métricas cruzadas.</span>
-        </button>
-        <button class="tab-button" type="button" role="tab" aria-selected="false" data-view="cotizacion">
-          <strong>Cotización final</strong>
-          <span class="tiny">Documento listo para emisión con estado, versión y condiciones.</span>
-        </button>
-        <button class="tab-button" type="button" role="tab" aria-selected="false" data-view="asistente">
-          <strong>Asistente</strong>
-          <span class="tiny">Conversación, checklist, tareas y decisiones operativas.</span>
-        </button>
-      </div>
-    </section>
-
-    <section class="view-shell">
-      <section class="view-frame active" id="view-bandeja" data-view="bandeja">
-        <div class="view-header">
-          <div>
-            <div class="eyebrow">Bandeja de pedidos · vista inmersiva</div>
-            <h2>Todos los canales del pedido activos en una sola bandeja operacional.</h2>
-            <p class="muted">La vista ocupa toda la pantalla de trabajo para resolver el pedido sin cambiar de contexto ni recargar información.</p>
-          </div>
-          <div class="meta-strip">
-            <span class="pill">Caso activo · M-900 / Sierra Norte</span>
-            <span class="pill">4 canales sincronizados</span>
-          </div>
-        </div>
-
-        <div class="workspace-grid">
-          <article class="panel">
-            <div class="stack">
-              <article class="card">
-                <div class="card-top">
-                  <div>
-                    <h3>📧 Correos</h3>
-                    <div class="tiny">Solicitudes formales y correcciones recibidas hoy.</div>
-                  </div>
-                  <span class="pill">6 correos abiertos</span>
-                </div>
-                <div class="mail-list" id="mailList"></div>
-                <div class="mail-preview" id="mailPreview"></div>
-              </article>
-
-              <article class="card">
-                <div class="card-top">
-                  <div>
-                    <h3>💬 WhatsApp</h3>
-                    <div class="tiny">Mensajes cortos del comprador y del ejecutivo.</div>
-                  </div>
-                  <span class="pill">Chat activo · hace 2 min</span>
-                </div>
-                <div class="wa-shell">
-                  <div class="wa-header row-between">
-                    <strong>Carolina Pardo · Compras Clínica Sierra Norte</strong>
-                    <span class="tiny">Último mensaje 10:40</span>
-                  </div>
-                  <div class="thread">
-                    <div class="bubble team">Te mandé versión con 18 unidades y entrega en 12 días.</div>
-                    <div class="bubble client">súbele eso a 20</div>
-                    <div class="bubble client">eso era en dólares</div>
-                    <div class="bubble team">Recibido. Estoy cruzando con el correo porque la solicitud formal venía en COP.</div>
-                    <div class="bubble client">urge hoy</div>
-                    <div class="bubble team">Ya quedó marcado como prioridad comercial y está en revisión con tu ejecutivo.</div>
-                  </div>
-                </div>
-              </article>
-
-              <article class="card">
-                <div class="card-top">
-                  <div>
-                    <h3>📞 Llamadas</h3>
-                    <div class="tiny">Registro de decisiones tomadas verbalmente.</div>
-                  </div>
-                  <span class="pill">3 decisiones registradas</span>
-                </div>
-                <div class="log-list">
-                  <div class="log-item">
-                    <strong>09:32 · Cliente aprueba 5% descuento</strong>
-                    <div class="tiny">Se mantiene condicionado a emisión en la moneda correcta.</div>
-                  </div>
-                  <div class="log-item">
-                    <strong>09:54 · Solicita cambio de referencia</strong>
-                    <div class="tiny">Pide confirmar si el monitor debe salir con módulo SpO2 Nellcor.</div>
-                  </div>
-                  <div class="log-item">
-                    <strong>10:18 · Requiere despacho prioritario</strong>
-                    <div class="tiny">Operaciones informa que 48 horas es viable solo para 20 unidades del lote disponible.</div>
-                  </div>
-                </div>
-              </article>
-
-              <article class="card">
-                <div class="card-top">
-                  <div>
-                    <h3>🧩 Interno</h3>
-                    <div class="tiny">Actividad del equipo comercial y de operaciones.</div>
-                  </div>
-                  <span class="pill">5 acciones del equipo</span>
-                </div>
-                <div class="log-list">
-                  <div class="log-item">
-                    <strong>08:57 · Ejecutivo ajusta moneda</strong>
-                    <div class="tiny">Se cambia COP → USD con base en mensaje de WhatsApp, pendiente soporte formal.</div>
-                  </div>
-                  <div class="log-item">
-                    <strong>09:11 · Se modifica condición comercial</strong>
-                    <div class="tiny">Se aplica 5% de descuento para no frenar comité de compras.</div>
-                  </div>
-                  <div class="log-item">
-                    <strong>09:46 · Coordinación reserva inventario</strong>
-                    <div class="tiny">Lote físico separado para 20 unidades con vigencia de reserva hasta las 17:00.</div>
-                  </div>
-                  <div class="log-item">
-                    <strong>10:05 · Finanzas valida cupo</strong>
-                    <div class="tiny">Cliente habilitado para pago a 30 días, sujeto a emisión final en USD.</div>
-                  </div>
-                </div>
-              </article>
+    <section class="workspace">
+      <section class="channel-stack">
+        <article class="channel-card">
+          <div class="card-head">
+            <div>
+              <h2>📧 Correo · tipo Outlook / Gmail</h2>
+              <p class="muted">Al abrir un correo, se dispara procesamiento y se llena la cotización parcialmente.</p>
             </div>
-          </article>
-        </div>
-      </section>
-
-      <section class="view-frame" id="view-consolidacion" data-view="consolidacion">
-        <div class="view-header">
-          <div>
-            <div class="eyebrow">Consolidación · motor activo</div>
-            <h2>Lectura consolidada del caso con señales, versiones y decisiones inferidas.</h2>
-            <p class="muted">Aquí se concentran métricas, timeline, alertas e interpretaciones sin duplicar ni recargar la información de la operación.</p>
+            <span class="pill">Formal · bandeja activa</span>
           </div>
-          <div class="meta-strip">
-            <span class="pill">Motor sincronizado · 10:42</span>
-            <span class="pill">8 eventos relevantes</span>
-          </div>
-        </div>
-
-        <div class="consolidation-layout">
-          <article class="panel">
-            <div class="stack">
-              <article class="card">
-                <div class="card-top">
-                  <div>
-                    <h3>Timeline operativo</h3>
-                    <div class="tiny">Hora · canal · hallazgo · interpretación del motor</div>
-                  </div>
-                  <span class="pill">8 eventos relevantes</span>
-                </div>
-                <div class="timeline">
-                  <div class="timeline-item ok">
-                    <strong>08:41 · Correo · Solicitud base recibida</strong>
-                    <div class="tiny">El cliente solicita 18 monitores M-900 en COP con pago a 30 días.</div>
-                  </div>
-                  <div class="timeline-item warn">
-                    <strong>08:57 · Interno · Ajuste comercial</strong>
-                    <div class="tiny">El ejecutivo cambia moneda a USD sin adjunto formal. Se registra desalineación documental.</div>
-                  </div>
-                  <div class="timeline-item alert">
-                    <strong>09:08 · WhatsApp · Cambio de cantidad</strong>
-                    <div class="tiny">Mensaje “súbele eso a 20” altera cantidad sin modificar el correo original.</div>
-                  </div>
-                  <div class="timeline-item ok">
-                    <strong>09:32 · Llamada · Descuento aprobado</strong>
-                    <div class="tiny">Se autoriza 5% de descuento por cierre de mes; se mantiene como concesión vigente.</div>
-                  </div>
-                  <div class="timeline-item alert">
-                    <strong>09:54 · Llamada · Cambio de referencia</strong>
-                    <div class="tiny">Se solicita revisar módulo SpO2; el sistema marca posible afectación sobre SKU final.</div>
-                  </div>
-                  <div class="timeline-item warn">
-                    <strong>10:05 · Interno · Validación financiera</strong>
-                    <div class="tiny">Finanzas habilita 30 días, pero condiciona emisión final en USD para no reprocesar cartera.</div>
-                  </div>
-                  <div class="timeline-item alert">
-                    <strong>10:20 · Correo · Corrección de referencia</strong>
-                    <div class="tiny">Cliente corrige el equipo a M-900 Plus con accesorio ECG de 5 derivaciones.</div>
-                  </div>
-                  <div class="timeline-item ok">
-                    <strong>10:38 · Agente · Consolidación lista</strong>
-                    <div class="tiny">Se propone versión única: USD, 20 unidades, 5% descuento, entrega 48 horas.</div>
-                  </div>
-                </div>
-              </article>
-
-              <article class="card">
-                <div class="card-top">
-                  <div>
-                    <h3>Alertas detectadas</h3>
-                    <div class="tiny">Contradicciones activas sobre moneda, cantidad y referencia.</div>
-                  </div>
-                  <span class="pill">Atención prioritaria</span>
-                </div>
-                <div class="alerts" id="alertList">
-                  <div class="alert-item high">
-                    <strong>⚠️ Cambio de moneda sin confirmación formal</strong>
-                    <div class="tiny">WhatsApp e interno apuntan a USD, pero el correo base estaba en COP. Falta soporte final del cliente.</div>
-                  </div>
-                  <div class="alert-item high">
-                    <strong>⚠️ Cantidad inconsistente entre canales</strong>
-                    <div class="tiny">Correo inicial: 18 unidades. WhatsApp y reserva logística: 20 unidades.</div>
-                  </div>
-                  <div class="alert-item medium">
-                    <strong>⚠️ Referencia de equipo corregida en llamada y correo</strong>
-                    <div class="tiny">Se debe emitir como M-900 Plus con ECG 5 derivaciones para evitar devolución.</div>
-                  </div>
-                </div>
-              </article>
+          <div class="mail-workspace">
+            <div class="mail-pane">
+              <div class="mail-header row-between">
+                <strong>Recibidos</strong>
+                <span class="tiny">6 conversaciones</span>
+              </div>
+              <div class="mail-list" id="mailList"></div>
             </div>
-          </article>
-
-          <article class="summary-panel">
-            <div class="stack">
-              <article class="card">
-                <div class="card-top">
-                  <div>
-                    <h3>Métricas del motor</h3>
-                    <div class="tiny">Indicadores de consolidación y riesgo del expediente.</div>
-                  </div>
-                  <span class="pill">Lectura continua</span>
+            <div class="mail-detail">
+              <div class="detail-header row-between">
+                <strong id="mailDetailTitle">Detalle del correo</strong>
+                <span class="tag" id="mailDetailTag">Procesamiento pendiente</span>
+              </div>
+              <div class="mail-body">
+                <div class="email-meta">
+                  <div class="email-line"><span class="muted">De</span><span id="mailFrom"></span></div>
+                  <div class="email-line"><span class="muted">Para</span><span id="mailTo"></span></div>
+                  <div class="email-line"><span class="muted">Asunto</span><span id="mailSubject"></span></div>
                 </div>
-                <div class="metric-grid">
-                  <div class="metric">
-                    <span class="tiny">Versiones detectadas</span>
-                    <strong id="versionCount">7</strong>
-                  </div>
-                  <div class="metric">
-                    <span class="tiny">Alertas abiertas</span>
-                    <strong id="alertCount">3</strong>
-                  </div>
-                  <div class="metric">
-                    <span class="tiny">Interpretaciones emitidas</span>
-                    <strong>12</strong>
-                  </div>
-                  <div class="metric">
-                    <span class="tiny">Índice de riesgo</span>
-                    <strong id="riskPercent">74%</strong>
-                    <div class="riskbar"><div class="riskfill" id="riskFill"></div></div>
-                  </div>
-                </div>
-              </article>
-
-              <article class="card">
-                <div class="card-top">
-                  <div>
-                    <h3>Interpretaciones principales</h3>
-                    <div class="tiny">Resumen que usa el motor para consolidar una sola versión operativa.</div>
-                  </div>
-                  <span class="pill">Lectura automática</span>
-                </div>
-                <div class="ops-list">
-                  <div class="op-card">
-                    <strong>Moneda preferida por el comprador: USD</strong>
-                    <div class="tiny">La evidencia más reciente proviene de WhatsApp y validación interna financiera, pero no del correo original.</div>
-                  </div>
-                  <div class="op-card">
-                    <strong>Cantidad operativa definitiva: 20</strong>
-                    <div class="tiny">Coincide con chat, inventario separado y urgencia de despacho.</div>
-                  </div>
-                  <div class="op-card">
-                    <strong>Riesgo de error principal: emitir con versión vieja del SKU</strong>
-                    <div class="tiny">Llamada y correo posterior corrigen referencia, por lo que una emisión apresurada causaría devolución.</div>
-                  </div>
-                </div>
-              </article>
+                <div class="email-content" id="mailBody"></div>
+                <div class="email-footer" id="mailFooter"></div>
+              </div>
             </div>
-          </article>
-        </div>
-      </section>
-
-      <section class="view-frame" id="view-cotizacion" data-view="cotizacion">
-        <div class="view-header">
-          <div>
-            <div class="eyebrow">Cotización final · lista para emisión</div>
-            <h2>Documento consolidado presentado como resultado final del expediente.</h2>
-            <p class="muted">La vista prioriza el documento completo y acompaña con condiciones, estado y versión para salida comercial.</p>
           </div>
-          <div class="meta-strip">
-            <span class="pill" id="docPill">Versión 7 · revisión comercial</span>
-            <span class="pill">Expediente comercial vivo</span>
-          </div>
-        </div>
+        </article>
 
-        <div class="quote-layout">
-          <article class="panel">
-            <article class="card">
-              <div class="card-top">
+        <article class="channel-card">
+          <div class="card-head">
+            <div>
+              <h2>💬 WhatsApp · chat real</h2>
+              <p class="muted">Al hacer click en el chat se activa procesamiento, se actualiza la cotización y se generan alertas.</p>
+            </div>
+            <button class="action" id="openWhatsapp">Procesar chat</button>
+          </div>
+          <div class="whatsapp-shell" id="whatsappCard">
+            <div class="wa-topbar">
+              <div class="chat-top">
+                <span class="chat-avatar" style="background: linear-gradient(135deg, #0f766e, #16a34a);">CP</span>
                 <div>
-                  <h3>Documento completo</h3>
-                  <div class="tiny">Versión consolidada lista para revisión y emisión.</div>
-                </div>
-                <span class="pill">Salida comercial</span>
-              </div>
-              <div class="doc-sheet">
-                <div class="doc-head">
-                  <div>
-                    <div class="doc-brand">Medinistros · expediente comercial</div>
-                    <h4 class="doc-title">Cotización MC-2025-1184</h4>
-                    <div class="tiny">Ejecutivo: Laura Méndez · Cuenta estratégica: Clínica Sierra Norte</div>
-                  </div>
-                  <div class="doc-status" id="docStatus">En revisión</div>
-                </div>
-
-                <div class="doc-grid">
-                  <div class="doc-field">
-                    <label>Cliente</label>
-                    <div>Clínica Sierra Norte S.A.S.</div>
-                  </div>
-                  <div class="doc-field">
-                    <label>Contacto</label>
-                    <div>Carolina Pardo · Compras biomédicas</div>
-                  </div>
-                  <div class="doc-field">
-                    <label>Producto</label>
-                    <div id="quoteProduct">Monitor multiparámetro M-900 Plus</div>
-                  </div>
-                  <div class="doc-field">
-                    <label>Referencia validada</label>
-                    <div id="quoteReference">SKU M900P-ECG5 / módulo SpO2 + ECG 5 deriv.</div>
-                  </div>
-                  <div class="doc-field">
-                    <label>Cantidad</label>
-                    <div id="quoteQuantity">20 unidades</div>
-                  </div>
-                  <div class="doc-field">
-                    <label>Moneda</label>
-                    <div id="quoteCurrency">USD</div>
-                  </div>
-                  <div class="doc-field">
-                    <label>Descuento</label>
-                    <div id="quoteDiscount">5% autorizado por cierre de mes</div>
-                  </div>
-                  <div class="doc-field">
-                    <label>Condiciones</label>
-                    <div id="quoteTerms">Entrega 48 horas · Pago a 30 días · Reserva inventario hasta 17:00</div>
-                  </div>
-                </div>
-
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Ítem</th>
-                      <th>Cant.</th>
-                      <th>Moneda</th>
-                      <th>Precio unit.</th>
-                      <th>Total</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td id="tableItem">Monitor multiparámetro M-900 Plus con ECG 5 derivaciones</td>
-                      <td id="tableQty">20</td>
-                      <td id="tableCurrency">USD</td>
-                      <td id="tableUnit">3,420</td>
-                      <td id="tableTotal">68,400</td>
-                    </tr>
-                  </tbody>
-                </table>
-
-                <div class="doc-summary">
-                  <div class="summary-box">
-                    <strong>Condiciones comerciales consolidadas</strong>
-                    <div class="tiny">Incluye instalación básica remota, entrenamiento virtual y vigencia de oferta por 72 horas.</div>
-                  </div>
-                  <div class="summary-box">
-                    <strong>Estado actual</strong>
-                    <div class="tiny" id="docStateCopy">Pendiente confirmación final de moneda frente al soporte formal del cliente.</div>
-                  </div>
-                </div>
-
-                <div class="doc-actions" style="margin-top:12px;">
-                  <span class="tag">Aprobación comercial parcial</span>
-                  <span class="tag">Finanzas alineadas</span>
-                  <span class="tag" id="docTag">Falta soporte formal del cliente</span>
+                  <strong>Carolina Pardo</strong>
+                  <div class="tiny">Compras Biomédicas · Clínica Sierra Norte</div>
                 </div>
               </div>
-            </article>
-          </article>
-
-          <article class="summary-panel">
-            <div class="stack">
-              <article class="card">
-                <div class="card-top">
-                  <div>
-                    <h3>Condiciones</h3>
-                    <div class="tiny">Bloque resumido de condiciones clave para la emisión.</div>
-                  </div>
-                  <span class="pill">Checklist comercial</span>
-                </div>
-                <div class="status-stack">
-                  <div class="status-card">
-                    <strong>Entrega</strong>
-                    <div class="tiny">48 horas con inventario reservado hasta las 17:00.</div>
-                  </div>
-                  <div class="status-card">
-                    <strong>Pago</strong>
-                    <div class="tiny">Crédito a 30 días habilitado por finanzas.</div>
-                  </div>
-                  <div class="status-card">
-                    <strong>Vigencia</strong>
-                    <div class="tiny">Oferta válida por 72 horas con soporte de comité.</div>
-                  </div>
-                </div>
-              </article>
-
-              <article class="card">
-                <div class="card-top">
-                  <div>
-                    <h3>Estado</h3>
-                    <div class="tiny">Situación actual del documento antes de enviarlo.</div>
-                  </div>
-                  <span class="pill" id="orderStatusMirror">Cotización en proceso</span>
-                </div>
-                <div class="status-stack">
-                  <div class="status-card highlight">
-                    <strong id="quoteStatusHeadline">Pendiente soporte formal de moneda</strong>
-                    <div class="tiny">La salida final depende del respaldo documental del cliente para no reprocesar cartera.</div>
-                  </div>
-                </div>
-              </article>
-
-              <article class="card">
-                <div class="card-top">
-                  <div>
-                    <h3>Versión</h3>
-                    <div class="tiny">Seguimiento de avance sobre la versión consolidada visible.</div>
-                  </div>
-                  <span class="pill" id="versionPillMirror">Versión 7</span>
-                </div>
-                <div class="status-stack">
-                  <div class="status-card">
-                    <strong>Versión visible</strong>
-                    <div class="tiny" id="versionNarrative">La versión actual integra USD, 20 unidades, 5% de descuento y corrección de referencia.</div>
-                  </div>
-                  <div class="status-card">
-                    <strong>Trazabilidad</strong>
-                    <div class="tiny">Se conservaron 7 iteraciones para auditoría sin romper la continuidad del expediente.</div>
-                  </div>
-                </div>
-              </article>
+              <span class="tiny">última interacción 10:41 AM</span>
             </div>
-          </article>
-        </div>
+            <div class="wa-thread" id="waThread"></div>
+          </div>
+        </article>
+
+        <article class="channel-card">
+          <div class="card-head">
+            <div>
+              <h2>📞 Llamadas · transcripción CRM</h2>
+              <p class="muted">Al abrir la llamada, el sistema detecta “descuento 5%”, actualiza la cotización y agrega validación.</p>
+            </div>
+            <span class="pill">Call center / CRM</span>
+          </div>
+          <div class="crm-workspace">
+            <div class="crm-pane">
+              <div class="crm-header row-between">
+                <strong>Llamadas del caso</strong>
+                <span class="tiny">3 registros</span>
+              </div>
+              <div class="crm-list" id="callList"></div>
+            </div>
+            <div class="crm-detail">
+              <div class="detail-header row-between">
+                <strong id="callDetailTitle">Selecciona una llamada</strong>
+                <span class="tag" id="callDetailTag">Sin detectar</span>
+              </div>
+              <div class="crm-detail-body">
+                <div class="call-banner" id="callBanner"></div>
+                <div class="transcript" id="callTranscript"></div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="channel-card">
+          <div class="card-head">
+            <div>
+              <h2>⚙️ Interno · operación</h2>
+              <p class="muted">Al hacer click en un log interno se impactan condiciones y estado dentro de la cotización unificada.</p>
+            </div>
+            <span class="pill">Log de sistema</span>
+          </div>
+          <div class="ops-workspace">
+            <div class="ops-pane">
+              <div class="ops-header row-between">
+                <strong>Actividad operativa</strong>
+                <span class="tiny">3 cambios clave</span>
+              </div>
+              <div class="ops-list" id="opsList"></div>
+            </div>
+            <div class="ops-detail">
+              <div class="detail-header row-between">
+                <strong id="opsDetailTitle">Detalle del evento interno</strong>
+                <span class="tag" id="opsDetailTag">Sin aplicar</span>
+              </div>
+              <div class="ops-detail-body" id="opsDetailBody"></div>
+            </div>
+          </div>
+        </article>
       </section>
 
-      <section class="view-frame" id="view-asistente" data-view="asistente">
-        <div class="view-header">
+      <aside class="quote-panel">
+        <div class="card-head" style="margin-bottom:0;">
           <div>
-            <div class="eyebrow">Asistente · continuidad operativa</div>
-            <h2>Seguimiento asistido con conversación, validaciones y decisiones listas para ejecutar.</h2>
-            <p class="muted">La navegación mantiene el estado del asistente para que el usuario continúe exactamente donde lo dejó.</p>
+            <h2>🧠 Motor · una sola cotización</h2>
+            <p class="muted">Todos los canales alimentan un mismo estado global.</p>
           </div>
-          <div class="meta-strip">
-            <span class="pill">Agente asignado · Laura Méndez</span>
-            <span class="pill">Seguimiento activo · 10:41</span>
-          </div>
+          <span class="pill" id="quoteVersion">Versión 1</span>
         </div>
 
-        <div class="assistant-layout">
-          <article class="panel">
-            <div class="stack">
-              <article class="card" style="padding:0;">
-                <div class="agent-shell">
-                  <div class="agent-header row-between">
-                    <strong>Asistente Medinistros</strong>
-                    <span class="tiny">Seguimiento activo · 10:41</span>
-                  </div>
-                  <div class="chat-list" id="agentChat">
-                    <div class="chat-item system">
-                      <strong>Asistente</strong>
-                      <div>Detecté inconsistencias en la cotización. ¿Deseas confirmar la moneda y la cantidad antes de emitir?</div>
-                    </div>
-                    <div class="chat-item user">
-                      <strong>Usuario</strong>
-                      <div>Deja USD y 20 unidades.</div>
-                    </div>
-                    <div class="chat-item audit">
-                      <strong>Sistema</strong>
-                      <div>Actualizado. Cotización lista para revisión. Mantengo alerta por soporte formal de moneda.</div>
-                    </div>
-                    <div class="chat-item system">
-                      <strong>Asistente</strong>
-                      <div>También marqué la corrección de referencia a M-900 Plus con ECG 5 derivaciones para que la emisión no salga con SKU anterior.</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="quick-actions" style="padding:14px;">
-                  <button class="primary" id="appendAudit">Registrar confirmación en expediente</button>
-                  <button id="requestFormal">Solicitar soporte formal</button>
-                  <button class="success" id="syncQuote">Sincronizar cotización</button>
-                </div>
-              </article>
+        <section class="surface" style="padding:16px; border-radius:18px;">
+          <div class="row-between" style="margin-bottom:10px;">
+            <strong>Estado global (JS)</strong>
+            <span class="tiny" id="stateUpdated">actualizado 10:20 AM</span>
+          </div>
+          <pre class="quote-state" id="quoteStateView"></pre>
+        </section>
 
-              <article class="card">
-                <div class="card-top">
-                  <div>
-                    <h3>Decisiones</h3>
-                    <div class="tiny">Resumen ejecutivo de decisiones activas para el siguiente paso.</div>
-                  </div>
-                  <span class="pill">Resolución guiada</span>
-                </div>
-                <div class="decision-list">
-                  <div class="decision-item">
-                    <strong>Moneda operativa fijada en USD</strong>
-                    <div class="tiny">La decisión ya fue aplicada al expediente y solo espera soporte formal del cliente.</div>
-                  </div>
-                  <div class="decision-item">
-                    <strong>Cantidad final definida en 20 unidades</strong>
-                    <div class="tiny">La reserva de inventario y la urgencia del despacho respaldan esta versión.</div>
-                  </div>
-                  <div class="decision-item">
-                    <strong>Referencia final corregida a M-900 Plus con ECG 5 derivaciones</strong>
-                    <div class="tiny">Se evita emitir el SKU anterior y reducir riesgo de devolución.</div>
-                  </div>
-                </div>
-              </article>
+        <section class="quote-sheet">
+          <div class="row-between" style="margin-bottom:14px;">
+            <div>
+              <strong style="font-size:1.1rem;">Cotización MC-2026-0318</strong>
+              <div class="tiny">Versión consolidada emitible</div>
             </div>
-          </article>
+            <span class="tag" id="quoteDocStatus">En construcción</span>
+          </div>
+          <div class="summary-grid" style="display:grid; gap:12px; margin-bottom:12px;">
+            <div class="field"><label>Cliente</label><div id="quoteCliente"></div></div>
+            <div class="field"><label>Producto</label><div id="quoteProducto"></div></div>
+            <div class="field"><label>Cantidad</label><div id="quoteCantidad"></div></div>
+            <div class="field"><label>Moneda</label><div id="quoteMoneda"></div></div>
+            <div class="field"><label>Descuento</label><div id="quoteDescuento"></div></div>
+            <div class="field"><label>Condiciones</label><div id="quoteCondiciones"></div></div>
+          </div>
+          <div class="actions">
+            <button class="action primary" id="finalizeQuote">Marcar lista para emitir</button>
+            <button class="action success" id="resetDemo">Reiniciar demo</button>
+          </div>
+        </section>
 
-          <article class="summary-panel">
-            <div class="stack">
-              <article class="card">
-                <div class="card-top">
-                  <div>
-                    <h3>Checklist operativo</h3>
-                    <div class="tiny">Estado de las validaciones necesarias para emitir.</div>
-                  </div>
-                  <span class="pill" id="checkStatus">3/4 completadas</span>
-                </div>
-                <div class="checklist" id="checklist">
-                  <div class="check-item"><span><span class="dot done"></span>Cantidad consolidada en 20 unidades</span><span class="tiny">Hecho</span></div>
-                  <div class="check-item"><span><span class="dot done"></span>Descuento 5% aprobado por llamada</span><span class="tiny">Hecho</span></div>
-                  <div class="check-item"><span><span class="dot done"></span>Referencia M-900 Plus confirmada</span><span class="tiny">Hecho</span></div>
-                  <div class="check-item" id="formalCheck"><span><span class="dot pending"></span>Soporte formal de moneda en expediente</span><span class="tiny">Pendiente</span></div>
-                </div>
-              </article>
+        <section class="summary-card">
+          <h3>Alertas generadas</h3>
+          <p class="muted" style="margin-top:4px; margin-bottom:12px;">WhatsApp, llamadas e interno pueden tensionar el documento formal.</p>
+          <div class="alert-list" id="alertList"></div>
+        </section>
 
-              <article class="card">
-                <div class="card-top">
-                  <div>
-                    <h3>Tareas del agente</h3>
-                    <div class="tiny">Siguientes acciones sugeridas para el ejecutivo.</div>
-                  </div>
-                  <span class="pill">2 urgentes · 1 seguimiento</span>
-                </div>
-                <div class="task-list" id="taskList">
-                  <div class="task-item">
-                    <div>
-                      <strong>Solicitar correo de confirmación de moneda</strong>
-                      <div class="tiny">Necesario para cerrar la alerta documental antes de emisión.</div>
-                    </div>
-                    <span class="badge alert">Urgente</span>
-                  </div>
-                  <div class="task-item">
-                    <div>
-                      <strong>Emitir versión PDF con referencia corregida</strong>
-                      <div class="tiny">La última versión aún no ha sido enviada al cliente.</div>
-                    </div>
-                    <span class="badge warn">En curso</span>
-                  </div>
-                  <div class="task-item">
-                    <div>
-                      <strong>Confirmar inventario reservado a las 16:30</strong>
-                      <div class="tiny">Operaciones retiene lote solo hasta el cierre de jornada.</div>
-                    </div>
-                    <span class="badge">Seguimiento</span>
-                  </div>
-                </div>
-              </article>
-            </div>
-          </article>
-        </div>
-      </section>
+        <section class="summary-card">
+          <h3>Timeline de procesamiento</h3>
+          <p class="muted" style="margin-top:4px; margin-bottom:12px;">Cada click deja trazabilidad sobre la misma cotización.</p>
+          <div class="event-list" id="eventList"></div>
+        </section>
+      </aside>
     </section>
-
-    <div class="footer-note">
-      <strong>Vista operativa unificada de Medinistros.</strong>
-      La plataforma mantiene la cotización viva mientras el equipo comercial toma decisiones, detecta inconsistencias y prepara una sola versión emitible.
-    </div>
-  </div>
+  </main>
 
   <script>
-    const mails = [
+    const baseState = {
+      cliente: 'Clínica Sierra Norte',
+      producto: 'Monitor multiparámetro M-900',
+      cantidad: 'Pendiente',
+      moneda: 'Pendiente',
+      descuento: 'Sin descuento',
+      condiciones: 'Pendientes de consolidación'
+    };
+
+    const mailData = [
       {
+        id: 'mail-1',
+        senderName: 'Carolina Pardo',
+        senderEmail: 'carolina.pardo@sierranorte.com',
+        to: 'Laura Méndez <laura.mendez@medinistros.com>',
         subject: 'Re: Ajuste cantidad cotización M-900',
-        from: 'compras.biomedica@sierranorte.com',
-        time: '10:20',
-        snippet: 'Favor dejar la propuesta en 20 unidades y actualizar referencia.',
-        body: 'Equipo Medinistros,\n\nPor favor ajusten la propuesta final a 20 unidades del monitor multiparámetro M-900 Plus.\nAsegúrense de incluir el accesorio ECG de 5 derivaciones en la referencia.\nNecesitamos versión actualizada hoy antes del comité de las 12:30.\n\nGracias,\nCarolina Pardo\nCompras Biomédicas'
+        preview: 'Favor dejar la propuesta en 20 unidades y revisar la versión final hoy.',
+        time: '10:20 AM',
+        unread: true,
+        body: 'Equipo Medinistros,\n\nPor favor ajustar la propuesta a 20 unidades del monitor M-900 Plus.\nNecesitamos la versión actualizada antes del comité de compras de hoy.\n\nGracias,\nCarolina Pardo\nCompras Biomédicas\nClínica Sierra Norte',
+        footer: 'Este correo llena parcialmente la cotización con cantidad 20 y deja el producto en versión Plus.',
+        process: {
+          producto: 'Monitor multiparámetro M-900 Plus',
+          cantidad: '20 unidades',
+          conditionsAppend: 'Correo formal solicita actualización antes del comité de compras',
+          alert: {
+            level: 'medium',
+            title: 'Correo formal actualizado',
+            text: 'La cantidad queda soportada por correo, pero la moneda sigue pendiente.'
+          },
+          event: 'Correo abierto: se actualizó cantidad a 20 y se llenó parcialmente la cotización.'
+        }
       },
       {
-        subject: 'Cambio de moneda urgente',
-        from: 'carolina.pardo@sierranorte.com',
-        time: '09:48',
-        snippet: 'Revisar emisión en USD para no frenar aprobación financiera.',
-        body: 'Hola Laura,\n\nTe confirmo que el comité financiero está revisando la operación en USD.\nSi la versión sale en COP tendríamos que reprocesar la solicitud y perderíamos la ventana de compra de hoy.\n\nQuedo atenta.\nCarolina'
-      },
-      {
-        subject: 'Corrección referencia equipo',
-        from: 'ingenieria.clinica@sierranorte.com',
-        time: '09:15',
-        snippet: 'Debe salir como M-900 Plus con ECG 5 derivaciones.',
-        body: 'Buen día,\n\nLa referencia correcta para esta compra es Monitor M-900 Plus.\nLa versión estándar no nos sirve para UCI intermedia.\nFavor incluir ECG de 5 derivaciones y mantener el módulo SpO2.\n\nSaludos,\nIng. Clínica Sierra Norte'
-      },
-      {
-        subject: 'Comité solicita vigencia de oferta',
-        from: 'direccion.medica@sierranorte.com',
-        time: '08:59',
-        snippet: 'Incluir vigencia mínima de 72 horas en condiciones.',
-        body: 'Hola equipo,\n\nPara poder presentar la oferta al comité necesitamos que la vigencia quede por 72 horas y que se especifique entrega máxima en 48 horas si hay stock.\n\nGracias.'
-      },
-      {
-        subject: 'Re: aprobación descuento comercial',
-        from: 'laura.mendez@medinistros.com',
-        time: '09:34',
-        snippet: 'Se documenta descuento de 5% autorizado en llamada.',
-        body: 'Se deja registrado que el cliente aprobó en llamada el cierre con 5% de descuento sobre la propuesta consolidada.\nPendiente: alinear moneda definitiva para emitir sin reproceso.'
-      },
-      {
+        id: 'mail-2',
+        senderName: 'Carolina Pardo',
+        senderEmail: 'compras.biomedica@sierranorte.com',
+        to: 'Laura Méndez <laura.mendez@medinistros.com>',
         subject: 'Solicitud inicial monitores UCI',
-        from: 'compras.biomedica@sierranorte.com',
-        time: '08:41',
-        snippet: '18 unidades M-900, COP, pago a 30 días.',
-        body: 'Buen día,\n\nSolicitamos cotización de 18 monitores M-900 para reposición de UCI intermedia.\nMoneda COP.\nPago a 30 días.\n\nAtentos a su propuesta.\nCompras Biomédicas'
+        preview: '18 unidades M-900, moneda COP, pago a 30 días.',
+        time: '08:41 AM',
+        unread: false,
+        body: 'Buen día,\n\nSolicitamos cotización de 18 monitores M-900 para reposición de UCI intermedia.\nMoneda COP.\nPago a 30 días.\n\nAtentos a su propuesta.\nCarolina Pardo\nCompras Biomédicas\nClínica Sierra Norte',
+        footer: 'Sirve como origen documental y deja visible la primera versión del negocio.',
+        process: {
+          moneda: 'COP',
+          cantidad: '18 unidades',
+          conditionsAppend: 'Solicitud base con pago a 30 días',
+          alert: {
+            level: 'high',
+            title: 'Versión inicial distinta',
+            text: 'El correo original habla de 18 unidades en COP; se deberá conciliar con otros canales.'
+          },
+          event: 'Correo base abierto: se registró la versión inicial de 18 unidades en COP.'
+        }
+      },
+      {
+        id: 'mail-3',
+        senderName: 'Dirección Médica',
+        senderEmail: 'direccion.medica@sierranorte.com',
+        to: 'Equipo comercial <ventas@medinistros.com>',
+        subject: 'Condiciones para comité de hoy',
+        preview: 'Incluir vigencia mínima de 72 horas y entrega máxima en 48 horas.',
+        time: '08:59 AM',
+        unread: false,
+        body: 'Hola equipo,\n\nPara presentar la oferta al comité necesitamos vigencia mínima de 72 horas y entrega máxima de 48 horas si hay stock.\n\nSaludos,\nDirección Médica\nClínica Sierra Norte',
+        footer: 'Este correo no cambia producto ni moneda; fortalece las condiciones de la oferta.',
+        process: {
+          conditionsAppend: 'Vigencia 72 horas y entrega máxima 48 horas',
+          alert: {
+            level: 'low',
+            title: 'Condiciones reforzadas por correo',
+            text: 'Se anexaron vigencia y tiempo de entrega a la cotización consolidada.'
+          },
+          event: 'Correo de comité abierto: se consolidaron vigencia de 72 horas y entrega en 48 horas.'
+        }
       }
     ];
 
-    const mailList = document.getElementById('mailList');
-    const mailPreview = document.getElementById('mailPreview');
-    const tabButtons = Array.from(document.querySelectorAll('.tab-button'));
-    const viewFrames = Array.from(document.querySelectorAll('.view-frame'));
-    let activeMail = 0;
-    let activeView = 'bandeja';
+    const whatsappMessages = [
+      { side: 'client', text: 'eso era en dólares', time: '10:36 AM' },
+      { side: 'user', text: 'ok lo ajusto', time: '10:37 AM' },
+      { side: 'client', text: 'súbele eso a 20', time: '10:38 AM' },
+      { side: 'client', text: 'urge hoy', time: '10:39 AM' },
+      { side: 'user', text: 'ya lo estoy consolidando con la propuesta formal', time: '10:40 AM' }
+    ];
 
-    function setActiveView(viewName) {
-      activeView = viewName;
-      tabButtons.forEach((button) => {
-        const isActive = button.dataset.view === viewName;
-        button.classList.toggle('active', isActive);
-        button.setAttribute('aria-selected', String(isActive));
-      });
-      viewFrames.forEach((frame) => {
-        frame.classList.toggle('active', frame.dataset.view === viewName);
-      });
+    const calls = [
+      {
+        id: 'call-1',
+        contact: 'Carolina Pardo',
+        time: '09:32',
+        duration: '06:18',
+        status: 'Completada',
+        direction: 'Llamada saliente',
+        summary: 'Negociación final de precio y aprobación comercial.',
+        transcript: [
+          ['Asesor', 'Buenos días, le confirmo la cotización.'],
+          ['Cliente', 'Sí, está bien, pero necesito 5% de descuento.'],
+          ['Asesor', 'Perfecto, queda aprobado el descuento.']
+        ],
+        process: {
+          descuento: '5% aprobado en llamada',
+          conditionsAppend: 'Validación comercial por llamada grabada',
+          alert: {
+            level: 'low',
+            title: 'Descuento detectado',
+            text: 'La transcripción detectó 5% de descuento y agregó una validación comercial.'
+          },
+          event: 'Llamada abierta: se detectó y aplicó descuento del 5% sobre la cotización.'
+        }
+      },
+      {
+        id: 'call-2',
+        contact: 'Ingeniería Clínica',
+        time: '09:54',
+        duration: '03:41',
+        status: 'Completada',
+        direction: 'Llamada entrante',
+        summary: 'Confirmación de referencia técnica del equipo.',
+        transcript: [
+          ['Cliente', 'Necesitamos que salga como M-900 Plus.'],
+          ['Asesor', 'Perfecto, lo actualizo en la cotización.']
+        ],
+        process: {
+          producto: 'Monitor multiparámetro M-900 Plus',
+          alert: {
+            level: 'medium',
+            title: 'Referencia verbal corregida',
+            text: 'La llamada corrige la referencia; confirmar que el documento final no salga con la versión vieja.'
+          },
+          event: 'Llamada técnica abierta: se reafirmó la referencia M-900 Plus.'
+        }
+      }
+    ];
+
+    const opsEvents = [
+      {
+        id: 'ops-1',
+        time: '09:15',
+        title: 'Ejecutivo ajusta moneda a USD',
+        detail: '09:15 – Ejecutivo ajusta moneda a USD\n09:16 – Se marca dependencia con aprobación financiera\n09:17 – Motor crea alerta documental por divergencia con correo inicial',
+        process: {
+          moneda: 'USD',
+          alert: {
+            level: 'high',
+            title: 'Moneda modificada en canal interno',
+            text: 'Internamente se fija USD, pero el documento formal original seguía en COP.'
+          },
+          event: 'Evento interno abierto: la moneda operativa cambió a USD.'
+        }
+      },
+      {
+        id: 'ops-2',
+        time: '09:46',
+        title: 'Se modifica condición comercial',
+        detail: '09:46 – Se modifica condición comercial\n09:47 – Reserva logística se ajusta para despacho prioritario\n09:48 – Se marca ventana de salida en 48 horas',
+        process: {
+          conditionsAppend: 'Despacho prioritario con ventana de 48 horas',
+          alert: {
+            level: 'low',
+            title: 'Condición comercial impactada',
+            text: 'El área interna agregó urgencia operativa y priorización logística a la propuesta.'
+          },
+          event: 'Evento interno abierto: se actualizaron condiciones comerciales y logísticas.'
+        }
+      },
+      {
+        id: 'ops-3',
+        time: '10:05',
+        title: 'Finanzas valida cupo',
+        detail: '10:05 – Finanzas valida cupo\n10:06 – Cliente habilitado para pago a 30 días\n10:07 – Se libera condición para emitir la versión final',
+        process: {
+          conditionsAppend: 'Finanzas valida pago a 30 días',
+          alert: {
+            level: 'low',
+            title: 'Validación financiera',
+            text: 'Se confirmó cupo para pago a 30 días dentro del expediente consolidado.'
+          },
+          event: 'Evento interno abierto: finanzas validó cupo y pago a 30 días.'
+        }
+      }
+    ];
+
+    let quoteState = { ...baseState };
+    let version = 1;
+    let processedCount = 9;
+    let activeMail = 0;
+    let activeCall = 0;
+    let activeOps = 0;
+    const alerts = [];
+    const timeline = [];
+    const processedKeys = new Set();
+
+    const mailList = document.getElementById('mailList');
+    const waThread = document.getElementById('waThread');
+    const callList = document.getElementById('callList');
+    const opsList = document.getElementById('opsList');
+
+    function uniqueAppend(source, text) {
+      if (!text) return;
+      const current = quoteState[source] || '';
+      if (current.includes(text)) return;
+      quoteState[source] = current === 'Pendientes de consolidación' ? text : current ? `${current} · ${text}` : text;
+    }
+
+    function timestampLabel() {
+      return new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
+    }
+
+    function addAlert(alert) {
+      if (!alert) return;
+      alerts.unshift(alert);
+      renderAlerts();
+    }
+
+    function addTimeline(text) {
+      timeline.unshift({ time: timestampLabel(), text });
+      renderTimeline();
+    }
+
+    function applyProcess(key, process) {
+      const firstTime = !processedKeys.has(key);
+      if (process.producto) quoteState.producto = process.producto;
+      if (process.cantidad) quoteState.cantidad = process.cantidad;
+      if (process.moneda) quoteState.moneda = process.moneda;
+      if (process.descuento) quoteState.descuento = process.descuento;
+      if (process.conditionsAppend) uniqueAppend('condiciones', process.conditionsAppend);
+      if (firstTime) {
+        processedKeys.add(key);
+        version += 1;
+        processedCount += 1;
+        addAlert(process.alert);
+        addTimeline(process.event);
+      } else {
+        addTimeline(`Reapertura de evidencia: ${process.event}`);
+      }
+      updateStatus();
+      renderQuote();
+    }
+
+    function updateStatus() {
+      const ready = quoteState.cantidad !== 'Pendiente' && quoteState.moneda !== 'Pendiente' && quoteState.producto !== 'Monitor multiparámetro M-900' && quoteState.descuento !== 'Sin descuento';
+      document.getElementById('globalStatus').textContent = ready ? 'Lista para revisión comercial' : 'Cotización en construcción';
+      document.getElementById('quoteDocStatus').textContent = ready ? 'Consolidada' : 'En construcción';
+      document.getElementById('quoteVersion').textContent = `Versión ${version}`;
+      document.getElementById('processedCounter').textContent = String(processedCount);
+      document.getElementById('stateUpdated').textContent = `actualizado ${timestampLabel()}`;
+    }
+
+    function renderQuote() {
+      document.getElementById('quoteStateView').textContent = JSON.stringify(quoteState, null, 2);
+      document.getElementById('quoteCliente').textContent = quoteState.cliente;
+      document.getElementById('quoteProducto').textContent = quoteState.producto;
+      document.getElementById('quoteCantidad').textContent = quoteState.cantidad;
+      document.getElementById('quoteMoneda').textContent = quoteState.moneda;
+      document.getElementById('quoteDescuento').textContent = quoteState.descuento;
+      document.getElementById('quoteCondiciones').textContent = quoteState.condiciones;
+      document.getElementById('heroClient').textContent = quoteState.cliente;
+    }
+
+    function renderAlerts() {
+      const list = document.getElementById('alertList');
+      if (!alerts.length) {
+        list.innerHTML = '<div class="alert-item low"><strong>Sin alertas todavía</strong><div class="tiny">Abre un canal para que el motor detecte diferencias o validaciones.</div></div>';
+        return;
+      }
+      list.innerHTML = alerts.map((alert) => `
+        <div class="alert-item ${alert.level}">
+          <strong>${alert.title}</strong>
+          <div class="tiny">${alert.text}</div>
+        </div>
+      `).join('');
+    }
+
+    function renderTimeline() {
+      const list = document.getElementById('eventList');
+      if (!timeline.length) {
+        list.innerHTML = '<div class="event-item"><strong>Sin eventos</strong><div class="tiny">La trazabilidad aparecerá aquí.</div></div>';
+        return;
+      }
+      list.innerHTML = timeline.map((event) => `
+        <div class="event-item">
+          <strong>${event.time}</strong>
+          <div class="tiny">${event.text}</div>
+        </div>
+      `).join('');
     }
 
     function renderMails() {
       mailList.innerHTML = '';
-      mails.forEach((mail, index) => {
-        const article = document.createElement('button');
-        article.type = 'button';
-        article.className = `mail-item ${index === activeMail ? 'active' : ''}`;
-        article.innerHTML = `
-          <div class="row-between"><strong>${mail.subject}</strong><span class="tiny">${mail.time}</span></div>
-          <div class="tiny">${mail.from}</div>
-          <div style="margin-top:8px;">${mail.snippet}</div>
+      mailData.forEach((mail, index) => {
+        const item = document.createElement('button');
+        item.className = `mail-item ${index === activeMail ? 'active' : ''}`;
+        item.type = 'button';
+        item.innerHTML = `
+          <div class="mail-top">
+            <div class="mail-sender">
+              <span class="avatar">${mail.senderName.split(' ').map((part) => part[0]).slice(0, 2).join('')}</span>
+              <div>
+                <strong>${mail.senderName}</strong>
+                <div class="tiny">${mail.senderEmail}</div>
+              </div>
+            </div>
+            <div style="display:flex; align-items:center; gap:10px;">
+              ${mail.unread ? '<span class="dot unread"></span>' : ''}
+              <span class="tiny">${mail.time}</span>
+            </div>
+          </div>
+          <strong>${mail.subject}</strong>
+          <div class="tiny" style="margin-top:4px;">${mail.preview}</div>
         `;
-        article.addEventListener('click', () => {
+        item.addEventListener('click', () => {
           activeMail = index;
           renderMails();
+          showMail();
+          applyProcess(mail.id, mail.process);
         });
-        mailList.appendChild(article);
+        mailList.appendChild(item);
       });
-      const mail = mails[activeMail];
-      mailPreview.textContent = `${mail.subject}\n${mail.from} · ${mail.time}\n\n${mail.body}`;
     }
 
-    function syncMirrors() {
-      const orderStatus = document.getElementById('orderStatus').textContent;
-      const versionCount = document.getElementById('versionCount').textContent;
-      document.getElementById('orderStatusMirror').textContent = orderStatus;
-      document.getElementById('versionPillMirror').textContent = `Versión ${versionCount}`;
+    function showMail() {
+      const mail = mailData[activeMail];
+      document.getElementById('mailDetailTitle').textContent = mail.subject;
+      document.getElementById('mailDetailTag').textContent = 'Procesado desde correo';
+      document.getElementById('mailFrom').textContent = `${mail.senderName} <${mail.senderEmail}>`;
+      document.getElementById('mailTo').textContent = mail.to;
+      document.getElementById('mailSubject').textContent = mail.subject;
+      document.getElementById('mailBody').textContent = mail.body;
+      document.getElementById('mailFooter').textContent = mail.footer;
     }
 
-    function pushAgentMessage(type, title, text) {
-      const wrap = document.getElementById('agentChat');
-      const item = document.createElement('div');
-      item.className = `chat-item ${type}`;
-      item.innerHTML = `<strong>${title}</strong><div>${text}</div>`;
-      wrap.appendChild(item);
-      wrap.scrollTop = wrap.scrollHeight;
-    }
-
-    function markFormalSupportDone() {
-      const formalCheck = document.getElementById('formalCheck');
-      formalCheck.innerHTML = '<span><span class="dot done"></span>Soporte formal de moneda en expediente</span><span class="tiny">Hecho</span>';
-      document.getElementById('checkStatus').textContent = '4/4 completadas';
-      document.getElementById('docTag').textContent = 'Soporte formal recibido';
-      document.getElementById('docStateCopy').textContent = 'La moneda quedó respaldada formalmente; la cotización puede pasar a emisión.';
-      document.getElementById('quoteStatusHeadline').textContent = 'Documento listo para emisión';
-      document.getElementById('versionNarrative').textContent = 'La versión actual quedó formalizada, sincronizada y lista para emitirse al cliente.';
-      document.getElementById('alertList').innerHTML = `
-        <div class="alert-item medium">
-          <strong>⚠️ Cantidad inconsistente entre versiones anteriores</strong>
-          <div class="tiny">El historial conserva 18 y 20 unidades, pero la versión vigente ya quedó consolidada en 20.</div>
+    function renderWhatsapp() {
+      waThread.innerHTML = whatsappMessages.map((message) => `
+        <div class="wa-bubble ${message.side}">
+          ${message.text}
+          <span class="wa-time">${message.time}</span>
         </div>
-        <div class="alert-item low">
-          <strong>⚠️ Referencia corregida recientemente</strong>
-          <div class="tiny">Revisar que el PDF final salga como M-900 Plus con ECG 5 derivaciones.</div>
-        </div>
-      `;
-      document.getElementById('alertCount').textContent = '2';
-      document.getElementById('riskPercent').textContent = '38%';
-      document.getElementById('riskFill').style.width = '38%';
-      document.getElementById('riskHeadline').textContent = 'Medio';
-      syncMirrors();
+      `).join('');
     }
 
-    tabButtons.forEach((button) => {
-      button.addEventListener('click', () => {
-        setActiveView(button.dataset.view);
+    function processWhatsapp() {
+      applyProcess('whatsapp-thread', {
+        moneda: 'USD',
+        cantidad: '20 unidades',
+        conditionsAppend: 'Urgencia de cliente para cierre hoy',
+        alert: {
+          level: 'high',
+          title: 'WhatsApp contradice documento base',
+          text: 'El chat indica USD y 20 unidades con urgencia, distinto a la solicitud formal inicial.'
+        },
+        event: 'Chat abierto: el motor leyó USD, 20 unidades y urgencia para hoy.'
       });
+      document.getElementById('whatsappCard').style.outline = '2px solid rgba(17,138,126,0.35)';
+    }
+
+    function renderCalls() {
+      callList.innerHTML = '';
+      calls.forEach((call, index) => {
+        const item = document.createElement('button');
+        item.className = `crm-item ${index === activeCall ? 'active' : ''}`;
+        item.type = 'button';
+        item.innerHTML = `
+          <div class="crm-top">
+            <div>
+              <strong>${call.contact}</strong>
+              <div class="tiny">${call.direction} · ${call.status}</div>
+            </div>
+            <div class="tiny">${call.time}</div>
+          </div>
+          <div class="tiny" style="margin-top:6px;">Duración ${call.duration}</div>
+          <div style="margin-top:6px;">${call.summary}</div>
+        `;
+        item.addEventListener('click', () => {
+          activeCall = index;
+          renderCalls();
+          showCall();
+          applyProcess(call.id, call.process);
+        });
+        callList.appendChild(item);
+      });
+    }
+
+    function showCall() {
+      const call = calls[activeCall];
+      document.getElementById('callDetailTitle').textContent = `${call.contact} · ${call.direction}`;
+      document.getElementById('callDetailTag').textContent = call.id === 'call-1' ? 'Descuento detectado' : 'Referencia detectada';
+      document.getElementById('callBanner').textContent = `[${call.time} - ${call.direction}] · Duración ${call.duration} · Estado ${call.status}`;
+      document.getElementById('callTranscript').innerHTML = call.transcript.map(([speaker, text]) => `
+        <div class="transcript-block">
+          <strong>${speaker}:</strong>
+          <div>${text}</div>
+        </div>
+      `).join('');
+    }
+
+    function renderOps() {
+      opsList.innerHTML = '';
+      opsEvents.forEach((event, index) => {
+        const item = document.createElement('button');
+        item.className = `ops-item ${index === activeOps ? 'active' : ''}`;
+        item.type = 'button';
+        item.innerHTML = `
+          <div class="ops-top">
+            <strong>${event.time}</strong>
+            <span class="tiny">Sistema</span>
+          </div>
+          <div style="margin-top:6px;">${event.title}</div>
+        `;
+        item.addEventListener('click', () => {
+          activeOps = index;
+          renderOps();
+          showOps();
+          applyProcess(event.id, event.process);
+        });
+        opsList.appendChild(item);
+      });
+    }
+
+    function showOps() {
+      const event = opsEvents[activeOps];
+      document.getElementById('opsDetailTitle').textContent = event.title;
+      document.getElementById('opsDetailTag').textContent = 'Aplicado al estado';
+      document.getElementById('opsDetailBody').innerHTML = event.detail.split('\n').map((line) => `<div class="log-entry">${line}</div>`).join('');
+    }
+
+    document.getElementById('openWhatsapp').addEventListener('click', processWhatsapp);
+
+    document.getElementById('finalizeQuote').addEventListener('click', () => {
+      uniqueAppend('condiciones', 'Lista para emisión comercial');
+      addTimeline('Acción manual: el usuario marcó la cotización como lista para emitir.');
+      addAlert({
+        level: 'low',
+        title: 'Documento listo para salida',
+        text: 'La cotización consolidada fue marcada como lista para emitir con una sola versión visible.'
+      });
+      document.getElementById('globalStatus').textContent = 'Lista para emitir';
+      document.getElementById('quoteDocStatus').textContent = 'Lista para emitir';
+      renderQuote();
     });
 
-    document.getElementById('confirmUsd20').addEventListener('click', () => {
-      document.getElementById('quoteCurrency').textContent = 'USD';
-      document.getElementById('tableCurrency').textContent = 'USD';
-      document.getElementById('quoteQuantity').textContent = '20 unidades';
-      document.getElementById('tableQty').textContent = '20';
-      document.getElementById('tableTotal').textContent = '68,400';
-      document.getElementById('processedCount').textContent = '187';
-      document.getElementById('versionCount').textContent = '8';
-      document.getElementById('versionPillMirror').textContent = 'Versión 8';
-      document.getElementById('versionNarrative').textContent = 'La versión actual integra la confirmación operativa en USD y 20 unidades mientras se espera soporte formal.';
-      pushAgentMessage('user', 'Usuario', 'Confirmado: la versión final debe quedar en USD y 20 unidades.');
-      pushAgentMessage('audit', 'Sistema', 'Versión 8 consolidada en expediente. Se mantiene pendiente soporte formal del cliente para moneda.');
-      syncMirrors();
-    });
-
-    document.getElementById('flagForReview').addEventListener('click', () => {
-      document.getElementById('docStatus').textContent = 'Revisión formal';
-      document.getElementById('docPill').textContent = 'Versión 7 · validación documental';
-      document.getElementById('orderStatus').textContent = 'Escalada a revisión';
-      document.getElementById('quoteStatusHeadline').textContent = 'Expediente escalado a revisión formal';
-      pushAgentMessage('system', 'Asistente', 'Escalé la cotización para revisión formal. No emitiré PDF hasta recibir soporte de moneda.');
-      syncMirrors();
-    });
-
-    document.getElementById('readyForReview').addEventListener('click', () => {
-      document.getElementById('docStatus').textContent = 'Lista para revisión';
-      document.getElementById('orderStatus').textContent = 'Lista para revisión';
-      document.getElementById('docPill').textContent = 'Versión 7 · lista para revisión';
-      document.getElementById('quoteStatusHeadline').textContent = 'Lista para revisión comercial';
-      pushAgentMessage('audit', 'Sistema', 'La cotización quedó marcada como lista para revisión del ejecutivo comercial.');
-      syncMirrors();
-    });
-
-    document.getElementById('appendAudit').addEventListener('click', () => {
-      pushAgentMessage('audit', 'Sistema', 'Se registró en expediente la confirmación verbal de USD y 20 unidades con sello horario 10:43.');
-      document.getElementById('processedCount').textContent = '188';
-    });
-
-    document.getElementById('requestFormal').addEventListener('click', () => {
-      pushAgentMessage('system', 'Asistente', 'Envié solicitud de correo formal al comprador para dejar respaldada la moneda antes de emitir.');
-    });
-
-    document.getElementById('syncQuote').addEventListener('click', () => {
-      markFormalSupportDone();
-      document.getElementById('docStatus').textContent = 'Lista para emitir';
-      document.getElementById('docPill').textContent = 'Versión 8 · lista para emitir';
-      document.getElementById('orderStatus').textContent = 'Lista para emitir';
-      document.getElementById('orderStatusMirror').textContent = 'Lista para emitir';
-      pushAgentMessage('audit', 'Sistema', 'Soporte formal recibido y cotización sincronizada. Expediente listo para emisión.');
-      syncMirrors();
+    document.getElementById('resetDemo').addEventListener('click', () => {
+      quoteState = { ...baseState };
+      version = 1;
+      processedCount = 9;
+      alerts.length = 0;
+      timeline.length = 0;
+      processedKeys.clear();
+      document.getElementById('globalStatus').textContent = 'Cotización en construcción';
+      document.getElementById('quoteDocStatus').textContent = 'En construcción';
+      document.getElementById('whatsappCard').style.outline = 'none';
+      renderQuote();
+      renderAlerts();
+      renderTimeline();
+      updateStatus();
     });
 
     renderMails();
-    syncMirrors();
-    setActiveView(activeView);
+    showMail();
+    renderWhatsapp();
+    renderCalls();
+    showCall();
+    renderOps();
+    showOps();
+    renderQuote();
+    renderAlerts();
+    renderTimeline();
+    updateStatus();
   </script>
 </body>
 </html>
